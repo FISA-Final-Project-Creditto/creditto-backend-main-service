@@ -65,6 +65,7 @@ public enum ErrorBaseCode implements ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "서버 내부 오류입니다."),
     URL_DECODE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "URL 디코딩 에러"),
     TRANSACTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, 50001, "거래 처지 중 오류가 발생했습니다."),
+    NO_AUTHENTICATION(HttpStatus.INTERNAL_SERVER_ERROR, 50010, "인증객체 관련 오류입니다."),
 
     /**
      * 501 NOT IMPLEMENTED - 구현되지 않음
