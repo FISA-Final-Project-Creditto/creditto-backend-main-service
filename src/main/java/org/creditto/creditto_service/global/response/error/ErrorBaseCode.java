@@ -13,7 +13,6 @@ public enum ErrorBaseCode implements ErrorCode {
      * 400 BAD_REQUEST - 잘못된 요청
      */
     BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, "잘못된 요청입니다."),
-    BAD_REQUEST_ILLEGALARGUMENTS(HttpStatus.BAD_REQUEST, 40010, "잘못된 요청입니다."),
     MISSING_PARAM(HttpStatus.BAD_REQUEST, 400, "필수 파라미터가 존재하지 않습니다."),
     NOT_READABLE(HttpStatus.BAD_REQUEST, 400, "JSON 혹은 REQUEST BODY 필드 오류 입니다."),
     INVALID_GOOGLE_CODE(HttpStatus.BAD_REQUEST, 400, "유효하지 않은 코드입니다."),
@@ -32,8 +31,7 @@ public enum ErrorBaseCode implements ErrorCode {
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, 401, "토큰이 만료되었습니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, 401, "인증되지 않은 사용자입니다."),
     UNENROLLED(HttpStatus.UNAUTHORIZED, 40101, "가입되지 않은 사용자입니다."),
-    INVALID_GOOGLE_AUTHCODE(HttpStatus.UNAUTHORIZED, 401, "유효하지 않은 인증코드입니다."),
-    INVALID_GOOGLE_TOKEN(HttpStatus.UNAUTHORIZED, 401, "유효하지 않은 토큰입니다."),
+    INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, 401, "유효하지 않은 토큰입니다."),
 
     /**
      * 403 FORBIDDEN - 리소스 접근 금지
@@ -67,6 +65,7 @@ public enum ErrorBaseCode implements ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "서버 내부 오류입니다."),
     URL_DECODE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "URL 디코딩 에러"),
     TRANSACTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, 50001, "거래 처지 중 오류가 발생했습니다."),
+    NO_AUTHENTICATION(HttpStatus.INTERNAL_SERVER_ERROR, 50010, "인증객체 관련 오류입니다."),
 
     /**
      * 501 NOT IMPLEMENTED - 구현되지 않음
