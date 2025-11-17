@@ -1,5 +1,6 @@
-package org.creditto.creditto_service.global.security;
+package org.creditto.creditto_service.global.config;
 
+import org.creditto.creditto_service.global.security.JwtAuthenticationConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
