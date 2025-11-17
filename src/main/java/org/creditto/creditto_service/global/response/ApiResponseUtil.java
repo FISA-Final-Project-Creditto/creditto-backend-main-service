@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ApiResponseUtil {
-    public static <T> ResponseEntity<BaseResponse<T>> success(final SuccessCode successCode) {
+    public static ResponseEntity<BaseResponse<Void>> success(final SuccessCode successCode) {
         return ResponseEntity.status(successCode.getHttpStatus())
                 .body(BaseResponse.of(successCode));
     }
@@ -17,13 +17,13 @@ public final class ApiResponseUtil {
                 .body(BaseResponse.of(successCode, data));
     }
 
-    public static <T> ResponseEntity<BaseResponse<T>> failure(final ErrorCode errorBaseCode) {
+    public static ResponseEntity<BaseResponse<Void>> failure(final ErrorCode errorBaseCode) {
         return ResponseEntity.status(errorBaseCode.getHttpStatus())
                 .body(BaseResponse.of(errorBaseCode));
     }
 
     //따로 error message 넣어줄 때, 사용
-    public static <T> ResponseEntity<BaseResponse<T>> failure(final ErrorCode errorBaseCode, final String message) {
+    public static ResponseEntity<BaseResponse<Void>> failure(final ErrorCode errorBaseCode, final String message) {
         return ResponseEntity
                 .status(errorBaseCode.getHttpStatus())
                 .body(BaseResponse.of(errorBaseCode.getCode(), message));
