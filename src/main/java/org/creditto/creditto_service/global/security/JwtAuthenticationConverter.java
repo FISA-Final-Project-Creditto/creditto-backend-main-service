@@ -1,7 +1,7 @@
 package org.creditto.creditto_service.global.security;
 
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
-import org.creditto.creditto_service.global.response.exception.JwtInvalidException;
+import org.creditto.creditto_service.global.response.exception.JwtTokenException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,7 +42,7 @@ public class JwtAuthenticationConverter implements Converter<Jwt, AbstractAuthen
 
     private static void validExternalUserIdAndUserName(String externalUserId, String userName) {
         if (externalUserId == null || externalUserId.isBlank() || userName == null || userName.isBlank()) {
-            throw new JwtInvalidException(ErrorBaseCode.INVALID_JWT_TOKEN);
+            throw new JwtTokenException(ErrorBaseCode.INVALID_JWT_TOKEN);
         }
     }
 }

@@ -58,6 +58,11 @@ public class TokenAuthentication extends AbstractAuthenticationToken {
         return userName != null ? userName : externalUserId;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
     public Jwt getJwt() {
         return jwt;
     }
