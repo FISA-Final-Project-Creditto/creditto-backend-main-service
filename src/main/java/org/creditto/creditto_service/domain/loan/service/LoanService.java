@@ -22,7 +22,7 @@ public class LoanService {
      */
     public LoanInfoRes getLoanInfo(Long loanId) {
 
-        Loan loan = loanRepository.getLoanById(loanId)
+        Loan loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new EntityNotFoundException(RESOURCE_NOT_FOUND));
 
         return LoanInfoRes.create(loan);

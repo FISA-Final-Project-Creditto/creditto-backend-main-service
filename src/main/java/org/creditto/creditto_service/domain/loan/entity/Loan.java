@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.creditto.creditto_service.global.common.BaseEntity;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 @Entity
@@ -22,21 +23,22 @@ public class Loan extends BaseEntity {
     private String description;
 
     // 기본 금리
-    private Double baseRate;
+    private BigDecimal baseRate;
 
     // 최대 한도
     private BigInteger maxLimitAmount;
 
     // 상환 방법
-    private RepaymentType repayMentType;
+    @Enumerated(EnumType.STRING)
+    private RepaymentType repaymentType;
 
-    public static Loan create(String title, String description, Double baseRate, BigInteger maxLimitAmount, RepaymentType repayMentType) {
+    public static Loan create(String title, String description, BigDecimal baseRate, BigInteger maxLimitAmount, RepaymentType repaymentType) {
         return Loan.builder()
                 .title(title)
                 .description(description)
                 .baseRate(baseRate)
                 .maxLimitAmount(maxLimitAmount)
-                .repayMentType(repayMentType)
+                .repaymentType(repaymentType)
                 .build();
     }
 }
