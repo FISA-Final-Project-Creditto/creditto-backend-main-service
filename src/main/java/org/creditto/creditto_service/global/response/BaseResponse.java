@@ -23,8 +23,8 @@ public class BaseResponse<T> {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
-    public static BaseResponse<?> of(final ApiCode apiMessage) {
-        return BaseResponse.builder()
+    public static <T> BaseResponse<T> of(final ApiCode apiMessage) {
+        return BaseResponse.<T>builder()
                 .code(apiMessage.getCode())
                 .message(apiMessage.getMessage())
                 .build();
@@ -39,8 +39,8 @@ public class BaseResponse<T> {
         }
 
     // Error 메시지 전송시
-    public static BaseResponse<?> of(final int code, final String message) {
-        return BaseResponse.builder()
+    public static <T> BaseResponse<T> of(final int code, final String message) {
+        return BaseResponse.<T>builder()
                 .code(code)
                 .message(message)
                 .build();
