@@ -33,7 +33,7 @@ public class AccountController {
     }
 
     // 계좌 조회 by accountId
-    @GetMapping("/{accountId}/account")
+    @GetMapping("/id/{accountId}")
     public ResponseEntity<?> getAccountByAccountId(
             @PathVariable("accountId") Long accountId
     ) {
@@ -41,7 +41,7 @@ public class AccountController {
     }
 
     // 계좌 잔액 조회 by accountId
-    @GetMapping("/{accountId}/balance")
+    @GetMapping("/id/{accountId}/balance")
     public ResponseEntity<?> getBalanceByAccountId(
             @PathVariable("accountId") Long accountId
     ) {
@@ -50,7 +50,7 @@ public class AccountController {
     }
 
     // 계좌 조회 by accountNo
-    @GetMapping("/{accountNo}")
+    @GetMapping("/number/{accountNo}")
     public ResponseEntity<?> getAccountByAccountNo(
             @PathVariable("accountNo") String accountNo
     ) {
@@ -58,7 +58,7 @@ public class AccountController {
     }
 
     // 전체 계좌 조회 by userId
-    @GetMapping("/me/account")
+    @GetMapping("/me/accounts")
     public ResponseEntity<?> getAccountByUserId(
             @ExternalUserId String userId
     ) {
@@ -66,7 +66,7 @@ public class AccountController {
     }
 
     // 거래 내역 조회 by accountId
-    @GetMapping("/{accountId}/transactions")
+    @GetMapping("/id/{accountId}/transactions")
     public ResponseEntity<?> getTransactionsByAccountId(
             @PathVariable("accountId")  Long accountId
     ) {
@@ -77,6 +77,7 @@ public class AccountController {
     @PostMapping("/{accountId}/remittance/once")
     public ResponseEntity<?> remittanceOnce(
             @ExternalUserId String userId,
+            @PathVariable("accountId") Long accountId,
             @RequestBody OverseasRemittanceReq request
             ) {
         return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.processRemittanceOnce(userId, request));
