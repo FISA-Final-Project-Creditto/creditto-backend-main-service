@@ -44,10 +44,6 @@ public class ConsentService {
 
         ConsentRecord newRecord = ConsentRecord.of(
                 latestDefinition,
-                ConsentStatus.AGREE,
-                latestDefinition.getConsentDefVer(),
-                LocalDateTime.now(),
-                null,
                 req.ipAddress(),
                 req.clientId()
         );

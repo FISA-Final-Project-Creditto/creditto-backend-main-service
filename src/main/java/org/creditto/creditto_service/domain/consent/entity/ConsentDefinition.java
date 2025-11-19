@@ -20,8 +20,10 @@ public class ConsentDefinition extends BaseEntity {
 
     private String consentCode; // 동의서 코드 (버전이 달라져도 그룹 조회 가능)
 
+    @Lob
     private String consentTitle;
 
+    @Lob
     private String consentDesc;
 
     @Enumerated(EnumType.STRING)

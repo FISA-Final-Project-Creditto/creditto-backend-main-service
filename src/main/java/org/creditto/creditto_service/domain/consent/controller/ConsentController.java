@@ -31,7 +31,7 @@ public class ConsentController {
      * @return 최신 버전의 모든 동의서 목록을 포함하는 응답 엔티티
      */
     @GetMapping("/definitions")
-    public ResponseEntity<BaseResponse<?>> getLatestConsentDefinitions() {
+    public ResponseEntity<BaseResponse<List<ConsentDefinitionRes>>> getLatestConsentDefinitions() {
         List<ConsentDefinitionRes> definitions = consentService.getLatestConsentDefinitions();
         return ApiResponseUtil.success(SuccessCode.OK, definitions);
     }
@@ -43,7 +43,7 @@ public class ConsentController {
      * @return 생성된 동의 기록 정보를 포함하는 응답 엔티티
      */
     @PostMapping("/agree")
-    public ResponseEntity<BaseResponse<?>> agreeConsent(@RequestBody ConsentAgreeReq req) {
+    public ResponseEntity<BaseResponse<ConsentRecordRes>> agreeConsent(@RequestBody ConsentAgreeReq req) {
         ConsentRecordRes record = consentService.agree(req);
         return ApiResponseUtil.success(SuccessCode.CREATED, record);
     }

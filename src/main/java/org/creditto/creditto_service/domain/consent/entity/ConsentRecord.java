@@ -33,13 +33,25 @@ public class ConsentRecord extends BaseEntity {
 
     private String clientId; // 외부 클라이언트 ID
 
-    public static ConsentRecord of(ConsentDefinition consentDefinition, ConsentStatus consentStatus, Integer consentRecVer, LocalDateTime consentDate, LocalDateTime withdrawalDate, String ipAddress, String clientId) {
+    public static ConsentRecord of(ConsentDefinition consentDefinition, ConsentStatus consentStatus, LocalDateTime withdrawalDate, String ipAddress, String clientId) {
         return ConsentRecord.builder()
                 .consentDefinition(consentDefinition)
                 .consentStatus(consentStatus)
-                .consentRecVer(consentRecVer)
-                .consentDate(consentDate)
+                .consentRecVer(consentDefinition.getConsentDefVer())
+                .consentDate(LocalDateTime.now())
                 .withdrawalDate(withdrawalDate)
+                .ipAddress(ipAddress)
+                .clientId(clientId)
+                .build();
+    }
+
+    public static ConsentRecord of(ConsentDefinition consentDefinition, String ipAddress, String clientId) {
+        return ConsentRecord.builder()
+                .consentDefinition(consentDefinition)
+                .consentStatus(ConsentStatus.AGREE)
+                .consentRecVer(consentDefinition.getConsentDefVer()) // Using getConsentDefVer for consistency with review context
+                .consentDate(LocalDateTime.now())
+                .withdrawalDate(null)
                 .ipAddress(ipAddress)
                 .clientId(clientId)
                 .build();
