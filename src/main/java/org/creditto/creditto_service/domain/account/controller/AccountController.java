@@ -13,9 +13,11 @@ import org.creditto.creditto_service.global.response.SuccessCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/accounts/open")
+@RequestMapping("/api/accounts")
 public class AccountController {
 
     private final AccountService accountService;
@@ -43,8 +45,8 @@ public class AccountController {
     public ResponseEntity<?> getBalanceByAccountId(
             @PathVariable("accountId") Long accountId
     ) {
-        AccountRes accountRes = accountService.getAccountByAccountId(accountId);
-        return ApiResponseUtil.success(SuccessCode.OK, accountRes.balance());
+        return ApiResponseUtil.success(SuccessCode.OK, accountService.getAccountBalanceByAccountId(accountId));
+
     }
 
     // 계좌 조회 by accountNo
@@ -55,8 +57,8 @@ public class AccountController {
         return ApiResponseUtil.success(SuccessCode.OK, accountService.getAccountByAccountNo(accountNo));
     }
 
-    // 계좌 조회 by userId
-    @GetMapping("/{userId}/account")
+    // 전체 계좌 조회 by userId
+    @GetMapping("/me/account")
     public ResponseEntity<?> getAccountByUserId(
             @ExternalUserId String userId
     ) {

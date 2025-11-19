@@ -9,16 +9,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.math.BigDecimal;
+
 @FeignClient(
         name = "core-banking",
         url = "${CORE_BANKING_SERVER_URL}"
 )
 public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/account/{externalUserId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    CreateAccountRes createAccountAPI(@PathVariable String externalUserId, @RequestBody CreateAccountReq request);
+    AccountRes createAccountAPI(@PathVariable String externalUserId, @RequestBody CreateAccountReq request);
+
+    @GetMapping(value = "/api/core/account/{accountId}/account", consumes = MediaType.APPLICATION_JSON_VALUE)
+    AccountRes getAccountByAccountId(@PathVariable Long accountId);
 
     @GetMapping(value = "/api/core/account/{accountId}/balance", consumes = MediaType.APPLICATION_JSON_VALUE)
-    AccountRes getAccountByAccountId(@PathVariable Long accountId);
+    BigDecimal getAccountBalanceByAccountId(@PathVariable Long accountId);
 
     @GetMapping(value = "/api/core/account/{accountNo}", consumes = MediaType.APPLICATION_JSON_VALUE)
     AccountRes getAccountByAccountNo(@PathVariable String accountNo);
@@ -26,7 +31,7 @@ public interface CoreBankingFeignClient {
     @GetMapping(value = "/api/core/account/client/{externalUserId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     AccountRes getAccountByExternalUserId(@PathVariable String externalUserId);
 
-    @GetMapping(value = "/api/core/transactions/{accountId", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/core/transactions/{accountId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     TransactionRes getTransactionByAccountId(@PathVariable Long accountId);
 
     @PostMapping(value = "/api/core/remittance/{externalUserId}", consumes = MediaType.APPLICATION_JSON_VALUE)

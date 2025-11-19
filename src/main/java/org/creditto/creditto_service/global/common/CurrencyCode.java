@@ -1,6 +1,8 @@
 package org.creditto.creditto_service.global.common;
 
+import lombok.Getter;
 
+@Getter
 public enum CurrencyCode {
 
     KRW("KRW", "원"),
