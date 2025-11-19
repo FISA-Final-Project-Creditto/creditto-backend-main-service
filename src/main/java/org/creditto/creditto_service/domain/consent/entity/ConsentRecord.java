@@ -49,7 +49,7 @@ public class ConsentRecord extends BaseEntity {
         return ConsentRecord.builder()
                 .consentDefinition(consentDefinition)
                 .consentStatus(ConsentStatus.AGREE)
-                .consentRecVer(consentDefinition.getConsentDefVer()) // Using getConsentDefVer for consistency with review context
+                .consentRecVer(consentDefinition.getConsentDefVer())
                 .consentDate(LocalDateTime.now())
                 .withdrawalDate(null)
                 .ipAddress(ipAddress)

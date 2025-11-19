@@ -72,7 +72,7 @@ class ConsentServiceTest {
     void withdraw_Success() {
         // Given
         ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        ConsentRecord record = recordRepository.save(ConsentRecord.of(definition, ConsentStatus.AGREE, 1, LocalDateTime.now(), null, "127.0.0.1", "client123"));
+        ConsentRecord record = recordRepository.save(ConsentRecord.of(definition, "127.0.0.1", "client123"));
         ConsentWithdrawReq req = new ConsentWithdrawReq("client123", definition.getId());
 
         // When
@@ -111,8 +111,8 @@ class ConsentServiceTest {
         String clientId = "client123";
         ConsentDefinition def1 = definitionRepository.save(ConsentDefinition.of("CODE1", "Title1", "Desc1", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
         ConsentDefinition def2 = definitionRepository.save(ConsentDefinition.of("CODE2", "Title2", "Desc2", ConsentCategory.SERVICE, 1, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(def1, ConsentStatus.AGREE, 1, LocalDateTime.now(), null, "127.0.0.1", clientId));
-        recordRepository.save(ConsentRecord.of(def2, ConsentStatus.WITHDRAW, 1, LocalDateTime.now(), LocalDateTime.now(), "127.0.0.1", clientId));
+        recordRepository.save(ConsentRecord.of(def1, "127.0.0.1", clientId));
+        recordRepository.save(ConsentRecord.of(def2, ConsentStatus.WITHDRAW, LocalDateTime.now(), "127.0.0.1", clientId));
 
         // When
         List<ConsentRecordRes> results = consentService.getConsentRecord(clientId);
@@ -129,7 +129,7 @@ class ConsentServiceTest {
         String clientId = "client123";
         String code = "CODE1";
         ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(definition, ConsentStatus.AGREE, 2, LocalDateTime.now(), null, "127.0.0.1", clientId));
+        recordRepository.save(ConsentRecord.of(definition, "127.0.0.1", clientId));
 
         // When
         boolean hasAgreed = consentService.checkAgreement(clientId, code);
@@ -146,7 +146,7 @@ class ConsentServiceTest {
         String code = "CODE1";
         definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
         ConsentDefinition oldDefinition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(oldDefinition, ConsentStatus.AGREE, 1, LocalDateTime.now(), null, "127.0.0.1", clientId));
+        recordRepository.save(ConsentRecord.of(oldDefinition, "127.0.0.1", clientId));
 
         // When
         boolean hasAgreed = consentService.checkAgreement(clientId, code);
@@ -162,7 +162,7 @@ class ConsentServiceTest {
         String clientId = "client123";
         String code = "CODE1";
         ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(definition, ConsentStatus.WITHDRAW, 2, LocalDateTime.now(), LocalDateTime.now(), "127.0.0.1", clientId));
+        recordRepository.save(ConsentRecord.of(definition, ConsentStatus.WITHDRAW, LocalDateTime.now(), "127.0.0.1", clientId));
 
         // When
         boolean hasAgreed = consentService.checkAgreement(clientId, code);

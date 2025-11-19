@@ -13,12 +13,12 @@ import org.creditto.creditto_service.domain.consent.repository.ConsentDefinition
 import org.creditto.creditto_service.domain.consent.repository.ConsentRecordRepository;
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
 import org.creditto.creditto_service.global.response.exception.CustomBaseException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 /**
  * 동의서 관련 비즈니스 로직을 처리하는 서비스 클래스입니다.
  */
@@ -63,7 +63,8 @@ public class ConsentService {
     @Transactional
     public ConsentRecordRes withdraw(ConsentWithdrawReq req) {
 
-        ConsentRecord findRecord = recordRepository.findLatestByClientAndDefinition(req.clientId(), req.definitionId())
+        List<ConsentRecord> records = recordRepository.findLatestByClientAndDefinitionWithDefinition(req.clientId(), req.definitionId(), PageRequest.of(0, 1));
+        ConsentRecord findRecord = records.stream().findFirst()
                 .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_RECORD));
 
         findRecord.withdraw();
@@ -109,13 +110,6 @@ public class ConsentService {
      * @return 최신 버전에 동의한 경우 true, 그렇지 않으면 false
      */
     public boolean checkAgreement(String clientId, String code) {
-
-        ConsentDefinition latestDefinition = getLatestDefinition(code);
-
-        return recordRepository.findLatestByClientAndCode(clientId, code)
-                .map(r ->
-                        r.getConsentRecVer().equals(latestDefinition.getConsentDefVer()) &&
-                        r.getConsentStatus() == ConsentStatus.AGREE
-                ).orElse(false);
+        return recordRepository.existsLatestAgreement(clientId, code);
     }
 }

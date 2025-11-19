@@ -18,10 +18,10 @@ public interface ConsentDefinitionRepository extends JpaRepository<ConsentDefini
     @Query("""
             SELECT d
             FROM ConsentDefinition d
-            WHERE d.consentDefVer = (
-                SELECT MAX(d2.consentDefVer)
+            WHERE (d.consentCode, d.consentDefVer) IN (
+                SELECT d2.consentCode, MAX(d2.consentDefVer)
                 FROM ConsentDefinition d2
-                WHERE d2.consentCode = d.consentCode
+                GROUP BY d2.consentCode
             )
             """)
     List<ConsentDefinition> findLatestForAllCodes();
