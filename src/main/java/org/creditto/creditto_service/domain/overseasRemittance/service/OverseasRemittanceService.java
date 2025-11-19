@@ -14,6 +14,7 @@ public class OverseasRemittanceService {
 
     private final CoreBankingFeignClient coreBankingFeignClient;
 
+    @Transactional
     public OverseasRemittanceRes processRemittanceOnce(String userId, OverseasRemittanceReq request) {
         return coreBankingFeignClient.processRemittanceOnce(userId, request);
     }
