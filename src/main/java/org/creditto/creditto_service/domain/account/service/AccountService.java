@@ -18,7 +18,7 @@ public class AccountService {
 
     @Transactional
     public AccountRes createAccount(String userId, CreateAccountReq request) {
-        return coreBankingFeignClient.createAccountAPI(userId, request);
+        return coreBankingFeignClient.createAccount(userId, request);
     }
 
     public AccountRes getAccountByAccountId(Long accountId) {
