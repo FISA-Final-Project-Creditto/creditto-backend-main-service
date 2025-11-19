@@ -55,7 +55,7 @@ public class ConsentController {
      * @return 철회 처리된 동의 기록 정보를 포함하는 응답 엔티티
      */
     @PostMapping("/withdraw")
-    public ResponseEntity<BaseResponse<?>> withdrawConsent(@RequestBody ConsentWithdrawReq req) {
+    public ResponseEntity<BaseResponse<ConsentRecordRes>> withdrawConsent(@RequestBody ConsentWithdrawReq req) {
         ConsentRecordRes record = consentService.withdraw(req);
         return ApiResponseUtil.success(SuccessCode.OK, record);
     }
@@ -67,7 +67,7 @@ public class ConsentController {
      * @return 해당 사용자의 전체 동의 기록 목록을 포함하는 응답 엔티티
      */
     @GetMapping("/record/{clientId}")
-    public ResponseEntity<BaseResponse<?>> getConsentRecord(@PathVariable String clientId) {
+    public ResponseEntity<BaseResponse<List<ConsentRecordRes>>> getConsentRecord(@PathVariable String clientId) {
         List<ConsentRecordRes> record = consentService.getConsentRecord(clientId);
         return ApiResponseUtil.success(SuccessCode.OK, record);
     }
@@ -80,7 +80,7 @@ public class ConsentController {
      * @return 동의 여부(true/false)를 포함하는 응답 엔티티
      */
     @GetMapping("/check/{clientId}/{code}")
-    public ResponseEntity<BaseResponse<?>> checkAgreement(@PathVariable String clientId, @PathVariable String code) {
+    public ResponseEntity<BaseResponse<Boolean>> checkAgreement(@PathVariable String clientId, @PathVariable String code) {
         boolean hasAgreed = consentService.checkAgreement(clientId, code);
         return ApiResponseUtil.success(SuccessCode.OK, hasAgreed);
     }
