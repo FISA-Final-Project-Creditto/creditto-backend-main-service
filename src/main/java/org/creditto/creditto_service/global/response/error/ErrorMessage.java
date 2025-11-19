@@ -1,5 +1,9 @@
 package org.creditto.creditto_service.global.response.error;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ErrorMessage {
 
     /**
