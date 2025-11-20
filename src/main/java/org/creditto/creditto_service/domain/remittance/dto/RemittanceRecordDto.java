@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.creditto.creditto_service.domain.remittance.enums.CurrencyCode;
 import org.creditto.creditto_service.domain.remittance.enums.RemittanceStatus;
 
 import java.math.BigDecimal;
@@ -22,8 +21,8 @@ public class RemittanceRecordDto {
     private Long exchangeId;
     private Long feeRecordId;
 
-    private CurrencyCode sendCurrency;
-    private CurrencyCode receiveCurrency;
+    private String sendCurrency;
+    private String receiveCurrency;
 
     private BigDecimal sendAmount;
     private BigDecimal receiveAmount;
