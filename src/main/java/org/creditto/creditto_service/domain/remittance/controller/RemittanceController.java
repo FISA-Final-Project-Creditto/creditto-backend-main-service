@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/remittance/scheduled")
+@RequestMapping("/api/remittance")
 public class RemittanceController {
 
     private final RemittanceService remittanceService;

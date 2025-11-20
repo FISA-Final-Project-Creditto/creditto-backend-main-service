@@ -34,7 +34,7 @@ public enum CurrencyCode {
     // 코드 조회 맵 생성
     private static final Map<String, CurrencyCode> CODE_MAP =
             Stream.of(values()).collect(Collectors.toMap(
-                    currency -> currency.getCode().toUpperCase(),
+                    currency -> currency.getCode(),
                     Function.identity()
             ));
 
@@ -90,7 +90,7 @@ public enum CurrencyCode {
      * @return 통화 조회에 사용될 형식화된 키 문자열
      */
     public String getLookupKey() {
-        String lookupKey = this.code.toUpperCase();
+        String lookupKey = this.code;
         if (this.unit > 1) {
             lookupKey += "(" + this.unit + ")";
         }
