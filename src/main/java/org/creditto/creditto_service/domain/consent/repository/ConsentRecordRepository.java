@@ -17,15 +17,15 @@ public interface ConsentRecordRepository extends JpaRepository<ConsentRecord, Lo
     List<ConsentRecord> findLatestByClientAndDefinitionWithDefinition(@Param("clientId") String clientId, @Param("definitionId") Long definitionId, Pageable pageable);
 
     @Query("""
-            SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END
+            SELECT count(r) > 0
             FROM ConsentRecord r
             WHERE r.clientId = :clientId
-              AND r.consentStatus = 'AGREE'
-              AND r.consentDefinition.consentCode = :code
-              AND r.consentRecVer = (
-                SELECT MAX(d.consentDefVer)
-                FROM ConsentDefinition d
-                WHERE d.consentCode = :code
+            AND r.consentStatus = org.creditto.creditto_service.domain.consent.entity.ConsentStatus.AGREE
+            AND r.consentDefinition.consentCode = :code
+            AND r.consentRecVer = (
+            SELECT MAX(d.consentDefVer)
+            FROM ConsentDefinition d
+            WHERE d.consentCode = :code
               )
             """)
     boolean existsLatestAgreement(@Param("clientId") String clientId, @Param("code") String code);
