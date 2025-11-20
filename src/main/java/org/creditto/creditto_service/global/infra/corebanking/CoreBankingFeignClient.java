@@ -87,7 +87,4 @@ public interface CoreBankingFeignClient {
             @PathVariable("regRemId") Long regRemId,
             @RequestParam("userId") Long userId
     );
-
-    // 일회성 해외 송금  내역 조회
-//    @GetMapping("/api/core/remmittance/{remittance}")
 }
