@@ -2,6 +2,7 @@ package org.creditto.creditto_service.domain.remittance.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
 import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
 import org.creditto.creditto_service.domain.remittance.service.RemittanceService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/remittance")
@@ -50,6 +52,15 @@ public class RemittanceController {
     }
 
     // TODO: 정기 해외 송금 내역 신규 등록
+    @PostMapping("/scheduled")
+    public ResponseEntity<BaseResponse<Void>> createScheduledRemittance (
+            @ExternalUserId String userId,
+            @RequestBody RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto
+    ) {
+        remittanceService.createScheduledRemittance(userId, regularRemittanceCreateRequestDto);
+        log.info("Controller:{}", regularRemittanceCreateRequestDto);
+        return ApiResponseUtil.success(SuccessCode.OK, null);
+    }
 
     /*
      * 정기 해외 송금 설정 수정
