@@ -1,7 +1,6 @@
 package org.creditto.creditto_service.domain.remittance.service;
 
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
-import org.creditto.creditto_service.domain.remittance.enums.RegRemStatus;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +39,7 @@ class RemittanceServiceTest {
                 .sendCurrency("KRW")
                 .receivedCurrency("USD")
                 .sendAmount(new BigDecimal("1000.00"))
-                .regRemStatus(RegRemStatus.ACTIVE)
+                .regRemStatus("ACTIVE")
                 .regRemType("매주")
                 .scheduledDay("FRIDAY")
                 .build();
