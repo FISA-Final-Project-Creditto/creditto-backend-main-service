@@ -5,9 +5,6 @@ import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemit
 import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.global.common.CoreBankingRes;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceDto;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
-import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
