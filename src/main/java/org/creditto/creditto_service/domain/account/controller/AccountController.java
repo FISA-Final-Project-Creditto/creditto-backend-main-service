@@ -80,7 +80,7 @@ public class AccountController {
             @PathVariable("accountId") Long accountId,
             @RequestBody OverseasRemittanceReq request
             ) {
-        return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.processRemittanceOnce(userId, request));
+        return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.processRemittanceOnce(userId, accountId, request));
     }
 
 //    // 정기 해외 송금 등록
