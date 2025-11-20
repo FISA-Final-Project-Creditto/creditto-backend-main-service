@@ -4,6 +4,7 @@ import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
 import org.creditto.creditto_service.global.common.CoreBankingRes;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceDto;
+import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
 import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -49,8 +50,16 @@ public interface CoreBankingFeignClient {
     @GetMapping("/api/core/remittance/schedule")
     List<RegularRemittanceDto> getScheduledRemittancesByUserId(@RequestParam("userId") String userId);
 
-    // 한 건의 정기 해외 송금 기록 상세 조회
+    // 한 건의 정기 해외 송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule/{recurId}")
+    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") Long recurId, @RequestParam("userId") String userId);
+
+    // TODO: 정기 해외 송금 내역 신규 등록
+    @PostMapping("/api/core/remittance/schedule")
+    void createScheduledRemittance(
+            @RequestParam("userId") String userId,
+            @RequestBody RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto
+    );
     List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") String recurId, @RequestParam("userId") String userId);
 
     // 정기 해외 송금 내역 수정
