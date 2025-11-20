@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.creditto.creditto_service.domain.remittance.enums.RegRemStatus;
-import org.creditto.creditto_service.domain.remittance.enums.ScheduledDay;
 
 import java.math.BigDecimal;
 
@@ -20,7 +18,7 @@ public class RegularRemittanceResponseDto {
     private String sendCurrency;
     private String receivedCurrency;
     private BigDecimal sendAmount;
-    private RegRemStatus regRemStatus;
+    private String regRemStatus;
 
     private String regRemType;      // 매월/매주
 

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.creditto.creditto_service.domain.remittance.enums.RemittanceStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,6 +28,6 @@ public class RemittanceRecordDto {
 
     private LocalDate startDate;
 
-    private RemittanceStatus remittanceStatus;
+    private String remittanceStatus;
 
 }
