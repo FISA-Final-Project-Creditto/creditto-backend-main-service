@@ -2,6 +2,7 @@ package org.creditto.creditto_service.domain.remittance.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
 import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
@@ -29,6 +30,10 @@ public class RemittanceService {
     }
 
     // TODO: 정기 해외 송금 내역 신규 등록
+    @Transactional
+    public void createScheduledRemittance(String userId, RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto) {
+        coreBankingFeignClient.createScheduledRemittance(userId, regularRemittanceCreateRequestDto);
+    }
 
     // 정기 해외 송금 내역 수정
     @Transactional
