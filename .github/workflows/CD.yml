@@ -2,8 +2,7 @@ name: CD-Dev
 
 on:
   pull_request:
-    branches:
-      - "ci/#28"
+    branches: ["ci/#28"]
   push:
     branches: ["main"]
 
