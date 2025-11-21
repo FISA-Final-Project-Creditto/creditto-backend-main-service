@@ -1,7 +1,6 @@
 package org.creditto.creditto_service.domain.remittance.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
 import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,7 +18,6 @@ public class RemittanceService {
 
     // 등록된 정기 해외 송금 설정 조회
     public List<RegularRemittanceResponseDto> getScheduledRemittanceList(String userId) {
-        log.info("{}", userId);
         return coreBankingFeignClient.getScheduledRemittancesByUserId(userId);
     }
 
