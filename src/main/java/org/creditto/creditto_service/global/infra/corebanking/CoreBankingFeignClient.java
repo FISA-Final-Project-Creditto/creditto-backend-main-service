@@ -31,7 +31,7 @@ public interface CoreBankingFeignClient {
     CoreBankingRes<AccountRes> getAccountByAccountNo(@PathVariable String accountNo);
 
     @GetMapping(value = "/api/core/account/client/{externalUserId}")
-    CoreBankingRes<AccountRes> getAccountByExternalUserId(@PathVariable String externalUserId);
+    CoreBankingRes<List<AccountRes>> getAccountByExternalUserId(@PathVariable String externalUserId);
 
     @GetMapping(value = "/api/core/transactions/{accountId}")
     CoreBankingRes<List<TransactionRes>> getTransactionByAccountId(@PathVariable Long accountId);
