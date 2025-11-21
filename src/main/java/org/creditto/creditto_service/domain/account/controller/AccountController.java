@@ -30,6 +30,7 @@ public class AccountController {
     private final TransactionService transactionService;
     private final OverseasRemittanceService overseasRemittanceService;
 
+    // 계좌 개설
     @PostMapping
     public ResponseEntity<BaseResponse<AccountRes>> createAccount(
             @ExternalUserId String userId,
@@ -43,10 +44,7 @@ public class AccountController {
     public ResponseEntity<BaseResponse<AccountRes>> getAccountByAccountId(
             @PathVariable("accountId") Long accountId
     ) {
-        log.info("getAccountByAccountId {}", accountId);
-        AccountRes accountRes = accountService.getAccountByAccountId(accountId);
-        log.info("조회된 계좌 정보: {}", accountRes); // 로그 메시지도 조금 더 명확하게 할 수 있습니다.
-        return ApiResponseUtil.success(SuccessCode.OK, accountRes); // accountRes 변수 재사용
+        return ApiResponseUtil.success(SuccessCode.OK, accountService.getAccountByAccountId(accountId));
     }
 
     // 계좌 잔액 조회 by accountId
@@ -91,13 +89,5 @@ public class AccountController {
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.processRemittanceOnce(userId, accountId, request));
     }
-
-//    // 정기 해외 송금 등록
-//    @PostMapping("/{accountId}/remittance/schedule")
-//    public ResponseEntity<?> remittanceSchedule(
-//
-//    ) {
-//
-//    }
 
 }

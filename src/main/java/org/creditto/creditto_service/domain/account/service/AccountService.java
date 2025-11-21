@@ -18,23 +18,23 @@ public class AccountService {
 
     @Transactional
     public AccountRes createAccount(String userId, CreateAccountReq request) {
-        return coreBankingFeignClient.createAccount(userId, request);
+        return coreBankingFeignClient.createAccount(userId, request).data();
     }
 
     public AccountRes getAccountByAccountId(Long accountId) {
-        return coreBankingFeignClient.getAccountByAccountId(accountId);
+        return coreBankingFeignClient.getAccountByAccountId(accountId).data();
     }
 
     public BigDecimal getAccountBalanceByAccountId(Long accountId) {
-        return coreBankingFeignClient.getAccountBalanceByAccountId(accountId);
+        return coreBankingFeignClient.getAccountBalanceByAccountId(accountId).data();
     }
 
     public AccountRes getAccountByAccountNo(String accountNo) {
-        return coreBankingFeignClient.getAccountByAccountNo(accountNo);
+        return coreBankingFeignClient.getAccountByAccountNo(accountNo).data();
     }
 
     public AccountRes getAccountByExternalUserId(String externalUserId) {
-        return coreBankingFeignClient.getAccountByExternalUserId(externalUserId);
+        return coreBankingFeignClient.getAccountByExternalUserId(externalUserId).data();
     }
 
 }
