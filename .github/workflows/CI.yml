@@ -26,12 +26,6 @@ jobs:
 
         shell: bash
 
-      - name: JDK 17 설치
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'corretto'
-          java-version: '17'
-
       - name: .env 파일 생성
         run: |
           
