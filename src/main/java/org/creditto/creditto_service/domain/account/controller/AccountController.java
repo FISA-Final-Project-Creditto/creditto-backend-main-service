@@ -66,7 +66,7 @@ public class AccountController {
 
     // 전체 계좌 조회 by userId
     @GetMapping("/me/accounts")
-    public ResponseEntity<BaseResponse<AccountRes>> getAccountByUserId(
+    public ResponseEntity<BaseResponse<List<AccountRes>>> getAccountByUserId(
             @ExternalUserId String userId
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, accountService.getAccountByExternalUserId(userId));

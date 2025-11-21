@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.global.infra.corebanking.AccountRes;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
+import org.creditto.creditto_service.global.infra.corebanking.TransactionRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +35,7 @@ public class AccountService {
         return coreBankingFeignClient.getAccountByAccountNo(accountNo).data();
     }
 
-    public AccountRes getAccountByExternalUserId(String externalUserId) {
+    public List<AccountRes> getAccountByExternalUserId(String externalUserId) {
         return coreBankingFeignClient.getAccountByExternalUserId(externalUserId).data();
     }
-
 }
