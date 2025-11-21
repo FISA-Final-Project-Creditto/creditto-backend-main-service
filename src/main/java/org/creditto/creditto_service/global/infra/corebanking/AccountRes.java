@@ -10,6 +10,6 @@ public record AccountRes(
         BigDecimal balance,
         AccountType accountType,
         String accountState,
-        String clientId
+        String externalUserId
 ) {
 }

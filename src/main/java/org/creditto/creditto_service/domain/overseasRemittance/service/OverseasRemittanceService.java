@@ -2,7 +2,6 @@ package org.creditto.creditto_service.domain.overseasRemittance.service;
 
 import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
-import org.creditto.creditto_service.global.common.CoreBankingRes;
 import org.creditto.creditto_service.global.infra.corebanking.AccountRes;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
 import org.creditto.creditto_service.global.infra.corebanking.OverseasRemittanceRes;
@@ -22,7 +21,7 @@ public class OverseasRemittanceService {
     public OverseasRemittanceRes processRemittanceOnce(String userId, Long accountId, OverseasRemittanceReq request) {
         AccountRes account = coreBankingFeignClient.getAccountByAccountId(accountId).data();
 
-        if (!account.clientId().equals(userId)) {
+        if (!account.externalUserId().equals(userId)) {
             // TODO: 접근 권한 예외로 변경
             throw new CustomBaseException(ErrorBaseCode.NOT_FOUND_ACCOUNT);
         }
