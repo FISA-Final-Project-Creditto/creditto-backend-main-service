@@ -112,3 +112,9 @@ jobs:
             export IMAGE_NAME="${IMAGE_NAME}"
             export IMAGE_TAG="${IMAGE_TAG}"
             bash ${{ secrets.DEPLOY_SCRIPT_PATH }}
+
+      - name: Cleanup build artifacts
+        if: always()
+        run: |
+          rm -rf build
+        shell: bash

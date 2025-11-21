@@ -68,3 +68,9 @@ jobs:
         run: |
           rm .env
         shell: bash
+
+      - name: Cleanup build artifacts
+        if: always()
+        run: |
+          rm -rf build
+        shell: bash
