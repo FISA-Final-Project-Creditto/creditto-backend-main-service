@@ -1,8 +1,10 @@
 package org.creditto.creditto_service.global.common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record CoreBankingRes<T>(
-        Integer code,
-        String message,
-        T data
+        @JsonProperty("code") Integer code,
+        @JsonProperty("message") String message,
+        @JsonProperty("data") T data
 ) {
 }
