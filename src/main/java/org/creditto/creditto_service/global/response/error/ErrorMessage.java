@@ -11,6 +11,7 @@ public final class ErrorMessage {
      */
     public static final String USER_NOT_FOUND = "해당 유저를 찾을 수 없습니다.";
     public static final String NOT_DEFINED_VALUE = "정의되지 않은 값입니다.";
+    public static final String RESOURCE_NOT_FOUND = "존재하지 않는 리소스입니다.";
 
     /**
      * INVALID - 유효하지 않음
