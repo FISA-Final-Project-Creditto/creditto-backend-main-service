@@ -46,10 +46,15 @@ class ConsentServiceTest {
         // Given
         ConsentDefinition definition = ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null);
         definitionRepository.save(definition);
+        org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq req = new org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq(
+                "test-client",
+                definition.getId(),
+                "127.0.0.1"
+        );
 
         // When
         Long userId = 1L;
-        ConsentRecordRes result = consentService.agree(userId, "CODE1");
+        ConsentRecordRes result = consentService.agree(userId, req);
 
         // Then
         List<ConsentRecord> records = recordRepository.findAll();
