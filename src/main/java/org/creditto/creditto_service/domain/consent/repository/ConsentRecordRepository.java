@@ -21,7 +21,13 @@ public interface ConsentRecordRepository extends JpaRepository<ConsentRecord, Lo
      * @param pageable     결과를 제한하고 정렬하기 위한 페이징 정보 (최신 기록 1개만 가져오기 위해 사용)
      * @return 조회된 ConsentRecord 목록
      */
-    @Query("SELECT r FROM ConsentRecord r JOIN FETCH r.consentDefinition WHERE r.clientId = :clientId AND r.consentDefinition.id = :definitionId AND r.consentStatus = org.creditto.creditto_service.domain.consent.entity.ConsentStatus.AGREE ORDER BY r.consentDate DESC")
+    @Query("""
+            SELECT r FROM ConsentRecord r
+            JOIN FETCH r.consentDefinition
+            WHERE r.clientId = :clientId
+            AND r.consentDefinition.id = :definitionId
+            AND r.consentStatus = ConsentStatus.AGREE
+            ORDER BY r.consentDate DESC""")
     List<ConsentRecord> findLatestByClientAndDefinitionWithDefinition(@Param("clientId") String clientId, @Param("definitionId") Long definitionId, Pageable pageable);
 
     /**
@@ -35,7 +41,7 @@ public interface ConsentRecordRepository extends JpaRepository<ConsentRecord, Lo
             SELECT count(r) > 0
             FROM ConsentRecord r
             WHERE r.clientId = :clientId
-            AND r.consentStatus = org.creditto.creditto_service.domain.consent.entity.ConsentStatus.AGREE
+            AND r.consentStatus = ConsentStatus.AGREE
             AND r.consentDefinition.consentCode = :code
             AND r.consentRecVer = (
             SELECT MAX(d.consentDefVer)
