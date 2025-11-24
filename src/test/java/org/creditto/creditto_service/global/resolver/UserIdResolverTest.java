@@ -11,9 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ExternalUserIdResolverTest {
+class UserIdResolverTest {
 
-    private final ExternalUserIdResolver resolver = new ExternalUserIdResolver();
+    private final UserIdResolver resolver = new UserIdResolver();
 
     @AfterEach
     void clear() {
@@ -21,13 +21,13 @@ class ExternalUserIdResolverTest {
     }
 
     @Test
-    @DisplayName("String 타입의 exUserId가 담긴 인증객체가 SecurityContext에 존재할 경우 exUserId를 정상적으로 Resolve")
+    @DisplayName("Long 타입의 userId가 담긴 인증객체가 SecurityContext에 존재할 경우 userId를 정상적으로 Resolve")
     void resolveArgument_returnsPrincipal_whenAuthenticated() {
         // Given
         Authentication auth = TokenAuthentication.create(
                 null,
                 null,
-                "exId",
+                1L,
                 "exUser"
         );
         SecurityContextHolder.getContext().setAuthentication(auth);
@@ -36,7 +36,7 @@ class ExternalUserIdResolverTest {
         Object result = resolver.resolveArgument(null, null, null, null);
 
         // Then
-        assertEquals("exId", result);
+        assertEquals(1L, result);
     }
 
     @Test
@@ -58,7 +58,7 @@ class ExternalUserIdResolverTest {
         Authentication auth = TokenAuthentication.create(
                 null,
                 null,
-                "exId",
+                1L,
                 "exUser"
         );
         auth.setAuthenticated(false);

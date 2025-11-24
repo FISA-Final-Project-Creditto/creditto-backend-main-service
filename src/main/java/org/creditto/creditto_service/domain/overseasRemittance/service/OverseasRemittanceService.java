@@ -18,10 +18,10 @@ public class OverseasRemittanceService {
     private final CoreBankingFeignClient coreBankingFeignClient;
 
     @Transactional
-    public OverseasRemittanceRes processRemittanceOnce(String userId, Long accountId, OverseasRemittanceReq request) {
+    public OverseasRemittanceRes processRemittanceOnce(Long userId, Long accountId, OverseasRemittanceReq request) {
         AccountRes account = coreBankingFeignClient.getAccountByAccountId(accountId).data();
 
-        if (!account.externalUserId().equals(userId)) {
+        if (!account.userId().equals(userId)) {
             // TODO: 접근 권한 예외로 변경
             throw new CustomBaseException(ErrorBaseCode.NOT_FOUND_ACCOUNT);
         }

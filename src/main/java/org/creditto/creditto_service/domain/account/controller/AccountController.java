@@ -10,7 +10,7 @@ import org.creditto.creditto_service.domain.transaction.service.TransactionServi
 import org.creditto.creditto_service.global.infra.corebanking.AccountRes;
 import org.creditto.creditto_service.global.infra.corebanking.OverseasRemittanceRes;
 import org.creditto.creditto_service.global.infra.corebanking.TransactionRes;
-import org.creditto.creditto_service.global.resolver.ExternalUserId;
+import org.creditto.creditto_service.global.resolver.UserId;
 import org.creditto.creditto_service.global.response.ApiResponseUtil;
 import org.creditto.creditto_service.global.response.BaseResponse;
 import org.creditto.creditto_service.global.response.SuccessCode;
@@ -33,7 +33,7 @@ public class AccountController {
     // 계좌 개설
     @PostMapping
     public ResponseEntity<BaseResponse<AccountRes>> createAccount(
-            @ExternalUserId String userId,
+            @UserId Long userId,
             @RequestBody CreateAccountReq request
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, accountService.createAccount(userId, request));
@@ -67,9 +67,9 @@ public class AccountController {
     // 전체 계좌 조회 by userId
     @GetMapping("/me/accounts")
     public ResponseEntity<BaseResponse<List<AccountRes>>> getAccountByUserId(
-            @ExternalUserId String userId
+            @UserId Long userId
     ) {
-        return ApiResponseUtil.success(SuccessCode.OK, accountService.getAccountByExternalUserId(userId));
+        return ApiResponseUtil.success(SuccessCode.OK, accountService.getAccountByUserId(userId));
     }
 
     // 거래 내역 조회 by accountId
@@ -83,7 +83,7 @@ public class AccountController {
     // 일회성 해외 송금 등록
     @PostMapping("/{accountId}/remittance/once")
     public ResponseEntity<BaseResponse<OverseasRemittanceRes>> remittanceOnce(
-            @ExternalUserId String userId,
+            @UserId Long userId,
             @PathVariable("accountId") Long accountId,
             @RequestBody OverseasRemittanceReq request
     ) {

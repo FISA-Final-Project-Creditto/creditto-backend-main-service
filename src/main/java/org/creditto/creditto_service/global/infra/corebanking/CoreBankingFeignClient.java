@@ -18,8 +18,8 @@ import java.util.List;
         url = "${CORE_BANKING_SERVER_URL}"
 )
 public interface CoreBankingFeignClient {
-    @PostMapping(value = "/api/core/account/{externalUserId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    CoreBankingRes<AccountRes> createAccount(@PathVariable String externalUserId, @RequestBody CreateAccountReq request);
+    @PostMapping(value = "/api/core/account/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    CoreBankingRes<AccountRes> createAccount(@PathVariable Long userId, @RequestBody CreateAccountReq request);
 
     @GetMapping(value = "/api/core/account/{accountId}/account")
     CoreBankingRes<AccountRes> getAccountByAccountId(@PathVariable Long accountId);
@@ -30,13 +30,13 @@ public interface CoreBankingFeignClient {
     @GetMapping(value = "/api/core/account/{accountNo}")
     CoreBankingRes<AccountRes> getAccountByAccountNo(@PathVariable String accountNo);
 
-    @GetMapping(value = "/api/core/account/client/{externalUserId}")
-    CoreBankingRes<List<AccountRes>> getAccountByExternalUserId(@PathVariable String externalUserId);
+    @GetMapping(value = "/api/core/account/client/{userId}")
+    CoreBankingRes<List<AccountRes>> getAccountByUserId(@PathVariable Long userId);
 
     @GetMapping(value = "/api/core/transactions/{accountId}")
     CoreBankingRes<List<TransactionRes>> getTransactionByAccountId(@PathVariable Long accountId);
 
-    @PostMapping(value = "/api/core/remittance/{externalUserId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    CoreBankingRes<OverseasRemittanceRes> processRemittanceOnce(@PathVariable String externalUserId, @RequestBody OverseasRemittanceReq request);
+    @PostMapping(value = "/api/core/remittance/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    CoreBankingRes<OverseasRemittanceRes> processRemittanceOnce(@PathVariable Long userId, @RequestBody OverseasRemittanceReq request);
 
 }
