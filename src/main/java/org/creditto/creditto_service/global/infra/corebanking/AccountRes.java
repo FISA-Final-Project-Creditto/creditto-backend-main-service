@@ -5,6 +5,7 @@ import org.creditto.creditto_service.domain.account.enums.AccountType;
 import java.math.BigDecimal;
 
 public record AccountRes(
+        Long accountId,
         String accountNo,
         String accountName,
         BigDecimal balance,
