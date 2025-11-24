@@ -14,10 +14,10 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Slf4j
 @Component
-public class ExternalUserIdResolver implements HandlerMethodArgumentResolver {
+public class UserIdResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return (parameter.getParameterType().equals(String.class) && parameter.hasParameterAnnotation(ExternalUserId.class));
+        return (parameter.getParameterType().equals(Long.class) && parameter.hasParameterAnnotation(UserId.class));
     }
 
     @Override
@@ -28,6 +28,10 @@ public class ExternalUserIdResolver implements HandlerMethodArgumentResolver {
            throw new CustomBaseException(ErrorBaseCode.NO_AUTHENTICATION);
        }
 
-       return String.valueOf(authentication.getPrincipal());
+       try {
+           return Long.valueOf(String.valueOf(authentication.getPrincipal()));
+       } catch (NumberFormatException e) {
+           throw new CustomBaseException(ErrorBaseCode.INVALID_JWT_TOKEN);
+       }
     }
 }
