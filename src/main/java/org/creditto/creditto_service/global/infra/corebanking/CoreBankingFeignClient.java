@@ -2,8 +2,8 @@ package org.creditto.creditto_service.global.infra.corebanking;
 
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
-import org.creditto.creditto_service.global.common.CoreBankingRes;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceDto;
+import org.creditto.creditto_service.global.common.CoreBankingRes;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
 import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
@@ -50,13 +50,21 @@ public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/remittance/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     CoreBankingRes<OverseasRemittanceRes> processRemittanceOnce(@PathVariable Long userId, @RequestBody OverseasRemittanceReq request);
 
-    // 등록된 정기 해외 송금 설정 조회
+    // Task 1: 사용자 정기송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule")
     List<RegularRemittanceDto> getScheduledRemittancesByUserId(@RequestParam("userId") String userId);
 
     // 한 건의 정기 해외 송금 설정 내역 조회
-    @GetMapping("/api/core/remittance/schedule/{recurId}")
-    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") Long recurId, @RequestParam("userId") String userId);
+    @GetMapping("/api/core/remittance/schedule/{regRemId}")
+    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") String userId);
+
+    // 정기 해외 송금 기록의 내역 상세 조회
+    @GetMapping("/api/core/remittance/schedule/{regRemId}/{remittanceId}")
+    RemittanceRecordDto getRemittanceRecordsByRecurIdAndRemittanceId(
+            @PathVariable("regRemId") Long regRemId,
+            @PathVariable("remittanceId") Long remittanceId,
+            @RequestParam("userId") String userId);
+
 
     // TODO: 정기 해외 송금 내역 신규 등록
     @PostMapping("/api/core/remittance/schedule")
@@ -80,4 +88,7 @@ public interface CoreBankingFeignClient {
             @PathVariable("recurId") String recurId,
             @RequestParam("userId") String userId
     );
+
+    // 일회성 해외 송금  내역 조회
+//    @GetMapping("/api/core/remmittance/{remittance}")
 }
