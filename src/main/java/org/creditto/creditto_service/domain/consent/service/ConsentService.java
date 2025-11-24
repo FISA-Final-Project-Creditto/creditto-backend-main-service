@@ -32,20 +32,14 @@ public class ConsentService {
      * @return ConsentRecordRes 생성된 동의 기록 정보
      */
     @Transactional
-    public ConsentRecordRes agree(Long userId, String consentCode) {
+    public ConsentRecordRes agree(Long userId, org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq req) {
 
-        ConsentDefinition latestDefinition = getLatestDefinition(consentCode);
+        ConsentDefinition definition = definitionRepository.findById(req.definitionId())
+                .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_DEFINITION));
 
-        ConsentRecord consentRecord = recordRepository
-                .findFirstByUserIdAndConsentDefinitionIdAndConsentStatusOrderByConsentDateDesc(
-                        userId, latestDefinition.getId(), ConsentStatus.AGREE
-                )
-                .orElseGet(() -> {
-                    ConsentRecord newRecord = ConsentRecord.of(latestDefinition, userId);
-                    return recordRepository.save(newRecord);
-                });
+        ConsentRecord newRecord = recordRepository.save(ConsentRecord.of(definition, userId));
 
-        return ConsentRecordRes.from(consentRecord);
+        return ConsentRecordRes.from(newRecord);
     }
 
     /**
@@ -75,9 +69,16 @@ public class ConsentService {
                 .toList();
     }
 
-    // 특정 코드의 동의서 최신 버전 조회
-    private ConsentDefinition getLatestDefinition(String consentCode) {
-        return definitionRepository.findTopByConsentCodeOrderByConsentDefVerDesc(consentCode)
+    /**
+     * 특정 ID의 동의서 정의를 조회
+     *
+     * @param definitionId 동의서 ID
+     * @return 해당 ID의 동의서 정의 정보
+     * @throws CustomBaseException 해당 ID의 동의서 정의를 찾을 수 없을 때 발생
+     */
+    public ConsentDefinitionRes getConsentDefinition(Long definitionId) {
+        return definitionRepository.findById(definitionId)
+                .map(ConsentDefinitionRes::from)
                 .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_DEFINITION));
     }
 
