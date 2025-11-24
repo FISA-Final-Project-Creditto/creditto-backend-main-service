@@ -48,7 +48,7 @@ public interface CoreBankingFeignClient {
 
     // 사용자 정기송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule")
-    List<RegularRemittanceResponseDto> getScheduledRemittancesByUserId(@RequestParam("userId") Long userId);
+    List<RegularRemittanceDto> getScheduledRemittancesByUserId(@RequestParam("userId") String userId);
 
     // 한 건의 정기 해외 송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule/{regRemId}")
