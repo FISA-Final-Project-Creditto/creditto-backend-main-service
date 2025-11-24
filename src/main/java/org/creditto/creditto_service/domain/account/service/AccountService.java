@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.global.infra.corebanking.AccountRes;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
-import org.creditto.creditto_service.global.infra.corebanking.TransactionRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,7 @@ public class AccountService {
     private final CoreBankingFeignClient coreBankingFeignClient;
 
     @Transactional
-    public AccountRes createAccount(String userId, CreateAccountReq request) {
+    public AccountRes createAccount(Long userId, CreateAccountReq request) {
         return coreBankingFeignClient.createAccount(userId, request).data();
     }
 
@@ -35,7 +34,7 @@ public class AccountService {
         return coreBankingFeignClient.getAccountByAccountNo(accountNo).data();
     }
 
-    public List<AccountRes> getAccountByExternalUserId(String externalUserId) {
-        return coreBankingFeignClient.getAccountByExternalUserId(externalUserId).data();
+    public List<AccountRes> getAccountByUserId(Long userId) {
+        return coreBankingFeignClient.getAccountByUserId(userId).data();
     }
 }
