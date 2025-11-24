@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 public class RegularRemittanceCreateRequestDto {
     private Long accountId;
     private Long recipientId;
+
+
     private String sendCurrency;
     private String receivedCurrency;
     private BigDecimal sendAmount;

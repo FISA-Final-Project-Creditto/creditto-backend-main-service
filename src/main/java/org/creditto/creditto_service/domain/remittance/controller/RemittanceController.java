@@ -24,7 +24,7 @@ public class RemittanceController {
     private final RemittanceService remittanceService;
 
     /*
-     * 등록된 정기 해외 송금 설정 조회
+     * Task 1: 사용자 정기송금 설정 내역 조회
      *
      * @param ExternalUserId 등록된 정기 송금 설정을 조회할 고객의 ID
      * @return 해당 고객의 정기 송금 설정 리스트 ({@link RegularRemittanceResponseDto})
@@ -43,15 +43,36 @@ public class RemittanceController {
      * @param recurId 조회할 정기 송금 설정의 ID
      * @return 해당 정기 송금 설정의 송금 내역 리스트 ({@link RemittanceRecordDto})
      */
-    @GetMapping("/scheduled/{recurId}")
+    @GetMapping("/scheduled/{regRemId}")
     public ResponseEntity<BaseResponse<List<RemittanceRecordDto>>> getScheduledRemittanceDetail (
             @ExternalUserId String userId,
-            @PathVariable Long recurId
+            @PathVariable Long regRemId
     ) {
-        return ApiResponseUtil.success(SuccessCode.OK, remittanceService.getScheduledRemittanceDetail(userId, recurId));
+        return ApiResponseUtil.success(SuccessCode.OK, remittanceService.getScheduledRemittanceDetail(userId, regRemId));
     }
 
-    // TODO: 정기 해외 송금 내역 신규 등록
+    /*
+     * 정기 해외 송금 기록의 내역 상세 조회
+     *
+     * @param userId 정기 송금 내역을 조회할 고객의 ID
+     * @param recurId 조회할 정기 송금 설정의 ID
+     * @param remittanceId 선택한 정기 송금
+     * @return 해당 정기 송금 설정의 송금 내역 리스트 ({@link RemittanceRecordDto})
+     */
+    @GetMapping("/scheduled/{recurId}/{remittanceId}")
+    public ResponseEntity<BaseResponse<RemittanceRecordDto>> getScheduledRemittanceRecordDetail (
+            @ExternalUserId String userId,
+            @PathVariable Long recurId,
+            @PathVariable Long remittanceId
+    ) {
+        return ApiResponseUtil.success(SuccessCode.OK, remittanceService.getScheduledRemittanceRecordDetail(userId, recurId, remittanceId));
+    }
+
+    /* 정기 해외 송금 설정 신규 등록
+     *
+     * @param userId 정기 송금 내역을 등록할 고객의 ID
+     * @return 성공 응답
+     */
     @PostMapping("/scheduled")
     public ResponseEntity<BaseResponse<Void>> createScheduledRemittance (
             @ExternalUserId String userId,

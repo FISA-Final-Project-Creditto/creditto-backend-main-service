@@ -18,15 +18,20 @@ public class RemittanceService {
 
     private final CoreBankingFeignClient coreBankingFeignClient;
 
-    // 등록된 정기 해외 송금 설정 조회
+    // Task 1: 사용자 정기송금 설정 내역 조회
     public List<RegularRemittanceResponseDto> getScheduledRemittanceList(String userId) {
         log.info("{}", userId);
         return coreBankingFeignClient.getScheduledRemittancesByUserId(userId);
     }
 
-    // 정기 해외 송금 내역 상세 조회
-    public List<RemittanceRecordDto> getScheduledRemittanceDetail(String userId, Long recurId) {
-        return coreBankingFeignClient.getRemittanceRecordsByRecurId(recurId, userId);
+    // 한 건의 정기 해외 송금 기록 상세 조회
+    public List<RemittanceRecordDto> getScheduledRemittanceDetail(String userId, Long regRemId) {
+        return coreBankingFeignClient.getRemittanceRecordsByRecurId(regRemId, userId);
+    }
+
+    // 정기 해외 송금 기록의 내역 상세 조회
+    public RemittanceRecordDto getScheduledRemittanceRecordDetail(String userId, Long recurId, Long remittanceId) {
+        return coreBankingFeignClient.getRemittanceRecordsByRecurIdAndRemittanceId(recurId, remittanceId, userId);
     }
 
     // TODO: 정기 해외 송금 내역 신규 등록
