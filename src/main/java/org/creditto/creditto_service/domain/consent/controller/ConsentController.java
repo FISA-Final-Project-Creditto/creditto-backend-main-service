@@ -36,8 +36,6 @@ public class ConsentController {
     }
 
     /**
-     * 특정 ID의 동의서 정의를 조회
-     *
      * @param definitionId 조회할 동의서의 ID
      * @return 특정 동의서의 정보를 포함하는 응답 엔티티
      */

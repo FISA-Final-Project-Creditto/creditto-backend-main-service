@@ -37,7 +37,13 @@ public class ConsentService {
         ConsentDefinition definition = definitionRepository.findById(req.definitionId())
                 .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_DEFINITION));
 
-        ConsentRecord newRecord = recordRepository.save(ConsentRecord.of(definition, userId));
+        ConsentRecord newRecord = ConsentRecord.of(
+                definition,
+                req.ipAddress(),
+                req.clientId()
+        );
+
+        recordRepository.save(newRecord);
 
         return ConsentRecordRes.from(newRecord);
     }
