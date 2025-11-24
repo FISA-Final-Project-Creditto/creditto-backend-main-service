@@ -4,6 +4,10 @@ import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
 import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.global.common.CoreBankingRes;
+import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceDto;
+import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
+import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
+import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +66,7 @@ public interface CoreBankingFeignClient {
             @RequestParam("userId") Long userId,
             @RequestBody RegularRemittanceCreateCoreDto dto
     );
+    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") String recurId, @RequestParam("userId") String userId);
 
     // 정기 해외 송금 내역 수정
     @PutMapping("/api/core/remittance/schedule/{regRemId}")
