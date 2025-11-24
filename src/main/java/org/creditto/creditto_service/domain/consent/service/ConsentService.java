@@ -40,10 +40,11 @@ public class ConsentService {
     @Transactional
     public ConsentRecordRes agree(ConsentAgreeReq req) {
 
-        ConsentDefinition latestDefinition = getLatestDefinition(req.consentCode());
+        ConsentDefinition definition = definitionRepository.findById(req.definitionId())
+                .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_DEFINITION));
 
         ConsentRecord newRecord = ConsentRecord.of(
-                latestDefinition,
+                definition,
                 req.ipAddress(),
                 req.clientId()
         );
@@ -83,9 +84,16 @@ public class ConsentService {
                 .collect(Collectors.toList());
     }
 
-    // 특정 코드의 동의서 최신 버전 조회
-    private ConsentDefinition getLatestDefinition(String consentCode) {
-        return definitionRepository.findTopByConsentCodeOrderByConsentDefVerDesc(consentCode)
+    /**
+     * 특정 ID의 동의서 정의를 조회
+     *
+     * @param definitionId 동의서 ID
+     * @return 해당 ID의 동의서 정의 정보
+     * @throws CustomBaseException 해당 ID의 동의서 정의를 찾을 수 없을 때 발생
+     */
+    public ConsentDefinitionRes getConsentDefinition(Long definitionId) {
+        return definitionRepository.findById(definitionId)
+                .map(ConsentDefinitionRes::from)
                 .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_DEFINITION));
     }
 

@@ -37,6 +37,18 @@ public class ConsentController {
     }
 
     /**
+     * 특정 ID의 동의서 정의를 조회
+     *
+     * @param definitionId 조회할 동의서의 ID
+     * @return 특정 동의서의 정보를 포함하는 응답 엔티티
+     */
+    @GetMapping("/definitions/{definitionId}")
+    public ResponseEntity<BaseResponse<ConsentDefinitionRes>> getConsentDefinitionById(@PathVariable Long definitionId) {
+        ConsentDefinitionRes definition = consentService.getConsentDefinition(definitionId);
+        return ApiResponseUtil.success(SuccessCode.OK, definition);
+    }
+
+    /**
      * 사용자가 특정 동의서에 동의
      *
      * @param req 동의 요청 정보 (동의 코드, IP 주소, 클라이언트 ID)
