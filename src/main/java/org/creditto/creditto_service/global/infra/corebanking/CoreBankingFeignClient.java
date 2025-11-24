@@ -18,8 +18,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @FeignClient(
         name = "core-banking",
         url = "${CORE_BANKING_SERVER_URL}"
@@ -48,42 +46,42 @@ public interface CoreBankingFeignClient {
 
     // Task 1: 사용자 정기송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule")
-    List<RegularRemittanceDto> getScheduledRemittancesByUserId(@RequestParam("userId") String userId);
+    List<RegularRemittanceResponseDto> getScheduledRemittancesByUserId(@RequestParam("userId") Long userId);
 
     // 한 건의 정기 해외 송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule/{regRemId}")
-    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") String userId);
+    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
 
     // 정기 해외 송금 기록의 내역 상세 조회
     @GetMapping("/api/core/remittance/schedule/{regRemId}/{remittanceId}")
     RemittanceRecordDto getRemittanceRecordsByRecurIdAndRemittanceId(
             @PathVariable("regRemId") Long regRemId,
             @PathVariable("remittanceId") Long remittanceId,
-            @RequestParam("userId") String userId);
+            @RequestParam("userId") Long userId);
 
 
-    // TODO: 정기 해외 송금 내역 신규 등록
-    @PostMapping("/api/core/remittance/schedule")
-    void createScheduledRemittance(
-            @RequestParam("userId") String userId,
-            @RequestBody RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto
-    );
-    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") String recurId, @RequestParam("userId") String userId);
-
-    // 정기 해외 송금 내역 수정
-    @PutMapping("/api/core/remittance/schedule/{recurId}")
-    void updateScheduledRemittance(
-            @PathVariable("recurId") String recurId,
-            @RequestParam("userId") String userId,
-            @RequestBody RegularRemittanceDto regularRemittanceDto
-    );
-
-    // 정기 해외 송금 설정 삭제
-    @DeleteMapping("/api/core/remittance/schedule/{recurId}")
-    void cancelScheduledRemittance(
-            @PathVariable("recurId") String recurId,
-            @RequestParam("userId") String userId
-    );
+//    // TODO: 정기 해외 송금 내역 신규 등록
+//    @PostMapping("/api/core/remittance/schedule")
+//    void createScheduledRemittance(
+//            @RequestParam("userId") Long userId,
+//            @RequestBody RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto
+//    );
+//    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") Long recurId, @RequestParam("userId") Long userId);
+//
+//    // 정기 해외 송금 내역 수정
+//    @PutMapping("/api/core/remittance/schedule/{recurId}")
+//    void updateScheduledRemittance(
+//            @PathVariable("recurId") Long recurId,
+//            @RequestParam("userId") Long userId,
+//            @RequestBody RegularRemittanceDto regularRemittanceDto
+//    );
+//
+//    // 정기 해외 송금 설정 삭제
+//    @DeleteMapping("/api/core/remittance/schedule/{recurId}")
+//    void cancelScheduledRemittance(
+//            @PathVariable("recurId") Long recurId,
+//            @RequestParam("userId") Long userId
+//    );
 
     // 일회성 해외 송금  내역 조회
 //    @GetMapping("/api/core/remmittance/{remittance}")

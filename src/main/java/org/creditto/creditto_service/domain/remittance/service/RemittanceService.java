@@ -19,36 +19,35 @@ public class RemittanceService {
     private final CoreBankingFeignClient coreBankingFeignClient;
 
     // Task 1: 사용자 정기송금 설정 내역 조회
-    public List<RegularRemittanceResponseDto> getScheduledRemittanceList(String userId) {
-        log.info("{}", userId);
+    public List<RegularRemittanceResponseDto> getScheduledRemittanceList(Long userId) {
         return coreBankingFeignClient.getScheduledRemittancesByUserId(userId);
     }
 
-    // 한 건의 정기 해외 송금 기록 상세 조회
-    public List<RemittanceRecordDto> getScheduledRemittanceDetail(String userId, Long regRemId) {
+    // Task 2: 하나의 정기송금 설정에 대한 송금 기록 조회
+    public List<RemittanceRecordDto> getScheduledRemittanceDetail(Long userId, Long regRemId) {
         return coreBankingFeignClient.getRemittanceRecordsByRecurId(regRemId, userId);
     }
 
     // 정기 해외 송금 기록의 내역 상세 조회
-    public RemittanceRecordDto getScheduledRemittanceRecordDetail(String userId, Long recurId, Long remittanceId) {
+    public RemittanceRecordDto getScheduledRemittanceRecordDetail(Long userId, Long recurId, Long remittanceId) {
         return coreBankingFeignClient.getRemittanceRecordsByRecurIdAndRemittanceId(recurId, remittanceId, userId);
     }
 
-    // TODO: 정기 해외 송금 내역 신규 등록
-    @Transactional
-    public void createScheduledRemittance(String userId, RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto) {
-        coreBankingFeignClient.createScheduledRemittance(userId, regularRemittanceCreateRequestDto);
-    }
-
-    // 정기 해외 송금 내역 수정
-    @Transactional
-    public void updateScheduledRemittance(String userId, Long recurId, RegularRemittanceResponseDto regularRemittanceResponseDto) {
-        coreBankingFeignClient.updateScheduledRemittance(recurId, userId, regularRemittanceResponseDto);
-    }
-
-    // 정기 해외 송금 설정 삭제
-    @Transactional
-    public void cancelScheduledRemittance(String userId, Long recurId) {
-        coreBankingFeignClient.cancelScheduledRemittance(recurId, userId);
-    }
+//    // TODO: 정기 해외 송금 내역 신규 등록
+//    @Transactional
+//    public void createScheduledRemittance(Long userId, RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto) {
+//        coreBankingFeignClient.createScheduledRemittance(userId, regularRemittanceCreateRequestDto);
+//    }
+//
+//    // 정기 해외 송금 내역 수정
+//    @Transactional
+//    public void updateScheduledRemittance(Long userId, Long recurId, RegularRemittanceResponseDto regularRemittanceResponseDto) {
+//        coreBankingFeignClient.updateScheduledRemittance(recurId, userId, regularRemittanceResponseDto);
+//    }
+//
+//    // 정기 해외 송금 설정 삭제
+//    @Transactional
+//    public void cancelScheduledRemittance(Long userId, Long recurId) {
+//        coreBankingFeignClient.cancelScheduledRemittance(recurId, userId);
+//    }
 }
