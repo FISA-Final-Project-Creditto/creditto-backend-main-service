@@ -14,17 +14,20 @@ import java.time.LocalDate;
 @Builder
 public class RemittanceRecordDto {
     private Long remittanceId;
+    private Long regRemId;
+
     private Long recipientId;
+    private String recipientName;
+    private String recipientBankName;
+
     private Long accountId;
     private Long recurId;
-    private Long exchangeId;
-    private Long feeRecordId;
 
     private String sendCurrency;
-    private String receiveCurrency;
-
     private BigDecimal sendAmount;
+    private String receiveCurrency;
     private BigDecimal receiveAmount;
+
 
     private LocalDate startDate;
 
