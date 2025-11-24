@@ -55,7 +55,7 @@ public class JwtAuthenticationConverter implements Converter<Jwt, AbstractAuthen
     }
 
     private void validUserName(String userName) {
-        if (userName == null)
+        if (userName == null || userName.isBlank())
             throw new JwtTokenException(INVALID_JWT_TOKEN);
     }
 }

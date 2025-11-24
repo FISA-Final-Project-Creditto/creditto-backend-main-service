@@ -28,8 +28,12 @@ public class UserIdResolver implements HandlerMethodArgumentResolver {
            throw new CustomBaseException(ErrorBaseCode.NO_AUTHENTICATION);
        }
 
+       Object principal = authentication.getPrincipal();
+       if (principal instanceof Long longPrincipal) {
+           return longPrincipal;
+       }
        try {
-           return Long.valueOf(String.valueOf(authentication.getPrincipal()));
+           return Long.parseLong(principal.toString());
        } catch (NumberFormatException e) {
            throw new CustomBaseException(ErrorBaseCode.INVALID_JWT_TOKEN);
        }
