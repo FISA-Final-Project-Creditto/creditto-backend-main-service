@@ -31,7 +31,7 @@ class RemittanceServiceTest {
     @DisplayName("정기 송금 리스트 조회 성공")
     void getScheduledRemittanceList_success() {
         // given
-        String userId = "1111";
+        Long userId = 1111L;
         RegularRemittanceResponseDto mockDto = RegularRemittanceResponseDto.builder()
                 .regRemId(1L)
                 .accountId(100L)
