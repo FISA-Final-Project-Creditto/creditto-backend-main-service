@@ -58,12 +58,12 @@ public class RemittanceService {
         coreBankingFeignClient.createScheduledRemittance(userId, regularRemittanceCreateCoreDto);
     }
 
-//    // 정기 해외 송금 내역 수정
-//    @Transactional
-//    public void updateScheduledRemittance(Long userId, Long recurId, RegularRemittanceResponseDto regularRemittanceResponseDto) {
-//        coreBankingFeignClient.updateScheduledRemittance(recurId, userId, regularRemittanceResponseDto);
-//    }
-//
+    // Task 5: 정기 해외 송금 내역 수정
+    @Transactional
+    public void updateScheduledRemittance(Long userId, Long regRemId, RegularRemittanceUpdateDto dto) {
+        coreBankingFeignClient.updateScheduledRemittance(regRemId, userId, dto);
+    }
+
 //    // 정기 해외 송금 설정 삭제
 //    @Transactional
 //    public void cancelScheduledRemittance(Long userId, Long recurId) {
