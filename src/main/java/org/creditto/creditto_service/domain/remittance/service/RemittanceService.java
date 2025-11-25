@@ -2,15 +2,13 @@ package org.creditto.creditto_service.domain.remittance.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
-import org.creditto.creditto_service.domain.remittance.dto.RemittanceDetailDto;
-import org.creditto.creditto_service.domain.remittance.dto.RemittanceHistoryDto;
-import org.creditto.creditto_service.global.common.CoreBankingRes;
+import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -34,12 +32,32 @@ public class RemittanceService {
         return coreBankingFeignClient.getRemittanceRecordsByRecurIdAndRemittanceId(remittanceId, userId).data();
     }
 
-//    // TODO: 정기 해외 송금 내역 신규 등록
-//    @Transactional
-//    public void createScheduledRemittance(Long userId, RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto) {
-//        coreBankingFeignClient.createScheduledRemittance(userId, regularRemittanceCreateRequestDto);
-//    }
-//
+    // Task 4: 정기송금 신규 등록
+    @Transactional
+    public void createScheduledRemittance(Long userId, RegularRemittanceCreateDto dto) {
+        // TODO: 인증 서버에 송금인 관련 정보 따로 저장
+
+        RegularRemittanceCreateCoreDto regularRemittanceCreateCoreDto = RegularRemittanceCreateCoreDto.builder()
+                .accountNo(dto.getAccountNo())
+                .sendCurrency(dto.getSendCurrency())
+                .receiveCurrency(dto.getReceiveCurrency())
+                .sendAmount(dto.getSendAmount())
+                .regRemType(dto.getRegRemType())
+                .scheduledDate(dto.getScheduledDate())
+                .scheduledDay(dto.getScheduledDay())
+                .recipientName(dto.getRecipientName())
+                .recipientPhoneCc(dto.getRecipientPhoneCc())
+                .recipientPhoneNo(dto.getRecipientPhoneNo())
+                .recipientAddress(dto.getRecipientAddress())
+                .recipientCountry(dto.getRecipientCountry())
+                .recipientBankName(dto.getRecipientBankName())
+                .recipientBankCode(dto.getRecipientBankCode())
+                .recipientAccountNo(dto.getRecipientAccountNo())
+                .build();
+
+        coreBankingFeignClient.createScheduledRemittance(userId, regularRemittanceCreateCoreDto);
+    }
+
 //    // 정기 해외 송금 내역 수정
 //    @Transactional
 //    public void updateScheduledRemittance(Long userId, Long recurId, RegularRemittanceResponseDto regularRemittanceResponseDto) {

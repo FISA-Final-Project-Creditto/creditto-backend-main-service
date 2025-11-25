@@ -1,7 +1,8 @@
 package org.creditto.creditto_service.domain.remittance.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateDto;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
 import org.creditto.creditto_service.domain.remittance.dto.RemittanceDetailDto;
 import org.creditto.creditto_service.domain.remittance.dto.RemittanceHistoryDto;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/remittance")
@@ -67,20 +67,20 @@ public class RemittanceController {
         return ApiResponseUtil.success(SuccessCode.OK, remittanceService.getScheduledRemittanceRecordDetail(userId, remittanceId));
     }
 
-    /* 정기 해외 송금 설정 신규 등록
+    /* 정기송금 신규 등록
      *
      * @param userId 정기 송금 내역을 등록할 고객의 ID
      * @return 성공 응답
      */
-//    @PostMapping("/scheduled")
-//    public ResponseEntity<BaseResponse<Void>> createScheduledRemittance (
-//            @UserId Long userId,
-//            @RequestBody RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto
-//    ) {
-//        remittanceService.createScheduledRemittance(userId, regularRemittanceCreateRequestDto);
+    @PostMapping("/scheduled/add")
+    public ResponseEntity<BaseResponse<Void>> createScheduledRemittance (
+            @UserId Long userId,
+            @RequestBody @Valid RegularRemittanceCreateDto dto
+    ) {
+        remittanceService.createScheduledRemittance(userId, dto);
 //        log.info("Controller:{}", regularRemittanceCreateRequestDto);
-//        return ApiResponseUtil.success(SuccessCode.OK, null);
-//    }
+        return ApiResponseUtil.success(SuccessCode.OK, null);
+    }
 
     /*
      * 정기 해외 송금 설정 수정

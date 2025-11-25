@@ -57,7 +57,6 @@ public interface CoreBankingFeignClient {
 
     // 한 건의 정기 해외 송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule/{regRemId}")
-    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") String userId);
     List<RemittanceHistoryDto> getRemittanceRecordsByRecurId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
 
     // 정기 해외 송금 기록의 내역 상세 조회
@@ -66,20 +65,12 @@ public interface CoreBankingFeignClient {
             @PathVariable("remittanceId") Long remittanceId,
             @RequestParam("userId") Long userId);
 
-    // TODO: 정기 해외 송금 내역 신규 등록
-    @PostMapping("/api/core/remittance/schedule")
+    // 정기송금 신규 등록
+    @PostMapping("/api/core/remittance/schedule/add")
     void createScheduledRemittance(
-            @RequestParam("userId") String userId,
-            @RequestBody RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto
+            @RequestParam("userId") Long userId,
+            @RequestBody RegularRemittanceCreateCoreDto dto
     );
-    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") String recurId, @RequestParam("userId") String userId);
-
-//    // TODO: 정기 해외 송금 내역 신규 등록
-//    @PostMapping("/api/core/remittance/schedule")
-//    void createScheduledRemittance(
-//            @RequestParam("userId") Long userId,
-//            @RequestBody RegularRemittanceCreateRequestDto regularRemittanceCreateRequestDto
-//    );
 //    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") Long recurId, @RequestParam("userId") Long userId);
 //
 //    // 정기 해외 송금 내역 수정
