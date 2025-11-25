@@ -2,9 +2,10 @@ package org.creditto.creditto_service.domain.remittance.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
-import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
+import org.creditto.creditto_service.domain.remittance.dto.RemittanceDetailDto;
+import org.creditto.creditto_service.domain.remittance.dto.RemittanceHistoryDto;
+import org.creditto.creditto_service.global.common.CoreBankingRes;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +25,13 @@ public class RemittanceService {
     }
 
     // Task 2: 하나의 정기송금 설정에 대한 송금 기록 조회
-    public List<RemittanceRecordDto> getScheduledRemittanceDetail(Long userId, Long regRemId) {
+    public List<RemittanceHistoryDto> getScheduledRemittanceDetail(Long userId, Long regRemId) {
         return coreBankingFeignClient.getRemittanceRecordsByRecurId(regRemId, userId);
     }
 
-    // 정기 해외 송금 기록의 내역 상세 조회
-    public RemittanceRecordDto getScheduledRemittanceRecordDetail(Long userId, Long recurId, Long remittanceId) {
-        return coreBankingFeignClient.getRemittanceRecordsByRecurIdAndRemittanceId(recurId, remittanceId, userId);
+    // Task 3: 정기 해외 송금 기록의 내역 상세 조회
+    public RemittanceDetailDto getScheduledRemittanceRecordDetail(Long userId, Long remittanceId) {
+        return coreBankingFeignClient.getRemittanceRecordsByRecurIdAndRemittanceId(remittanceId, userId).data();
     }
 
 //    // TODO: 정기 해외 송금 내역 신규 등록

@@ -2,11 +2,8 @@ package org.creditto.creditto_service.global.infra.corebanking;
 
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceDto;
+import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.global.common.CoreBankingRes;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
-import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,18 +41,17 @@ public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/remittance/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     CoreBankingRes<OverseasRemittanceRes> processRemittanceOnce(@PathVariable Long userId, @RequestBody OverseasRemittanceReq request);
 
-    // Task 1: 사용자 정기송금 설정 내역 조회
+    // 사용자 정기송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule")
     List<RegularRemittanceResponseDto> getScheduledRemittancesByUserId(@RequestParam("userId") Long userId);
 
     // 한 건의 정기 해외 송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule/{regRemId}")
-    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
+    List<RemittanceHistoryDto> getRemittanceRecordsByRecurId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
 
     // 정기 해외 송금 기록의 내역 상세 조회
-    @GetMapping("/api/core/remittance/schedule/{regRemId}/{remittanceId}")
-    RemittanceRecordDto getRemittanceRecordsByRecurIdAndRemittanceId(
-            @PathVariable("regRemId") Long regRemId,
+    @GetMapping("/api/core/remittance/{remittanceId}/detail")
+    CoreBankingRes<RemittanceDetailDto> getRemittanceRecordsByRecurIdAndRemittanceId(
             @PathVariable("remittanceId") Long remittanceId,
             @RequestParam("userId") Long userId);
 
