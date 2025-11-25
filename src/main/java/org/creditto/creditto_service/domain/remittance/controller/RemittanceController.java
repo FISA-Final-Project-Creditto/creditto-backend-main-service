@@ -2,9 +2,9 @@ package org.creditto.creditto_service.domain.remittance.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateRequestDto;
 import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
-import org.creditto.creditto_service.domain.remittance.dto.RemittanceRecordDto;
+import org.creditto.creditto_service.domain.remittance.dto.RemittanceDetailDto;
+import org.creditto.creditto_service.domain.remittance.dto.RemittanceHistoryDto;
 import org.creditto.creditto_service.domain.remittance.service.RemittanceService;
 import org.creditto.creditto_service.global.resolver.UserId;
 import org.creditto.creditto_service.global.response.ApiResponseUtil;
@@ -24,7 +24,7 @@ public class RemittanceController {
     private final RemittanceService remittanceService;
 
     /*
-     * Task 1: 사용자 정기송금 설정 내역 조회
+     * 사용자 정기송금 설정 내역 조회
      *
      * @param ExternalUserId 등록된 정기 송금 설정을 조회할 고객의 ID
      * @return 해당 고객의 정기 송금 설정 리스트 ({@link RegularRemittanceResponseDto})
@@ -37,14 +37,14 @@ public class RemittanceController {
     }
 
     /*
-     * Task 2: 하나의 정기송금 설정에 대한 송금 기록 조회
+     * 하나의 정기송금 설정에 대한 송금 기록 조회
      *
      * @param userId 정기 송금 내역을 조회할 고객의 ID
      * @param recurId 조회할 정기 송금 설정의 ID
      * @return 해당 정기 송금 설정의 송금 내역 리스트 ({@link RemittanceRecordDto})
      */
     @GetMapping("/scheduled/{regRemId}")
-    public ResponseEntity<BaseResponse<List<RemittanceRecordDto>>> getScheduledRemittanceDetail (
+    public ResponseEntity<BaseResponse<List<RemittanceHistoryDto>>> getScheduledRemittanceDetail (
             @UserId Long userId,
             @PathVariable Long regRemId
     ) {
@@ -57,15 +57,14 @@ public class RemittanceController {
      * @param userId 정기 송금 내역을 조회할 고객의 ID
      * @param recurId 조회할 정기 송금 설정의 ID
      * @param remittanceId 선택한 정기 송금
-     * @return 해당 정기 송금 설정의 송금 내역 리스트 ({@link RemittanceRecordDto})
+     * @return 해당 정기 송금 설정의 송금 내역 상세 ({@link RemittanceDetailDto})
      */
-    @GetMapping("/scheduled/{recurId}/{remittanceId}")
-    public ResponseEntity<BaseResponse<RemittanceRecordDto>> getScheduledRemittanceRecordDetail (
+    @GetMapping("/scheduled/{remittanceId}/detail")
+    public ResponseEntity<BaseResponse<RemittanceDetailDto>> getScheduledRemittanceRecordDetail (
             @UserId Long userId,
-            @PathVariable Long recurId,
             @PathVariable Long remittanceId
     ) {
-        return ApiResponseUtil.success(SuccessCode.OK, remittanceService.getScheduledRemittanceRecordDetail(userId, recurId, remittanceId));
+        return ApiResponseUtil.success(SuccessCode.OK, remittanceService.getScheduledRemittanceRecordDetail(userId, remittanceId));
     }
 
     /* 정기 해외 송금 설정 신규 등록

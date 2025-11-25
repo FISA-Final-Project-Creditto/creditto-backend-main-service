@@ -34,11 +34,7 @@ class RemittanceServiceTest {
         Long userId = 1111L;
         RegularRemittanceResponseDto mockDto = RegularRemittanceResponseDto.builder()
                 .regRemId(1L)
-                .accountId(100L)
-                .recipientId(200L)
-                .sendCurrency("KRW")
                 .receivedCurrency("USD")
-                .sendAmount(new BigDecimal("1000.00"))
                 .regRemStatus("ACTIVE")
                 .regRemType("매주")
                 .scheduledDay("FRIDAY")
@@ -56,7 +52,6 @@ class RemittanceServiceTest {
         assertEquals(1, result.size());
         assertEquals(coreBankingResponse, result);
         assertEquals(mockDto.getRegRemId(), result.get(0).getRegRemId());
-        assertEquals(mockDto.getSendAmount(), result.get(0).getSendAmount());
 
         verify(coreBankingFeignClient).getScheduledRemittancesByUserId(userId);
     }

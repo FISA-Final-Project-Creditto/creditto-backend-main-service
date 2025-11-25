@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class RegularRemittanceResponseDto {
+    private String accountNo;
+
     private Long regRemId;
 
     private String recipientName;
     private String recipientBankName;
 
-    private String sendCurrency;
-    private BigDecimal sendAmount;
     private String receivedCurrency;
     private String regRemStatus;
 
