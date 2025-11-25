@@ -66,7 +66,22 @@ public interface CoreBankingFeignClient {
             @RequestParam("userId") Long userId,
             @RequestBody RegularRemittanceCreateCoreDto dto
     );
-    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") String recurId, @RequestParam("userId") String userId);
+//    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") Long recurId, @RequestParam("userId") Long userId);
+
+//    // 정기 해외 송금 내역 수정
+//    @PutMapping("/api/core/remittance/schedule/{recurId}")
+//    void updateScheduledRemittance(
+//            @PathVariable("recurId") Long recurId,
+//            @RequestParam("userId") Long userId,
+//            @RequestBody RegularRemittanceDto regularRemittanceDto
+//    );
+//
+//    // 정기 해외 송금 설정 삭제
+//    @DeleteMapping("/api/core/remittance/schedule/{recurId}")
+//    void cancelScheduledRemittance(
+//            @PathVariable("recurId") Long recurId,
+//            @RequestParam("userId") Long userId
+//    );
 
     // 정기 해외 송금 내역 수정
     @PutMapping("/api/core/remittance/schedule/{regRemId}")
