@@ -2,10 +2,7 @@ package org.creditto.creditto_service.domain.remittance.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceCreateDto;
-import org.creditto.creditto_service.domain.remittance.dto.RegularRemittanceResponseDto;
-import org.creditto.creditto_service.domain.remittance.dto.RemittanceDetailDto;
-import org.creditto.creditto_service.domain.remittance.dto.RemittanceHistoryDto;
+import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.domain.remittance.service.RemittanceService;
 import org.creditto.creditto_service.global.resolver.UserId;
 import org.creditto.creditto_service.global.response.ApiResponseUtil;
@@ -86,19 +83,19 @@ public class RemittanceController {
      * 정기 해외 송금 설정 수정
      *
      * @param userId 정기 송금 설정을 수정할 고객의 ID
-     * @param recurId 수정할 정기 송금 설정의 ID
-     * @param regularRemittanceResponseDto 수정할 정기 송금 설정 정보
+     * @param regRemId 수정할 정기 송금 설정의 ID
+     * @param RegularRemittanceUpdateDto 수정할 정기 송금 설정 정보
      * @return 성공 응답
      */
-//    @PutMapping("/scheduled/{recurId}")
-//    public ResponseEntity<BaseResponse<Void>> updateScheduledRemittance (
-//            @UserId Long userId,
-//            @PathVariable Long recurId,
-//            @RequestBody RegularRemittanceResponseDto regularRemittanceResponseDto
-//    ) {
-//        remittanceService.updateScheduledRemittance(userId, recurId, regularRemittanceResponseDto);
-//        return ApiResponseUtil.success(SuccessCode.OK, null);
-//    }
+    @PutMapping("/scheduled/{regRemId}")
+    public ResponseEntity<BaseResponse<Void>> updateScheduledRemittance (
+            @UserId Long userId,
+            @PathVariable Long regRemId,
+            @RequestBody RegularRemittanceUpdateDto dto
+    ) {
+        remittanceService.updateScheduledRemittance(userId, regRemId, dto);
+        return ApiResponseUtil.success(SuccessCode.OK, null);
+    }
 
     /*
      * 정기 해외 송금 설정 삭제
