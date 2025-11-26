@@ -60,8 +60,8 @@ public class RemittanceService {
 
     // Task 5: 정기 해외 송금 내역 수정
     @Transactional
-    public void updateScheduledRemittance(String userId, Long recurId, RegularRemittanceResponseDto regularRemittanceResponseDto) {
-        coreBankingFeignClient.updateScheduledRemittance(recurId, userId, regularRemittanceResponseDto);
+    public void updateScheduledRemittance(Long userId, Long regRemId, RegularRemittanceUpdateDto dto) {
+        coreBankingFeignClient.updateScheduledRemittance(regRemId, userId, dto);
     }
 
     // 정기 해외 송금 설정 삭제
