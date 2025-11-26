@@ -1,15 +1,12 @@
 package org.creditto.creditto_service.domain.remittance.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
