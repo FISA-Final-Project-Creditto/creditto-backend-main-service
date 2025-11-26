@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/remittance")
+@RequestMapping("/api/remittance/scheduled")
 public class RemittanceController {
 
     private final RemittanceService remittanceService;
@@ -26,7 +26,7 @@ public class RemittanceController {
      * @param ExternalUserId 등록된 정기 송금 설정을 조회할 고객의 ID
      * @return 해당 고객의 정기 송금 설정 리스트 ({@link RegularRemittanceResponseDto})
      */
-    @GetMapping("/scheduled")
+    @GetMapping
     public ResponseEntity<BaseResponse<List<RegularRemittanceResponseDto>>> getScheduledRemittanceList (
             @UserId Long userId
     ) {
@@ -40,7 +40,7 @@ public class RemittanceController {
      * @param recurId 조회할 정기 송금 설정의 ID
      * @return 해당 정기 송금 설정의 송금 내역 리스트 ({@link RemittanceRecordDto})
      */
-    @GetMapping("/scheduled/{regRemId}")
+    @GetMapping("/{regRemId}")
     public ResponseEntity<BaseResponse<List<RemittanceHistoryDto>>> getScheduledRemittanceDetail (
             @UserId Long userId,
             @PathVariable Long regRemId
@@ -56,7 +56,7 @@ public class RemittanceController {
      * @param remittanceId 선택한 정기 송금
      * @return 해당 정기 송금 설정의 송금 내역 상세 ({@link RemittanceDetailDto})
      */
-    @GetMapping("/scheduled/{remittanceId}/detail")
+    @GetMapping("/{remittanceId}/detail")
     public ResponseEntity<BaseResponse<RemittanceDetailDto>> getScheduledRemittanceRecordDetail (
             @UserId Long userId,
             @PathVariable Long remittanceId
@@ -69,7 +69,7 @@ public class RemittanceController {
      * @param userId 정기 송금 내역을 등록할 고객의 ID
      * @return 성공 응답
      */
-    @PostMapping("/scheduled/add")
+    @PostMapping("/add")
     public ResponseEntity<BaseResponse<Void>> createScheduledRemittance (
             @UserId Long userId,
             @RequestBody @Valid RegularRemittanceCreateDto dto
@@ -87,7 +87,7 @@ public class RemittanceController {
      * @param RegularRemittanceUpdateDto 수정할 정기 송금 설정 정보
      * @return 성공 응답
      */
-    @PutMapping("/scheduled/{regRemId}")
+    @PutMapping("/{regRemId}")
     public ResponseEntity<BaseResponse<Void>> updateScheduledRemittance (
             @UserId Long userId,
             @PathVariable Long regRemId,
@@ -104,7 +104,7 @@ public class RemittanceController {
      * @param recurId 삭제할 정기 해외 송금 설정의 ID
      * @return 성공 응답
      */
-    @DeleteMapping("/scheduled/{regRemId}")
+    @DeleteMapping("/{regRemId}")
     public ResponseEntity<BaseResponse<Void>> cancelScheduledRemittance (
             @UserId Long userId,
             @PathVariable Long regRemId
