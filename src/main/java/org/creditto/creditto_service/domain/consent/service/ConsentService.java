@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.consent.dto.ConsentDefinitionRes;
 import org.creditto.creditto_service.domain.consent.dto.ConsentRecordRes;
-import org.creditto.creditto_service.domain.consent.dto.ConsentWithdrawReq;
 import org.creditto.creditto_service.domain.consent.entity.ConsentDefinition;
 import org.creditto.creditto_service.domain.consent.entity.ConsentRecord;
 import org.creditto.creditto_service.domain.consent.entity.ConsentStatus;
@@ -12,12 +11,10 @@ import org.creditto.creditto_service.domain.consent.repository.ConsentDefinition
 import org.creditto.creditto_service.domain.consent.repository.ConsentRecordRepository;
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
 import org.creditto.creditto_service.global.response.exception.CustomBaseException;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+
 /**
  * 동의서 관련 비즈니스 로직을 처리하는 서비스 클래스입니다.
  */
@@ -48,27 +45,17 @@ public class ConsentService {
 
     /**
      * 사용자의 동의를 철회
-     *
-     * @param req 동의 철회 요청 정보 (클라이언트 ID, 동의서 정의 ID)
-     * @return 철회 처리된 동의 기록 정보
-     * @throws CustomBaseException 철회할 동의 기록을 찾을 수 없을 때 발생
-     */
-
-    /**
-     * 사용자의 동의를 철회
      * @param userId 철회할 userId
      * @param definitionId 철회할 동의서 id
+     * @throws CustomBaseException 철회할 동의 기록을 찾을 수 없을 때 발생
      */
     @Transactional
     public void withdraw(Long userId, Long definitionId) {
-
-        List<ConsentRecord> records = recordRepository.findLatestByClientAndDefinitionWithDefinition(
-                userId, definitionId, ConsentStatus.AGREE, PageRequest.of(0, 1)
+        ConsentRecord findRecord = recordRepository.findFirstByUserIdAndConsentDefinitionIdAndConsentStatusOrderByConsentDateDesc(
+                userId, definitionId, ConsentStatus.AGREE
+        ).orElseThrow(
+                () -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_RECORD)
         );
-
-        ConsentRecord findRecord = records.stream()
-                .findFirst()
-                .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_RECORD));
 
         findRecord.withdraw();
     }
@@ -96,7 +83,7 @@ public class ConsentService {
      * @return 동의한 동의서 list
      */
     public List<ConsentRecordRes> getConsentRecord(Long userId) {
-        return recordRepository.findAllByClientIdWithDefinition(userId).stream()
+        return recordRepository.findAllByUserIdWithDefinition(userId).stream()
                 .map(ConsentRecordRes::from)
                 .toList();
     }
