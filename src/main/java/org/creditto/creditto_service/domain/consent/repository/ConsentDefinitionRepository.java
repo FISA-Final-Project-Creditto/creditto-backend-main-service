@@ -27,14 +27,13 @@ public interface ConsentDefinitionRepository extends JpaRepository<ConsentDefini
      *
      * @return 각 동의 코드별 최신 버전의 ConsentDefinition 목록
      */
-    @Query("""
-            SELECT d
-            FROM ConsentDefinition d
-            WHERE (d.consentCode, d.consentDefVer) IN (
-                SELECT d2.consentCode, MAX(d2.consentDefVer)
-                FROM ConsentDefinition d2
-                GROUP BY d2.consentCode
-            )
-            """)
+    @Query("SELECT d " +
+            "FROM ConsentDefinition  d " +
+            "WHERE (d.consentCode, d.consentDefVer) " +
+            "IN " +
+            "(SELECT d2.consentCode, MAX(d2.consentDefVer) " +
+            "FROM ConsentDefinition d2 " +
+            "GROUP BY d2.consentCode)"
+    )
     List<ConsentDefinition> findLatestForAllCodes();
 }
