@@ -48,7 +48,7 @@ class ConsentServiceTest {
         // Given
         ConsentDefinition definition = ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null);
         definitionRepository.save(definition);
-        ConsentAgreeReq req = new ConsentAgreeReq("client123", "CODE1", "127.0.0.1");
+        ConsentAgreeReq req = new ConsentAgreeReq("client123", definition.getId(), "127.0.0.1");
 
         // When
         ConsentRecordRes result = consentService.agree(req);
