@@ -2,6 +2,7 @@ package org.creditto.creditto_service.global.infra.corebanking;
 
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
+import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.global.common.CoreBankingRes;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -22,17 +23,17 @@ public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/account/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     CoreBankingRes<AccountRes> createAccount(@PathVariable Long userId, @RequestBody CreateAccountReq request);
 
-    @GetMapping(value = "/api/core/account/{accountId}")
+    @GetMapping(value = "/api/core/account/{accountId}/account")
     CoreBankingRes<AccountRes> getAccountByAccountId(@PathVariable Long accountId);
 
     @GetMapping(value = "/api/core/account/{accountId}/balance")
     CoreBankingRes<BigDecimal> getAccountBalanceByAccountId(@PathVariable Long accountId);
 
-    @GetMapping(value = "/api/core/account")
-    CoreBankingRes<AccountRes> getAccountByAccountNo(@RequestParam(name = "accountNo") String accountNo);
+    @GetMapping(value = "/api/core/account/{accountNo}")
+    CoreBankingRes<AccountRes> getAccountByAccountNo(@PathVariable String accountNo);
 
-    @GetMapping(value = "/api/core/account")
-    CoreBankingRes<List<AccountRes>> getAccountsByUserId(@RequestParam(name = "userId") Long userId);
+    @GetMapping(value = "/api/core/account/client/{userId}")
+    CoreBankingRes<List<AccountRes>> getAccountsByUserId(@PathVariable Long userId);
 
     /*
     TRANSACTION
@@ -46,4 +47,43 @@ public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/remittance/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     CoreBankingRes<OverseasRemittanceRes> processRemittanceOnce(@PathVariable Long userId, @RequestBody OverseasRemittanceReq request);
 
+    /*
+    REGULAR REMITTANCE
+     */
+    // 사용자 정기송금 설정 내역 조회
+    @GetMapping(value = "/api/core/remittance/schedule")
+    List<RegularRemittanceResponseDto> getScheduledRemittancesByUserId(@RequestParam("userId") Long userId);
+
+    // 한 건의 정기 해외 송금 설정 내역 조회
+    @GetMapping(value = "/api/core/remittance/schedule/{regRemId}")
+    List<RemittanceHistoryDto> getRemittanceRecordsByRegRemId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
+
+    // 단일 송금 내역 상세 조회
+    @GetMapping(value = "/api/core/remittance/schedule/{regRemId}/{remittanceId}")
+    CoreBankingRes<RemittanceDetailDto> getRemittanceRecordsByRegRemIdAndRemittanceId(
+            @PathVariable("regRemId") Long regRemId,
+            @PathVariable("remittanceId") Long remittanceId,
+            @RequestParam("userId") Long userId);
+
+    // 정기송금 신규 등록
+    @PostMapping(value = "/api/core/remittance/schedule/add")
+    void createScheduledRemittance(
+            @RequestParam("userId") Long userId,
+            @RequestBody RegularRemittanceCreateCoreDto dto
+    );
+
+    // 정기 해외 송금 내역 수정
+    @PutMapping(value = "/api/core/remittance/schedule/{regRemId}")
+    void updateScheduledRemittance(
+            @PathVariable("regRemId") Long regRemId,
+            @RequestParam("userId") Long userId,
+            @RequestBody RegularRemittanceUpdateDto dto
+    );
+
+    // 정기 해외 송금 설정 삭제
+    @DeleteMapping(value = "/api/core/remittance/schedule/{regRemId}")
+    void cancelScheduledRemittance(
+            @PathVariable("regRemId") Long regRemId,
+            @RequestParam("userId") Long userId
+    );
 }
