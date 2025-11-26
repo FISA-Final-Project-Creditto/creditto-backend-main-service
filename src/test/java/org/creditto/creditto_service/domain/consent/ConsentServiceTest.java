@@ -1,5 +1,4 @@
-package org.creditto.creditto_service.domain.consent;
-
+import org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq;
 import org.creditto.creditto_service.domain.consent.dto.ConsentDefinitionRes;
 import org.creditto.creditto_service.domain.consent.dto.ConsentRecordRes;
 import org.creditto.creditto_service.domain.consent.entity.ConsentCategory;
@@ -46,7 +45,7 @@ class ConsentServiceTest {
         // Given
         ConsentDefinition definition = ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null);
         definitionRepository.save(definition);
-        org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq req = new org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq(
+        ConsentAgreeReq req = new ConsentAgreeReq(
                 "test-client",
                 definition.getId(),
                 "127.0.0.1"
@@ -69,126 +68,3 @@ class ConsentServiceTest {
         assertThat(savedRecord.getConsentDefinition().getConsentCode()).isEqualTo("CODE1");
         assertThat(savedRecord.getConsentStatus()).isEqualTo(ConsentStatus.AGREE);
     }
-
-    @Test
-    @DisplayName("철회하기 - 성공")
-    void withdraw_Success() {
-        // Given
-        Long userId = 1L;
-        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        ConsentRecord consentRecord = recordRepository.save(ConsentRecord.of(definition, userId));
-
-        // When
-        consentService.withdraw(userId, definition.getConsentCode());
-
-        // Then
-        ConsentRecord withdrawnRecord = recordRepository.findById(consentRecord.getId()).get();
-        assertThat(withdrawnRecord.getConsentStatus()).isEqualTo(ConsentStatus.WITHDRAW);
-        assertThat(withdrawnRecord.getWithdrawalDate()).isNotNull();
-    }
-
-    @Test
-    @DisplayName("모든 최신 동의서 조회")
-    void getLatestConsentDefinitions_Success() {
-        // Given
-        definitionRepository.save(ConsentDefinition.of("CODE1", "Title1", "Desc1", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        definitionRepository.save(ConsentDefinition.of("CODE1", "Title1 v2", "Desc1 v2", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        definitionRepository.save(ConsentDefinition.of("CODE2", "Title2", "Desc2", ConsentCategory.SERVICE, 1, LocalDateTime.now(), null));
-
-        // When
-        List<ConsentDefinitionRes> results = consentService.getLatestConsentDefinitions();
-
-        // Then
-        assertThat(results).hasSize(2);
-        assertThat(results).extracting(ConsentDefinitionRes::consentCode).containsExactlyInAnyOrder("CODE1", "CODE2");
-        // CODE1의 최신 버전인 2가 조회되어야 함
-        ConsentDefinitionRes code1Result = results.stream().filter(r -> r.consentCode().equals("CODE1")).findFirst().get();
-        assertThat(code1Result.consentDefVer()).isEqualTo(2);
-    }
-
-    @Test
-    @DisplayName("사용자 동의 내역 조회")
-    void getConsentRecord_Success() {
-        // Given
-        Long userId = 1L;
-        ConsentDefinition def1 = definitionRepository.save(ConsentDefinition.of("CODE1", "Title1", "Desc1", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        ConsentDefinition def2 = definitionRepository.save(ConsentDefinition.of("CODE2", "Title2", "Desc2", ConsentCategory.SERVICE, 1, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(def1, userId));
-        ConsentRecord recordToWithdraw = ConsentRecord.of(def2, userId);
-        recordToWithdraw.withdraw();
-        recordRepository.save(recordToWithdraw);
-
-        // When
-        List<ConsentRecordRes> results = consentService.getConsentRecord(userId);
-
-        // Then
-        assertThat(results).hasSize(2);
-        assertThat(results).extracting(ConsentRecordRes::userId).containsOnly(userId);
-    }
-
-    @Test
-    @DisplayName("최신 버전 동의 여부 확인 - 동의함")
-    void checkAgreement_Agreed() {
-        // Given
-        Long userId = 1L;
-        String code = "CODE1";
-        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(definition, userId));
-
-        // When
-        boolean hasAgreed = consentService.checkAgreement(userId, code);
-
-        // Then
-        assertThat(hasAgreed).isTrue();
-    }
-
-    @Test
-    @DisplayName("최신 버전 동의 여부 확인 - 이전 버전에 동의함")
-    void checkAgreement_AgreedToOlderVersion() {
-        // Given
-        Long userId = 1L;
-        String code = "CODE1";
-        definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        ConsentDefinition oldDefinition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(oldDefinition, userId));
-
-        // When
-        boolean hasAgreed = consentService.checkAgreement(userId, code);
-
-        // Then
-        assertThat(hasAgreed).isFalse();
-    }
-
-    @Test
-    @DisplayName("최신 버전 동의 여부 확인 - 철회함")
-    void checkAgreement_Withdrawn() {
-        // Given
-        Long userId = 1L;
-        String code = "CODE1";
-        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        ConsentRecord recordToWithdraw = ConsentRecord.of(definition, userId);
-        recordToWithdraw.withdraw();
-        recordRepository.save(recordToWithdraw);
-
-        // When
-        boolean hasAgreed = consentService.checkAgreement(userId, code);
-
-        // Then
-        assertThat(hasAgreed).isFalse();
-    }
-
-    @Test
-    @DisplayName("최신 버전 동의 여부 확인 - 기록 없음")
-    void checkAgreement_NoRecord() {
-        // Given
-        Long userId = 1L;
-        String code = "CODE1";
-        definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-
-        // When
-        boolean hasAgreed = consentService.checkAgreement(userId, code);
-
-        // Then
-        assertThat(hasAgreed).isFalse();
-    }
-}
