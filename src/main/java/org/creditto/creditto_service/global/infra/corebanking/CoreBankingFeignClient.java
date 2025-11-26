@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @FeignClient(
         name = "core-banking",
