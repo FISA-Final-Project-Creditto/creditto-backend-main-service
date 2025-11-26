@@ -104,14 +104,14 @@ public class RemittanceController {
      * @param recurId 삭제할 정기 해외 송금 설정의 ID
      * @return 성공 응답
      */
-//    @DeleteMapping("/scheduled/{recurId}")
-//    public ResponseEntity<BaseResponse<Void>> cancelScheduledRemittance (
-//            @UserId Long userId,
-//            @PathVariable Long recurId
-//    ) {
-//        remittanceService.cancelScheduledRemittance(userId, recurId);
-//        return ApiResponseUtil.success(SuccessCode.OK, null);
-//    }
+    @DeleteMapping("/scheduled/{regRemId}")
+    public ResponseEntity<BaseResponse<Void>> cancelScheduledRemittance (
+            @UserId Long userId,
+            @PathVariable Long regRemId
+    ) {
+        remittanceService.cancelScheduledRemittance(userId, regRemId);
+        return ApiResponseUtil.success(SuccessCode.OK, null);
+    }
 
     // 일회성 송금 내역 조회, 전체 송금 내역 조회는 추후 구현
 

@@ -70,13 +70,13 @@ public interface CoreBankingFeignClient {
             @RequestParam("userId") Long userId,
             @RequestBody RegularRemittanceUpdateDto dto
     );
-//
-//    // 정기 해외 송금 설정 삭제
-//    @DeleteMapping("/api/core/remittance/schedule/{recurId}")
-//    void cancelScheduledRemittance(
-//            @PathVariable("recurId") Long recurId,
-//            @RequestParam("userId") Long userId
-//    );
+
+    // 정기 해외 송금 설정 삭제
+    @DeleteMapping("/api/core/remittance/schedule/{regRemId}")
+    void cancelScheduledRemittance(
+            @PathVariable("regRemId") Long regRemId,
+            @RequestParam("userId") Long userId
+    );
 
     // 일회성 해외 송금  내역 조회
 //    @GetMapping("/api/core/remmittance/{remittance}")
