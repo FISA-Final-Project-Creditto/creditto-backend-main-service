@@ -18,8 +18,8 @@ public class OverseasRemittanceService {
     private final CoreBankingFeignClient coreBankingFeignClient;
 
     @Transactional
-    public OverseasRemittanceRes processRemittanceOnce(Long userId, Long accountId, OverseasRemittanceReq request) {
-        AccountRes account = coreBankingFeignClient.getAccountByAccountId(accountId).data();
+    public OverseasRemittanceRes processRemittanceOnce(Long userId, OverseasRemittanceReq request) {
+        AccountRes account = coreBankingFeignClient.getAccountByAccountNo(request.accountNo()).data();
 
         if (!account.userId().equals(userId)) {
             // TODO: 접근 권한 예외로 변경

@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.account.service.AccountService;
-import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
-import org.creditto.creditto_service.domain.overseasRemittance.service.OverseasRemittanceService;
 import org.creditto.creditto_service.domain.transaction.service.TransactionService;
 import org.creditto.creditto_service.global.infra.corebanking.AccountRes;
-import org.creditto.creditto_service.global.infra.corebanking.OverseasRemittanceRes;
 import org.creditto.creditto_service.global.infra.corebanking.TransactionRes;
 import org.creditto.creditto_service.global.resolver.UserId;
 import org.creditto.creditto_service.global.response.ApiResponseUtil;
@@ -28,7 +25,6 @@ public class AccountController {
 
     private final AccountService accountService;
     private final TransactionService transactionService;
-    private final OverseasRemittanceService overseasRemittanceService;
 
     // 계좌 개설
     @PostMapping
@@ -40,7 +36,7 @@ public class AccountController {
     }
 
     // 계좌 조회 by accountId
-    @GetMapping("/id/{accountId}")
+    @GetMapping("/{accountId}")
     public ResponseEntity<BaseResponse<AccountRes>> getAccountByAccountId(
             @PathVariable("accountId") Long accountId
     ) {
@@ -48,7 +44,7 @@ public class AccountController {
     }
 
     // 계좌 잔액 조회 by accountId
-    @GetMapping("/id/{accountId}/balance")
+    @GetMapping("/{accountId}/balance")
     public ResponseEntity<BaseResponse<BigDecimal>> getBalanceByAccountId(
             @PathVariable("accountId") Long accountId
     ) {
@@ -65,7 +61,7 @@ public class AccountController {
     }
 
     // 전체 계좌 조회 by userId
-    @GetMapping("/me/accounts")
+    @GetMapping("/list")
     public ResponseEntity<BaseResponse<List<AccountRes>>> getAccountByUserId(
             @UserId Long userId
     ) {
@@ -73,21 +69,10 @@ public class AccountController {
     }
 
     // 거래 내역 조회 by accountId
-    @GetMapping("/id/{accountId}/transactions")
+    @GetMapping("/{accountId}/transactions")
     public ResponseEntity<BaseResponse<List<TransactionRes>>> getTransactionsByAccountId(
             @PathVariable("accountId")  Long accountId
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, transactionService.getTransactionByAccountId(accountId));
     }
-
-    // 일회성 해외 송금 등록
-    @PostMapping("/{accountId}/remittance/once")
-    public ResponseEntity<BaseResponse<OverseasRemittanceRes>> remittanceOnce(
-            @UserId Long userId,
-            @PathVariable("accountId") Long accountId,
-            @RequestBody OverseasRemittanceReq request
-    ) {
-        return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.processRemittanceOnce(userId, accountId, request));
-    }
-
 }
