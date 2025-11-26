@@ -23,4 +23,6 @@ public final class ErrorMessage {
      * DENIED - 접근 거부
      */
     public static final String ACCESS_DENIED = "권한이 없습니다.";
+
+    public static final String SERVER_ERROR = "서버 내부 오류 입니다.";
 }

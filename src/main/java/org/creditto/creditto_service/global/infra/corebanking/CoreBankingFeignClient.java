@@ -15,7 +15,8 @@ import java.util.List;
 
 @FeignClient(
         name = "core-banking",
-        url = "${CORE_BANKING_SERVER_URL}"
+        url = "${CORE_BANKING_SERVER_URL}",
+        configuration = CoreBankingFeignConfig.class
 )
 public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/account/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
