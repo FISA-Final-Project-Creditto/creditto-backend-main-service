@@ -19,6 +19,7 @@ public class RegularRemittanceResponseDto {
     private String recipientName;
     private String recipientBankName;
 
+    private BigDecimal sendAmount;
     private String receivedCurrency;
     private String regRemStatus;
 
