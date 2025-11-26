@@ -8,12 +8,14 @@ import org.creditto.creditto_service.global.response.BaseResponse;
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
+import org.springframework.util.StringUtils;
 
 import java.util.stream.Collectors;
 
@@ -48,6 +50,31 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseResponse<Void>> handleCustomException(final CustomException e) {
         logWarn(e);
         return ApiResponseUtil.failure(ErrorBaseCode.BAD_REQUEST, e.getMessage());
+    }
+
+    /**
+     * 400 - HttpMessageNotReadableException
+     * 예외 내용 : JSON 혹은 Request Body 파싱 실패
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<BaseResponse<Void>> handleHttpMessageNotReadableException(final HttpMessageNotReadableException e) {
+        logWarn(e);
+        return ApiResponseUtil.failure(ErrorBaseCode.NOT_READABLE);
+    }
+
+    /**
+     * CoreBanking OpenFeign 호출 실패 시 반환
+     * CoreBanking 서버의 응답을 그대로 전달하여 클라이언트가 동일한 응답 포맷을 받을 수 있도록 처리
+     */
+    @ExceptionHandler(CoreBankingFeignException.class)
+    public ResponseEntity<BaseResponse<Void>> handleCoreBankingFeignException(final CoreBankingFeignException e) {
+        logWarn(e);
+        int code = e.getCode() != null ? e.getCode() : ErrorBaseCode.INTERNAL_SERVER_ERROR.getCode();
+        String message = StringUtils.hasText(e.getMessage())
+                ? e.getMessage()
+                : ErrorBaseCode.INTERNAL_SERVER_ERROR.getMessage();
+        return ResponseEntity.status(e.getHttpStatus())
+                .body(BaseResponse.of(code, message));
     }
 
     /**
