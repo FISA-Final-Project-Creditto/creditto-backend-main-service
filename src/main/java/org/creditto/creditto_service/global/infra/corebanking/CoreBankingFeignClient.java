@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
         name = "core-banking",
-        url = "${CORE_BANKING_SERVER_URL}"
+        url = "${CORE_BANKING_SERVER_URL}",
+        configuration = CoreBankingFeignConfig.class
 )
 public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/account/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -61,7 +62,6 @@ public interface CoreBankingFeignClient {
             @RequestParam("userId") Long userId,
             @RequestBody RegularRemittanceCreateCoreDto dto
     );
-//    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") Long recurId, @RequestParam("userId") Long userId);
 
     // 정기 해외 송금 내역 수정
     @PutMapping("/api/core/remittance/schedule/{regRemId}")
@@ -77,7 +77,4 @@ public interface CoreBankingFeignClient {
             @PathVariable("regRemId") Long regRemId,
             @RequestParam("userId") Long userId
     );
-
-    // 일회성 해외 송금  내역 조회
-//    @GetMapping("/api/core/remmittance/{remittance}")
 }
