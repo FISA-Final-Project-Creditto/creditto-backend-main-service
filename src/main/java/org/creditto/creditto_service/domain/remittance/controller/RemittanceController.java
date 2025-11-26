@@ -113,7 +113,4 @@ public class RemittanceController {
         return ApiResponseUtil.success(SuccessCode.OK, null);
     }
 
-    // 일회성 송금 내역 조회, 전체 송금 내역 조회는 추후 구현
-
-
 }
