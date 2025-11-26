@@ -69,12 +69,11 @@ public class ConsentController {
     /**
      * 특정 사용자가 특정 동의서의 최신 버전에 동의했는지 확인
      */
-    @GetMapping("/check/{code}")
+    @GetMapping("/check/{consentCode}")
     public ResponseEntity<BaseResponse<Boolean>> checkAgreement(
             @UserId Long userId,
-            @PathVariable String code
+            @PathVariable String consentCode
     ) {
-        boolean hasAgreed = consentService.checkAgreement(userId, code);
-        return ApiResponseUtil.success(SuccessCode.OK, hasAgreed);
+        return ApiResponseUtil.success(SuccessCode.OK, consentService.checkAgreement(userId, consentCode));
     }
 }
