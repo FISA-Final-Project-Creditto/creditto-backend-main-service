@@ -34,7 +34,7 @@ public class AccountService {
         return coreBankingFeignClient.getAccountByAccountNo(accountNo).data();
     }
 
-    public List<AccountRes> getAccountByUserId(Long userId) {
-        return coreBankingFeignClient.getAccountByUserId(userId).data();
+    public List<AccountRes> getAccountsByUserId(Long userId) {
+        return coreBankingFeignClient.getAccountsByUserId(userId).data();
     }
 }

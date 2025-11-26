@@ -61,11 +61,11 @@ public class AccountController {
     }
 
     // 전체 계좌 조회 by userId
-    @GetMapping("/list")
+    @GetMapping("/me")
     public ResponseEntity<BaseResponse<List<AccountRes>>> getAccountByUserId(
             @UserId Long userId
     ) {
-        return ApiResponseUtil.success(SuccessCode.OK, accountService.getAccountByUserId(userId));
+        return ApiResponseUtil.success(SuccessCode.OK, accountService.getAccountsByUserId(userId));
     }
 
     // 거래 내역 조회 by accountId
