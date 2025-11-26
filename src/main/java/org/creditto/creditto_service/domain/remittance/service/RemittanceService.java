@@ -22,13 +22,13 @@ public class RemittanceService {
     }
 
     // Task 2: 하나의 정기송금 설정에 대한 송금 기록 조회
-    public List<RemittanceHistoryDto> getScheduledRemittanceDetail(Long userId, Long regRemId) {
-        return coreBankingFeignClient.getRemittanceRecordsByRecurId(regRemId, userId);
+    public List<RemittanceHistoryDto> getScheduledRemittanceHistory(Long userId, Long regRemId) {
+        return coreBankingFeignClient.getRemittanceRecordsByRegRemId(regRemId, userId);
     }
 
     // Task 3: 정기 해외 송금 기록의 내역 상세 조회
-    public RemittanceDetailDto getScheduledRemittanceRecordDetail(Long userId, Long remittanceId) {
-        return coreBankingFeignClient.getRemittanceRecordsByRecurIdAndRemittanceId(remittanceId, userId).data();
+    public RemittanceDetailDto getScheduledRemittanceHistoryDetail(Long userId, Long regRemId, Long remittanceId) {
+        return coreBankingFeignClient.getRemittanceRecordsByRegRemIdAndRemittanceId(regRemId, remittanceId, userId).data();
     }
 
     // Task 4: 정기송금 신규 등록

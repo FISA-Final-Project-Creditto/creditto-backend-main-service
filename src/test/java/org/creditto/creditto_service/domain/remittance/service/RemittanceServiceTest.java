@@ -75,16 +75,16 @@ class RemittanceServiceTest {
                 .build();
 
         List<RemittanceHistoryDto> expectedResponse = List.of(history1, history2, history3);
-        given(coreBankingFeignClient.getRemittanceRecordsByRecurId(regRemId, userId)).willReturn(expectedResponse);
+        given(coreBankingFeignClient.getRemittanceRecordsByRegRemId(regRemId, userId)).willReturn(expectedResponse);
 
         // when
-        List<RemittanceHistoryDto> result = remittanceService.getScheduledRemittanceDetail(userId, regRemId);
+        List<RemittanceHistoryDto> result = remittanceService.getScheduledRemittanceHistory(userId, regRemId);
 
         // then
         assertNotNull(result);
         assertEquals(3, result.size());
         assertEquals(expectedResponse, result);
-        verify(coreBankingFeignClient).getRemittanceRecordsByRecurId(regRemId, userId);
+        verify(coreBankingFeignClient).getRemittanceRecordsByRegRemId(regRemId, userId);
     }
 
     @Test
@@ -92,18 +92,19 @@ class RemittanceServiceTest {
     void getScheduledRemittanceRecordDetailTest() {
         // given
         Long userId = 1L;
+        Long regRemId = 10L;
         Long remittanceId = 201L;
         RemittanceDetailDto mockDto = RemittanceDetailDto.builder().build();
         CoreBankingRes<RemittanceDetailDto> coreBankingResponse = new CoreBankingRes<>(200, "Success", mockDto);
-        given(coreBankingFeignClient.getRemittanceRecordsByRecurIdAndRemittanceId(remittanceId, userId)).willReturn(coreBankingResponse);
+        given(coreBankingFeignClient.getRemittanceRecordsByRegRemIdAndRemittanceId(regRemId,remittanceId, userId)).willReturn(coreBankingResponse);
 
         // when
-        RemittanceDetailDto result = remittanceService.getScheduledRemittanceRecordDetail(userId, remittanceId);
+        RemittanceDetailDto result = remittanceService.getScheduledRemittanceHistoryDetail(userId, regRemId, remittanceId);
 
         // then
         assertNotNull(result);
         assertEquals(mockDto, result);
-        verify(coreBankingFeignClient).getRemittanceRecordsByRecurIdAndRemittanceId(remittanceId, userId);
+        verify(coreBankingFeignClient).getRemittanceRecordsByRegRemIdAndRemittanceId(regRemId, remittanceId, userId);
     }
 
     @Test

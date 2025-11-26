@@ -1,9 +1,6 @@
 package org.creditto.creditto_service.domain.remittance.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -69,4 +66,22 @@ public class RegularRemittanceCreateDto {
 
     @NotBlank
     private String recipientAccountNo;
+
+    @AssertTrue(message = "MONTHLY는 날짜(Date)가, WEEKLY는 요일(Day)이 필수이며 교차 입력은 불가합니다.")
+    public boolean isScheduleValid() {
+        // 타입이 없으면 패스
+        if (regRemType == null) return true;
+
+        if ("MONTHLY".equals(regRemType)) {
+            // MONTHLY일 때: Date는 있어야 하고, Day는 없어야 함
+            return scheduledDate != null && scheduledDay == null;
+        }
+
+        if ("WEEKLY".equals(regRemType)) {
+            // WEEKLY일 때: Day는 있어야 하고, Date는 없어야 함
+            return scheduledDay != null && scheduledDate == null;
+        }
+
+        return false; // 그 외 이상한 타입
+    }
 }

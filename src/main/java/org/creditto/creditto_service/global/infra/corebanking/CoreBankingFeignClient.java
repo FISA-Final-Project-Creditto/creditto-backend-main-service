@@ -57,11 +57,12 @@ public interface CoreBankingFeignClient {
 
     // 한 건의 정기 해외 송금 설정 내역 조회
     @GetMapping("/api/core/remittance/schedule/{regRemId}")
-    List<RemittanceHistoryDto> getRemittanceRecordsByRecurId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
+    List<RemittanceHistoryDto> getRemittanceRecordsByRegRemId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
 
     // 단일 송금 내역 상세 조회
-    @GetMapping("/api/core/remittance/schedule/{remittanceId}/detail")
-    CoreBankingRes<RemittanceDetailDto> getRemittanceRecordsByRecurIdAndRemittanceId(
+    @GetMapping("/api/core/remittance/schedule/{regRemId}/{remittanceId}")
+    CoreBankingRes<RemittanceDetailDto> getRemittanceRecordsByRegRemIdAndRemittanceId(
+            @PathVariable("regRemId") Long regRemId,
             @PathVariable("remittanceId") Long remittanceId,
             @RequestParam("userId") Long userId);
 
@@ -71,7 +72,6 @@ public interface CoreBankingFeignClient {
             @RequestParam("userId") Long userId,
             @RequestBody RegularRemittanceCreateCoreDto dto
     );
-    List<RemittanceRecordDto> getRemittanceRecordsByRecurId(@PathVariable("recurId") String recurId, @RequestParam("userId") String userId);
 
     // 정기 해외 송금 내역 수정
     @PutMapping("/api/core/remittance/schedule/{regRemId}")
