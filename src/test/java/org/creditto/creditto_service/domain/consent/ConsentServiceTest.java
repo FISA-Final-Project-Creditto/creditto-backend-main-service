@@ -71,13 +71,13 @@ class ConsentServiceTest {
         // Given
         Long userId = 1L;
         ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        ConsentRecord record = recordRepository.save(ConsentRecord.of(definition, userId));
+        ConsentRecord consentRecord = recordRepository.save(ConsentRecord.of(definition, userId));
 
         // When
-        consentService.withdraw(userId, definition.getId());
+        consentService.withdraw(userId, definition.getConsentCode());
 
         // Then
-        ConsentRecord withdrawnRecord = recordRepository.findById(record.getId()).get();
+        ConsentRecord withdrawnRecord = recordRepository.findById(consentRecord.getId()).get();
         assertThat(withdrawnRecord.getConsentStatus()).isEqualTo(ConsentStatus.WITHDRAW);
         assertThat(withdrawnRecord.getWithdrawalDate()).isNotNull();
     }

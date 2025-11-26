@@ -52,9 +52,9 @@ public class ConsentController {
     @PostMapping("/withdraw")
     public ResponseEntity<BaseResponse<Void>> withdrawConsent(
             @UserId Long userId,
-            @RequestParam(name = "definitionId") Long definitionId
+            @RequestParam(name = "consentCode") String consentCode
     ) {
-        consentService.withdraw(userId, definitionId);
+        consentService.withdraw(userId, consentCode);
         return ApiResponseUtil.success(SuccessCode.OK);
     }
 

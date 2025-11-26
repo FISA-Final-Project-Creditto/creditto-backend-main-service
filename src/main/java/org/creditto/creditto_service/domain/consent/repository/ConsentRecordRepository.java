@@ -51,4 +51,20 @@ public interface ConsentRecordRepository extends JpaRepository<ConsentRecord, Lo
     Optional<ConsentRecord> findFirstByUserIdAndConsentDefinitionIdAndConsentStatusOrderByConsentDateDesc(
             Long userId, Long definitionId, ConsentStatus status
     );
+
+    @Query("SELECT r " +
+            "FROM ConsentRecord r " +
+            "JOIN FETCH r.consentDefinition d " +
+            "WHERE r.userId = :userId " +
+            "AND r.consentStatus = :status " +
+            "AND d.consentCode = :code " +
+            "AND d.consentDefVer " +
+            "= (SELECT MAX(d2.consentDefVer) " +
+                "FROM ConsentDefinition d2 " +
+                "WHERE d2.consentCode = :code)")
+    Optional<ConsentRecord> findFirstByUserIdAndCodeAndStatus (
+            @Param("userId") Long userId,
+            @Param("code") String code,
+            @Param("status") ConsentStatus consentStatus
+    );
 }

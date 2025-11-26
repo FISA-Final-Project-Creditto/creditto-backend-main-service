@@ -36,23 +36,28 @@ public class ConsentService {
 
         ConsentDefinition latestDefinition = getLatestDefinition(consentCode);
 
-        ConsentRecord newRecord = ConsentRecord.of(latestDefinition, userId);
+        ConsentRecord consentRecord = recordRepository
+                .findFirstByUserIdAndConsentDefinitionIdAndConsentStatusOrderByConsentDateDesc(
+                        userId, latestDefinition.getId(), ConsentStatus.AGREE
+                )
+                .orElseGet(() -> {
+                    ConsentRecord newRecord = ConsentRecord.of(latestDefinition, userId);
+                    return recordRepository.save(newRecord);
+                });
 
-        recordRepository.save(newRecord);
-
-        return ConsentRecordRes.from(newRecord);
+        return ConsentRecordRes.from(consentRecord);
     }
 
     /**
      * 사용자의 동의를 철회
      * @param userId 철회할 userId
-     * @param definitionId 철회할 동의서 id
+     * @param consentCode 철회할 동의서 코드
      * @throws CustomBaseException 철회할 동의 기록을 찾을 수 없을 때 발생
      */
     @Transactional
-    public void withdraw(Long userId, Long definitionId) {
-        ConsentRecord findRecord = recordRepository.findFirstByUserIdAndConsentDefinitionIdAndConsentStatusOrderByConsentDateDesc(
-                userId, definitionId, ConsentStatus.AGREE
+    public void withdraw(Long userId, String consentCode) {
+        ConsentRecord findRecord = recordRepository.findFirstByUserIdAndCodeAndStatus(
+                userId, consentCode, ConsentStatus.AGREE
         ).orElseThrow(
                 () -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_RECORD)
         );
