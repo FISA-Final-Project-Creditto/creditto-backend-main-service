@@ -34,26 +34,7 @@ public class RemittanceService {
     // Task 4: 정기송금 신규 등록
     @Transactional
     public void createScheduledRemittance(Long userId, RegularRemittanceCreateDto dto) {
-        // TODO: 인증 서버에 송금인 관련 정보 따로 저장
-
-        RegularRemittanceCreateCoreDto regularRemittanceCreateCoreDto = RegularRemittanceCreateCoreDto.builder()
-                .accountNo(dto.getAccountNo())
-                .sendCurrency(dto.getSendCurrency())
-                .receiveCurrency(dto.getReceiveCurrency())
-                .sendAmount(dto.getSendAmount())
-                .regRemType(dto.getRegRemType())
-                .scheduledDate(dto.getScheduledDate())
-                .scheduledDay(dto.getScheduledDay())
-                .recipientName(dto.getRecipientName())
-                .recipientPhoneCc(dto.getRecipientPhoneCc())
-                .recipientPhoneNo(dto.getRecipientPhoneNo())
-                .recipientAddress(dto.getRecipientAddress())
-                .recipientCountry(dto.getRecipientCountry())
-                .recipientBankName(dto.getRecipientBankName())
-                .recipientBankCode(dto.getRecipientBankCode())
-                .recipientAccountNo(dto.getRecipientAccountNo())
-                .build();
-
+        RegularRemittanceCreateCoreDto regularRemittanceCreateCoreDto = RegularRemittanceCreateCoreDto.from(dto);
         coreBankingFeignClient.createScheduledRemittance(userId, regularRemittanceCreateCoreDto);
     }
 

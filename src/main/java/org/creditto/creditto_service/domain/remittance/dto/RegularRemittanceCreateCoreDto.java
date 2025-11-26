@@ -34,4 +34,24 @@ public class RegularRemittanceCreateCoreDto {
     private String recipientBankName;
     private String recipientBankCode;
     private String recipientAccountNo;
+
+    public static RegularRemittanceCreateCoreDto from(RegularRemittanceCreateDto dto) {
+        return RegularRemittanceCreateCoreDto.builder()
+                .accountNo(dto.getAccountNo())
+                .sendCurrency(dto.getSendCurrency())
+                .receiveCurrency(dto.getReceiveCurrency())
+                .sendAmount(dto.getSendAmount())
+                .regRemType(dto.getRegRemType())
+                .scheduledDate(dto.getScheduledDate())
+                .scheduledDay(dto.getScheduledDay())
+                .recipientName(dto.getRecipientName())
+                .recipientPhoneCc(dto.getRecipientPhoneCc())
+                .recipientPhoneNo(dto.getRecipientPhoneNo())
+                .recipientAddress(dto.getRecipientAddress())
+                .recipientCountry(dto.getRecipientCountry())
+                .recipientBankName(dto.getRecipientBankName())
+                .recipientBankCode(dto.getRecipientBankCode())
+                .recipientAccountNo(dto.getRecipientAccountNo())
+                .build();
+    }
 }

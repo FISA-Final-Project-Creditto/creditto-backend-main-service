@@ -47,30 +47,33 @@ public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/remittance/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     CoreBankingRes<OverseasRemittanceRes> processRemittanceOnce(@PathVariable Long userId, @RequestBody OverseasRemittanceReq request);
 
+    /*
+    REGULAR REMITTANCE
+     */
     // 사용자 정기송금 설정 내역 조회
-    @GetMapping("/api/core/remittance/schedule")
+    @GetMapping(value = "/api/core/remittance/schedule")
     List<RegularRemittanceResponseDto> getScheduledRemittancesByUserId(@RequestParam("userId") Long userId);
 
     // 한 건의 정기 해외 송금 설정 내역 조회
-    @GetMapping("/api/core/remittance/schedule/{regRemId}")
+    @GetMapping(value = "/api/core/remittance/schedule/{regRemId}")
     List<RemittanceHistoryDto> getRemittanceRecordsByRegRemId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
 
     // 단일 송금 내역 상세 조회
-    @GetMapping("/api/core/remittance/schedule/{regRemId}/{remittanceId}")
+    @GetMapping(value = "/api/core/remittance/schedule/{regRemId}/{remittanceId}")
     CoreBankingRes<RemittanceDetailDto> getRemittanceRecordsByRegRemIdAndRemittanceId(
             @PathVariable("regRemId") Long regRemId,
             @PathVariable("remittanceId") Long remittanceId,
             @RequestParam("userId") Long userId);
 
     // 정기송금 신규 등록
-    @PostMapping("/api/core/remittance/schedule/add")
+    @PostMapping(value = "/api/core/remittance/schedule/add")
     void createScheduledRemittance(
             @RequestParam("userId") Long userId,
             @RequestBody RegularRemittanceCreateCoreDto dto
     );
 
     // 정기 해외 송금 내역 수정
-    @PutMapping("/api/core/remittance/schedule/{regRemId}")
+    @PutMapping(value = "/api/core/remittance/schedule/{regRemId}")
     void updateScheduledRemittance(
             @PathVariable("regRemId") Long regRemId,
             @RequestParam("userId") Long userId,
@@ -78,7 +81,7 @@ public interface CoreBankingFeignClient {
     );
 
     // 정기 해외 송금 설정 삭제
-    @DeleteMapping("/api/core/remittance/schedule/{regRemId}")
+    @DeleteMapping(value = "/api/core/remittance/schedule/{regRemId}")
     void cancelScheduledRemittance(
             @PathVariable("regRemId") Long regRemId,
             @RequestParam("userId") Long userId
