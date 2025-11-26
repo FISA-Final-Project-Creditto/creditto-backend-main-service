@@ -104,7 +104,7 @@ public class RemittanceController {
      * @param recurId 삭제할 정기 해외 송금 설정의 ID
      * @return 성공 응답
      */
-    @DeleteMapping("/scheduled/{recurId}")
+    @DeleteMapping("/{regRemId}")
     public ResponseEntity<BaseResponse<Void>> cancelScheduledRemittance (
             @UserId Long userId,
             @PathVariable Long regRemId
