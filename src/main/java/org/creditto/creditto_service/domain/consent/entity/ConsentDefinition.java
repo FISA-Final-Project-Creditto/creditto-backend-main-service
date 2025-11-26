@@ -32,6 +32,7 @@ public class ConsentDefinition extends BaseEntity {
     private Integer consentDefVer; // 동의서 버전
 
     private LocalDateTime validFrom; // 유효 시작일
+
     private LocalDateTime validTo; // 유효 종료일
 
     public static ConsentDefinition of(String consentCode, String consentTitle, String consentDesc, ConsentCategory consentCategory, Integer consentDefVer, LocalDateTime validFrom, LocalDateTime validTo) {

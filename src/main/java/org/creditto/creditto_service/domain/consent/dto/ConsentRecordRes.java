@@ -13,8 +13,7 @@ public record ConsentRecordRes(
         ConsentStatus consentStatus,
         LocalDateTime consentDate,
         LocalDateTime withdrawalDate,
-        String ipAddress,
-        String clientId
+        Long userId
 ) {
 
     public static ConsentRecordRes from(ConsentRecord r) {
@@ -26,8 +25,7 @@ public record ConsentRecordRes(
                 r.getConsentStatus(),
                 r.getConsentDate(),
                 r.getWithdrawalDate(),
-                r.getIpAddress(),
-                r.getClientId()
+                r.getUserId()
         );
     }
 }

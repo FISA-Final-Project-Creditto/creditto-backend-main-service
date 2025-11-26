@@ -27,21 +27,19 @@ public class ConsentRecord extends BaseEntity {
     private Integer consentRecVer; // 사용자가 동의한 동의서 버전
 
     private LocalDateTime consentDate; // 동의 시점
+
     private LocalDateTime withdrawalDate; // 철회 시점
 
-    private String ipAddress;
+    private Long userId;
 
-    private String clientId; // 외부 클라이언트 ID
-
-    public static ConsentRecord of(ConsentDefinition consentDefinition, String ipAddress, String clientId) {
+    public static ConsentRecord of(ConsentDefinition consentDefinition, Long userId) {
         return ConsentRecord.builder()
                 .consentDefinition(consentDefinition)
                 .consentStatus(ConsentStatus.AGREE)
                 .consentRecVer(consentDefinition.getConsentDefVer())
                 .consentDate(LocalDateTime.now())
                 .withdrawalDate(null)
-                .ipAddress(ipAddress)
-                .clientId(clientId)
+                .userId(userId)
                 .build();
     }
 
