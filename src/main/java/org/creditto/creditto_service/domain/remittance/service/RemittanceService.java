@@ -1,12 +1,14 @@
 package org.creditto.creditto_service.domain.remittance.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -58,8 +60,8 @@ public class RemittanceService {
 
     // Task 5: 정기 해외 송금 내역 수정
     @Transactional
-    public void updateScheduledRemittance(String userId, Long recurId, RegularRemittanceResponseDto regularRemittanceResponseDto) {
-        coreBankingFeignClient.updateScheduledRemittance(recurId, userId, regularRemittanceResponseDto);
+    public void updateScheduledRemittance(Long userId, Long regRemId, RegularRemittanceUpdateDto dto) {
+        coreBankingFeignClient.updateScheduledRemittance(regRemId, userId, dto);
     }
 
     // 정기 해외 송금 설정 삭제
