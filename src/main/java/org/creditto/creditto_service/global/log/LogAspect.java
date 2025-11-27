@@ -12,7 +12,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.creditto.creditto_service.global.response.BaseResponse;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -110,7 +109,7 @@ public class LogAspect {
         log.info("[{}] {}() called", className, methodName);
 
         if (args.length > 0) {
-            log.debug("[{}] Parameters: {}", className, Arrays.toString(args));
+            log.debug("[{}] Parameters: {}", className, toJsonString(args));
         }
     }
 
@@ -139,6 +138,7 @@ public class LogAspect {
         try {
             return objectMapper.writeValueAsString(value);
         } catch (JsonProcessingException e) {
+            log.warn("[JsonProcessingException] JSON 직렬화 실패");
             return String.valueOf(value);
         }
     }
