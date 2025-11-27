@@ -23,17 +23,17 @@ public interface CoreBankingFeignClient {
     @PostMapping(value = "/api/core/account/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     CoreBankingRes<AccountRes> createAccount(@PathVariable Long userId, @RequestBody CreateAccountReq request);
 
-    @GetMapping(value = "/api/core/account/{accountId}/account")
+    @GetMapping(value = "/api/core/account/{accountId}")
     CoreBankingRes<AccountRes> getAccountByAccountId(@PathVariable Long accountId);
 
     @GetMapping(value = "/api/core/account/{accountId}/balance")
     CoreBankingRes<BigDecimal> getAccountBalanceByAccountId(@PathVariable Long accountId);
 
-    @GetMapping(value = "/api/core/account/{accountNo}")
-    CoreBankingRes<AccountRes> getAccountByAccountNo(@PathVariable String accountNo);
+    @GetMapping(value = "/api/core/account")
+    CoreBankingRes<AccountRes> getAccountByAccountNo(@RequestParam(name = "accountNo") String accountNo);
 
-    @GetMapping(value = "/api/core/account/client/{userId}")
-    CoreBankingRes<List<AccountRes>> getAccountsByUserId(@PathVariable Long userId);
+    @GetMapping(value = "/api/core/account")
+    CoreBankingRes<List<AccountRes>> getAccountsByUserId(@RequestParam(name = "userId") Long userId);
 
     /*
     TRANSACTION
