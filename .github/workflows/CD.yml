@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   CI:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
 
     steps:
       - name: 체크아웃
@@ -83,7 +83,7 @@ jobs:
 
   CD:
     needs: CI
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
 
     steps:
       - name: .env 파일 전달
