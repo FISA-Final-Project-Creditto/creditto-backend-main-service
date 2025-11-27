@@ -11,7 +11,6 @@ public record OverseasRemittanceReq(
         Long recurId,
         LocalDate startDate,
         CurrencyCode sendCurrency,
-        CurrencyCode receiveCurrency,
         BigDecimal targetAmount
 ) {
 }
