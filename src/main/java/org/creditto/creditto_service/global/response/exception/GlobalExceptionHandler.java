@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -75,6 +77,32 @@ public class GlobalExceptionHandler {
                 : ErrorBaseCode.INTERNAL_SERVER_ERROR.getMessage();
         return ResponseEntity.status(e.getHttpStatus())
                 .body(BaseResponse.of(code, message));
+    }
+
+    /**
+     * 400 - MethodArgumentNotValidException
+     * 예외내용 : Argument 유효성 오류
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<BaseResponse<Void>> handlerMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        logWarn(e);
+        String errorMessage = e.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+        if (errorMessage.isBlank()) {
+            errorMessage = ErrorBaseCode.INVALID_REQUEST_BODY.getMessage();
+        }
+        return ApiResponseUtil.failure(ErrorBaseCode.INVALID_REQUEST_BODY, errorMessage);
+    }
+
+    /**
+     * 400 - UnsatisfiedServletRequestParameterException
+     * 예외 내용 : 필수 파라미터 누락
+     */
+    @ExceptionHandler(UnsatisfiedServletRequestParameterException.class)
+    public ResponseEntity<BaseResponse<Void>> handleUnsatisfiedServletRequestParameterException(final UnsatisfiedServletRequestParameterException e) {
+        logWarn(e);
+        return ApiResponseUtil.failure(ErrorBaseCode.MISSING_PARAM, e.getMessage());
     }
 
     /**
