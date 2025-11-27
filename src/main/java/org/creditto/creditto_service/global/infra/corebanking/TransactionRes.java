@@ -3,11 +3,13 @@ package org.creditto.creditto_service.global.infra.corebanking;
 import org.creditto.creditto_service.domain.transaction.enums.TxnType;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public record TransactionRes(
         Long accountId,
         BigDecimal txnAmount,
         TxnType txnType,
-        Long typeId
+        Long typeId,
+        LocalDateTime txnTime
 ) {
 }
