@@ -21,6 +21,10 @@ public class OverseasRemittanceService {
     public OverseasRemittanceRes processRemittanceOnce(Long userId, OverseasRemittanceReq request) {
         AccountRes account = coreBankingFeignClient.getAccountByAccountNo(request.accountNo()).data();
 
+        if (account == null) {
+            throw new CustomBaseException(ErrorBaseCode.NOT_FOUND_ACCOUNT);
+        }
+
         if (!account.userId().equals(userId)) {
             throw new CustomBaseException(ErrorBaseCode.FORBIDDEN);
         }
