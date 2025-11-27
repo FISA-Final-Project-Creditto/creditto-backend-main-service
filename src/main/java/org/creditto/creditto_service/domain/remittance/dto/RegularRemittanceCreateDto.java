@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 
 @Data
 @NoArgsConstructor
@@ -29,9 +31,9 @@ public class RegularRemittanceCreateDto {
     @Pattern(regexp = "MONTHLY|WEEKLY", message = "주기는 MONTHLY 또는 WEEKLY여야 합니다.")
     private String regRemType;      // 매월/매주
 
-    private Integer scheduledDate;  // 매월 - 날짜
+    @Nullable private Integer scheduledDate;  // 매월 - 날짜
 
-    private String scheduledDay;    // 매주 - 요일
+    @Nullable private DayOfWeek scheduledDay;    // 매주 - 요일
 
     // 송금인 이름, 국적, 주소 저장은 인증서버에
     @NotBlank

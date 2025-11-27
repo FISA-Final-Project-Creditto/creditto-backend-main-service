@@ -52,11 +52,11 @@ public interface CoreBankingFeignClient {
      */
     // 사용자 정기송금 설정 내역 조회
     @GetMapping(value = "/api/core/remittance/schedule")
-    List<RegularRemittanceResponseDto> getScheduledRemittancesByUserId(@RequestParam("userId") Long userId);
+    CoreBankingRes<List<RegularRemittanceResponseDto>> getScheduledRemittancesByUserId(@RequestParam("userId") Long userId);
 
     // 한 건의 정기 해외 송금 설정 내역 조회
     @GetMapping(value = "/api/core/remittance/schedule/{regRemId}")
-    List<RemittanceHistoryDto> getRemittanceRecordsByRegRemId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
+    CoreBankingRes<List<RemittanceHistoryDto>> getRemittanceRecordsByRegRemId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
 
     // 단일 송금 내역 상세 조회
     @GetMapping(value = "/api/core/remittance/schedule/{regRemId}/{remittanceId}")

@@ -39,7 +39,8 @@ class RemittanceServiceTest {
         Long userId = 1L;
         RegularRemittanceResponseDto mockDto = RegularRemittanceResponseDto.builder().build();
         List<RegularRemittanceResponseDto> expectedResponse = Collections.singletonList(mockDto);
-        given(coreBankingFeignClient.getScheduledRemittancesByUserId(userId)).willReturn(expectedResponse);
+        CoreBankingRes<List<RegularRemittanceResponseDto>> response = new CoreBankingRes<>(200, "success", expectedResponse);
+        given(coreBankingFeignClient.getScheduledRemittancesByUserId(userId)).willReturn(response);
 
         // when
         List<RegularRemittanceResponseDto> result = remittanceService.getScheduledRemittanceList(userId);
@@ -75,7 +76,8 @@ class RemittanceServiceTest {
                 .build();
 
         List<RemittanceHistoryDto> expectedResponse = List.of(history1, history2, history3);
-        given(coreBankingFeignClient.getRemittanceRecordsByRegRemId(regRemId, userId)).willReturn(expectedResponse);
+        CoreBankingRes<List<RemittanceHistoryDto>> response = new CoreBankingRes<>(200, "success", expectedResponse);
+        given(coreBankingFeignClient.getRemittanceRecordsByRegRemId(regRemId, userId)).willReturn(response);
 
         // when
         List<RemittanceHistoryDto> result = remittanceService.getScheduledRemittanceHistory(userId, regRemId);
