@@ -34,7 +34,7 @@ jobs:
       - name: build 실행
         run: |
           chmod +x gradlew
-          ./gradlew clean build
+          ./gradlew build --no-daemon
         shell: bash
 
       - name: sonarqube
