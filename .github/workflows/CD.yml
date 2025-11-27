@@ -123,4 +123,5 @@ jobs:
         if: always()
         run: |
           rm -rf build
+          docker system prune -af --volumes
         shell: bash
