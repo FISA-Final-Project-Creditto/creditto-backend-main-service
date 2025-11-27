@@ -1,5 +1,7 @@
 package org.creditto.creditto_service.domain.overseasRemittance.dto;
 
+import org.creditto.creditto_service.global.common.CurrencyCode;
+
 public record RecipientInfoReq(
         String name,
         String accountNo,
@@ -7,6 +9,6 @@ public record RecipientInfoReq(
         String bankCode,
         String phoneCc,
         String phoneNo,
-        String country
-) {
-}
+        String country,
+        CurrencyCode receiveCurrency
+) { }

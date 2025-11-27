@@ -22,13 +22,7 @@ public class OverseasRemittanceService {
         AccountRes account = coreBankingFeignClient.getAccountByAccountNo(request.accountNo()).data();
 
         if (!account.userId().equals(userId)) {
-            // TODO: 접근 권한 예외로 변경
-            throw new CustomBaseException(ErrorBaseCode.NOT_FOUND_ACCOUNT);
-        }
-
-        if (!account.accountNo().equals(request.accountNo())) {
-            // TODO: 잘못된 요청 관련 예외로 변경
-            throw new CustomBaseException(ErrorBaseCode.NOT_FOUND_ACCOUNT);
+            throw new CustomBaseException(ErrorBaseCode.FORBIDDEN);
         }
 
         return coreBankingFeignClient.processRemittanceOnce(userId, request).data();
