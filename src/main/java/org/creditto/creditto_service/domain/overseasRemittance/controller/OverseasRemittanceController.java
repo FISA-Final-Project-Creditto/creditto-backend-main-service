@@ -1,5 +1,6 @@
 package org.creditto.creditto_service.domain.overseasRemittance.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
 import org.creditto.creditto_service.domain.overseasRemittance.service.OverseasRemittanceService;
@@ -22,7 +23,7 @@ public class OverseasRemittanceController {
     @PostMapping("/once")
     public ResponseEntity<BaseResponse<OverseasRemittanceRes>> remittanceOnce(
             @UserId Long userId,
-            @RequestBody OverseasRemittanceReq request
+            @Valid @RequestBody OverseasRemittanceReq request
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.processRemittanceOnce(userId, request));
     }
