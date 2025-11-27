@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.creditto.creditto_service.global.response.BaseResponse;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -50,13 +51,16 @@ public class LogAspect {
                 request.getMethod()
         );
 
-        Object[] args = Arrays.stream(joinPoint.getArgs())
-                .filter(arg -> !(arg instanceof HttpServletRequest))
-                .filter(arg -> !(arg instanceof jakarta.servlet.http.HttpServletResponse))
-                .filter(arg -> !(arg instanceof org.springframework.validation.BindingResult))
-                .toArray();
+        Object[] originalArgs = joinPoint.getArgs();
+        Object[] args = originalArgs == null
+                ? new Object[0]
+                : Arrays.stream(originalArgs)
+                        .filter(arg -> !(arg instanceof HttpServletRequest))
+                        .filter(arg -> !(arg instanceof jakarta.servlet.http.HttpServletResponse))
+                        .filter(arg -> !(arg instanceof org.springframework.validation.BindingResult))
+                        .toArray();
 
-        String argsAsString = toJsonString(args);
+        String argsAsString = toJsonString(args.length == 0 ? null : args);
 
         // Request Body (DTO) 로깅
         if (args.length > 0) {
