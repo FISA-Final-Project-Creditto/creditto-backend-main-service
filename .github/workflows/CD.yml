@@ -1,7 +1,6 @@
 name: CD-Dev
 
 on:
-  pull_request:
   push:
     branches: ["main"]
 
