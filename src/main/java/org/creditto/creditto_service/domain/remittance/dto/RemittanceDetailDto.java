@@ -3,12 +3,14 @@ package org.creditto.creditto_service.domain.remittance.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 public class RemittanceDetailDto {
@@ -19,9 +21,8 @@ public class RemittanceDetailDto {
     private DayOfWeek scheduledDay;
     private String startedAt;
 
-    // 인증 서버에서
-//    private String clientName;
-//    private String clientCountry;
+    private String clientName;
+    private String clientCountry;
     private String sendCurrency;
 
     private String recipientCountry;
