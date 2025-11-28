@@ -54,13 +54,17 @@ public interface CoreBankingFeignClient {
     @GetMapping(value = "/api/core/remittance/schedule")
     CoreBankingRes<List<RegularRemittanceResponseDto>> getScheduledRemittancesByUserId(@RequestParam("userId") Long userId);
 
+    // 특정 정기송금의 세부사항 조회
+    @GetMapping(value= "/api/core/remittance/schedule/{regRemId}")
+    CoreBankingRes<RemittanceDetailDto> getScheduledRemittanceDetail(@RequestParam("userId") Long userId, @PathVariable("regRemId") Long regRemId);
+
     // 한 건의 정기 해외 송금 설정 내역 조회
-    @GetMapping(value = "/api/core/remittance/schedule/{regRemId}")
+    @GetMapping(value = "/api/core/remittance/schedule/history/{regRemId}")
     CoreBankingRes<List<RemittanceHistoryDto>> getRemittanceRecordsByRegRemId(@PathVariable("regRemId") Long regRemId, @RequestParam("userId") Long userId);
 
     // 단일 송금 내역 상세 조회
-    @GetMapping(value = "/api/core/remittance/schedule/{regRemId}/{remittanceId}")
-    CoreBankingRes<RemittanceDetailDto> getRemittanceRecordsByRegRemIdAndRemittanceId(
+    @GetMapping(value = "/api/core/remittance/schedule/history/{regRemId}/{remittanceId}")
+    CoreBankingRes<RemittanceHistoryDetailDto> getRemittanceRecordsByRegRemIdAndRemittanceId(
             @PathVariable("regRemId") Long regRemId,
             @PathVariable("remittanceId") Long remittanceId,
             @RequestParam("userId") Long userId);

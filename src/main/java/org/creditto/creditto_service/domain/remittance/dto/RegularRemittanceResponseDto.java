@@ -23,7 +23,9 @@ public class RegularRemittanceResponseDto {
     private String receivedCurrency;
     private String regRemStatus;
 
-    private String regRemType;            // 매월/매주
-    private Integer scheduledDate;        // 매월 송금
-    private String scheduledDay;   // 매주 송금
+    private String regRemType;          // 매월/매주
+    private Integer scheduledDate;      // 매월 송금
+    private String scheduledDay;        // 매주 송금
+
+    private String startedAt;           // 송금 시작일
 }

@@ -96,12 +96,12 @@ class RemittanceServiceTest {
         Long userId = 1L;
         Long regRemId = 10L;
         Long remittanceId = 201L;
-        RemittanceDetailDto mockDto = RemittanceDetailDto.builder().build();
-        CoreBankingRes<RemittanceDetailDto> coreBankingResponse = new CoreBankingRes<>(200, "Success", mockDto);
+        RemittanceHistoryDetailDto mockDto = RemittanceHistoryDetailDto.builder().build();
+        CoreBankingRes<RemittanceHistoryDetailDto> coreBankingResponse = new CoreBankingRes<>(200, "Success", mockDto);
         given(coreBankingFeignClient.getRemittanceRecordsByRegRemIdAndRemittanceId(regRemId,remittanceId, userId)).willReturn(coreBankingResponse);
 
         // when
-        RemittanceDetailDto result = remittanceService.getScheduledRemittanceHistoryDetail(userId, regRemId, remittanceId);
+        RemittanceHistoryDetailDto result = remittanceService.getScheduledRemittanceHistoryDetail(userId, regRemId, remittanceId);
 
         // then
         assertNotNull(result);

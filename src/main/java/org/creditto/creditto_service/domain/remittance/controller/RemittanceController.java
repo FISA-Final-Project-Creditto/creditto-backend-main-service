@@ -33,6 +33,21 @@ public class RemittanceController {
         return ApiResponseUtil.success(SuccessCode.OK, remittanceService.getScheduledRemittanceList(userId));
     }
 
+    /**
+     * 특정 정기송금의 세부사항을 조회합니다.
+     *
+     * @param userId 사용자 ID
+     * @param regRemId 정기송금 ID
+     * @return 해당 정기송금 설정의 세부 사항 목록
+     */
+    @GetMapping("/{regRemId}")
+    public ResponseEntity<BaseResponse<RemittanceDetailDto>> getScheduledRemittanceDetail(
+            @UserId Long userId,
+            @PathVariable Long regRemId
+    ) {
+        return ApiResponseUtil.success(SuccessCode.OK, remittanceService.getScheduledRemittanceDetail(userId, regRemId));
+    }
+
     /*
      * 하나의 정기송금 설정에 대한 송금 기록 조회
      *
@@ -40,7 +55,7 @@ public class RemittanceController {
      * @param regRemId 조회할 정기 송금 설정의 ID
      * @return 해당 정기 송금 설정의 송금 내역 리스트 ({@link RemittanceHistoryDto})
      */
-    @GetMapping("/{regRemId}")
+    @GetMapping("/history/{regRemId}")
     public ResponseEntity<BaseResponse<List<RemittanceHistoryDto>>> getScheduledRemittanceHistory (
             @UserId Long userId,
             @PathVariable Long regRemId
@@ -56,8 +71,8 @@ public class RemittanceController {
      * @param remittanceId 선택한 정기 송금
      * @return 해당 정기 송금 설정의 송금 내역 상세 ({@link RemittanceDetailDto})
      */
-    @GetMapping("/{regRemId}/{remittanceId}")
-    public ResponseEntity<BaseResponse<RemittanceDetailDto>> getScheduledRemittanceHistoryDetail (
+    @GetMapping("/history/{regRemId}/{remittanceId}")
+    public ResponseEntity<BaseResponse<RemittanceHistoryDetailDto>> getScheduledRemittanceHistoryDetail (
             @UserId Long userId,
             @PathVariable Long regRemId,
             @PathVariable Long remittanceId
