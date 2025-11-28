@@ -22,7 +22,7 @@
             <!-- 총 보관 용량 한도 -->
             <totalSizeCap>0.5GB</totalSizeCap>
             <!-- 보관 일수 -->
-            <maxHistory>2</maxHistory>
+            <maxHistory>3</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
