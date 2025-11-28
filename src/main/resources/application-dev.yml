@@ -1,0 +1,10 @@
+logging:
+  config: classpath:logback-dev.xml
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_URL}/api/v2/spans
