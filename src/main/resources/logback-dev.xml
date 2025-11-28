@@ -1,7 +1,7 @@
 <configuration>
     <property name="LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - [traceId=%X{traceId}, spanId=%X{spanId}] %msg%n"/>
-    <property name="ACTIVE_LOG" value="/var/log/application.log"/>
+    <property name="ACTIVE_LOG" value="/home/ubuntu/log/application.log"/>
 
     <!-- 콘솔 출력 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -17,7 +17,7 @@
         <!-- 날짜+용량 기준 롤링 권장 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 아카이브 파일 경로 -->
-            <fileNamePattern>/var/log/application.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>/home/ubuntu/log/application.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <!-- 총 보관 용량 한도 -->
             <totalSizeCap>512MB</totalSizeCap>
