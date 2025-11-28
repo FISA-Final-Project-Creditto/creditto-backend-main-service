@@ -38,7 +38,7 @@ public class RemittanceController {
      *
      * @param userId 사용자 ID
      * @param regRemId 정기송금 ID
-     * @return 해당 정기송금 설정의 세부 사항 목록
+     * @return 해당 정기송금 설정의 세부 사항
      */
     @GetMapping("/{regRemId}")
     public ResponseEntity<BaseResponse<RemittanceDetailDto>> getScheduledRemittanceDetail(
@@ -69,7 +69,7 @@ public class RemittanceController {
      * @param userId 정기 송금 내역을 조회할 고객의 ID
      * @param regRemId 조회할 정기 송금 설정의 ID
      * @param remittanceId 선택한 정기 송금
-     * @return 해당 정기 송금 설정의 송금 내역 상세 ({@link RemittanceDetailDto})
+     * @return 해당 정기 송금 설정의 송금 내역 상세 ({@link RemittanceHistoryDetailDto})
      */
     @GetMapping("/history/{regRemId}/{remittanceId}")
     public ResponseEntity<BaseResponse<RemittanceHistoryDetailDto>> getScheduledRemittanceHistoryDetail (

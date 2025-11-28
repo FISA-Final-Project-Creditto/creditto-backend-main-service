@@ -27,9 +27,7 @@ public class RemittanceService {
     public RemittanceDetailDto getScheduledRemittanceDetail(Long userId, Long regRemId) {
         RemittanceDetailDto remittanceDetailDto = coreBankingFeignClient.getScheduledRemittanceDetail(userId, regRemId).data();
         ClientRes clientRes = authFeignClient.getUserInformation(userId).data();
-        remittanceDetailDto.setClientName(clientRes.name());
-        remittanceDetailDto.setClientCountry(clientRes.countryCode());
-        return remittanceDetailDto;
+        return RemittanceDetailDto.of(remittanceDetailDto, clientRes);
     }
 
     // Task 2: 하나의 정기송금 설정에 대한 송금 기록 조회
