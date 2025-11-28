@@ -20,7 +20,7 @@
             <fileNamePattern>/var/log/application.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <!-- 총 보관 용량 한도 -->
-            <totalSizeCap>0.5GB</totalSizeCap>
+            <totalSizeCap>512MB</totalSizeCap>
             <!-- 보관 일수 -->
             <maxHistory>3</maxHistory>
         </rollingPolicy>
