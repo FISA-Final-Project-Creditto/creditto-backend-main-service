@@ -5,14 +5,14 @@ import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignCl
 import org.creditto.creditto_service.global.infra.corebanking.ExchangeRes;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ExchangeService {
 
     private final CoreBankingFeignClient coreBankingFeignClient;
-
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
     public ExchangeRes getExchangeRateByCurrency(String currencyCode) {
         return Optional.ofNullable(coreBankingFeignClient.getExchangeRateByCurrency(currencyCode).data())
