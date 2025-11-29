@@ -10,8 +10,6 @@ spring:
 
 logging:
   config: classpath:logback-dev.xml
-  level:
-    root: info
 
 management:
   tracing:
