@@ -27,4 +27,7 @@ public interface CreditRatingFeignClient {
 
     @PostMapping(value = "/api/server/credit-score/prediction", consumes = MediaType.APPLICATION_JSON_VALUE)
     CreditScorePredictRes predictCreditScore(@RequestBody CreditScorePredictReq request);
+
+    @GetMapping(value = "/api/server/credit-score/report/{userId}")
+    CreditScoreReportRes  getCreditScoreReport(@PathVariable("userId") Long userId);
 }
