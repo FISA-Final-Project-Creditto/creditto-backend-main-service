@@ -80,6 +80,21 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * CreditRating OpenFeign 호출 실패 시 반환
+     * CreditRating 서버의 응답을 그대로 전달하여 클라이언트가 동일한 응답 포맷을 받을 수 있도록 처리
+     */
+    @ExceptionHandler(CreditRatingFeignException.class)
+    public ResponseEntity<BaseResponse<Void>> handleCreditRatingFeignException(final CreditRatingFeignException e) {
+        logWarn(e);
+        int code = e.getCode() != null ? e.getCode() : ErrorBaseCode.INTERNAL_SERVER_ERROR.getCode();
+        String message = StringUtils.hasText(e.getMessage())
+                ? e.getMessage()
+                : ErrorBaseCode.INTERNAL_SERVER_ERROR.getMessage();
+        return ResponseEntity.status(e.getHttpStatus())
+                .body(BaseResponse.of(code, message));
+    }
+
+    /**
      * 400 - MethodArgumentNotValidException
      * 예외내용 : Argument 유효성 오류
      */

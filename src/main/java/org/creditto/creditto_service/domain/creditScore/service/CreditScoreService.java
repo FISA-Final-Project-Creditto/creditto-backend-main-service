@@ -30,6 +30,6 @@ public class CreditScoreService {
     }
 
     public CreditScorePredictRes predictCreditScore(CreditScorePredictReq creditScorePredictReq) {
-        return creditRatingFeignClient.getPredictCreditScore(creditScorePredictReq);
+        return creditRatingFeignClient.predictCreditScore(creditScorePredictReq);
     }
 }

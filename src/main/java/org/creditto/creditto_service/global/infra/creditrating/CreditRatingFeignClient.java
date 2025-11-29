@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
         name = "credit-rating",
-        url = "${CREDIT_RATING_SERVER_URL}"
+        url = "${CREDIT_RATING_SERVER_URL}",
+        configuration = CreditRatingFeignConfig.class
 )
 public interface CreditRatingFeignClient {
 
@@ -25,5 +26,5 @@ public interface CreditRatingFeignClient {
     CreditScoreHistoryRes getCreditScoreHistory(@PathVariable("userId") Long userId);
 
     @PostMapping(value = "/api/server/credit-score/prediction", consumes = MediaType.APPLICATION_JSON_VALUE)
-    CreditScorePredictRes getPredictCreditScore(@RequestBody CreditScorePredictReq request);
+    CreditScorePredictRes predictCreditScore(@RequestBody CreditScorePredictReq request);
 }
