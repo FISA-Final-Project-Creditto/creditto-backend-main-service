@@ -29,10 +29,10 @@ public class ConsentService {
     /**
      * 사용자의 동의를 기록
      * @param userId 동의한 userId
-     * @return ConsentRecordRes 생성된 동의 기록 정보
+     * @param req 동의 요청 정보
      */
     @Transactional
-    public ConsentRecordRes agree(Long userId, org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq req) {
+    public ConsentRecordRes agree(Long userId, ConsentAgreeReq req) {
 
         ConsentDefinition definition = definitionRepository.findById(req.definitionId())
                 .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_DEFINITION));
