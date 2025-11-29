@@ -11,7 +11,11 @@ public class ExchangeService {
 
     private final CoreBankingFeignClient coreBankingFeignClient;
 
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
     public ExchangeRes getExchangeRateByCurrency(String currencyCode) {
-        return coreBankingFeignClient.getExchangeRateByCurrency(currencyCode).data();
+        return Optional.ofNullable(coreBankingFeignClient.getExchangeRateByCurrency(currencyCode).data())
+                .orElseThrow(() -> new NoSuchElementException("환율 정보를 찾을 수 없습니다: " + currencyCode));
     }
 }
