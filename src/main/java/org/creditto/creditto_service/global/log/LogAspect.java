@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.creditto.creditto_service.global.response.BaseResponse;
+import org.creditto.creditto_service.global.util.MaskingUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -60,6 +61,7 @@ public class LogAspect {
                         .toArray();
 
         String argsAsString = toJsonString(args.length == 0 ? null : args);
+        argsAsString = MaskingUtil.maskSensitiveData(argsAsString);
 
         // Request Body (DTO) 로깅
         if (args.length > 0) {
@@ -89,6 +91,7 @@ public class LogAspect {
         }
 
         String dataAsString = toJsonString(dataForLog);
+        dataAsString = MaskingUtil.maskSensitiveData(dataAsString);
 
         log.info("[{}] {} {} - ResponseData: {}",
                 className,
@@ -106,10 +109,12 @@ public class LogAspect {
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
 
-        log.info("[{}] {}() called", className, methodName);
+        log.info("[{}] method = {}()", className, methodName);
+
+        String sensitiveData = MaskingUtil.maskSensitiveData(toJsonString(args));
 
         if (args.length > 0) {
-            log.debug("[{}] Parameters: {}", className, toJsonString(args));
+            log.debug("[{}] Parameters: {}", className, sensitiveData);
         }
     }
 
@@ -117,15 +122,17 @@ public class LogAspect {
     public Object logFeignRequestAndResponse(ProceedingJoinPoint joinPoint) throws Throwable {
         String methodSignature = joinPoint.getSignature().toShortString();
         String argsJson = toJsonString(joinPoint.getArgs());
+        argsJson = MaskingUtil.maskSensitiveData(argsJson);
 
-        log.info("[Feign] Request -> {} | args={}", methodSignature, argsJson);
+        log.info("[OpenFeign] Request -> {} | args={}", methodSignature, argsJson);
 
         try {
             Object response = joinPoint.proceed();
-            log.info("[Feign] Response <- {} | body={}", methodSignature, toJsonString(response));
+            String responseAsString = MaskingUtil.maskSensitiveData(toJsonString(response));
+            log.info("[OpenFeign] Response <- {} | body={}", methodSignature, responseAsString);
             return response;
         } catch (Exception ex) {
-            log.warn("[Feign] Error <- {} | message={}", methodSignature, ex.getMessage());
+            log.warn("[OpenFeign] Error <- {} | message={}", methodSignature, ex.getMessage());
             throw ex;
         }
     }
