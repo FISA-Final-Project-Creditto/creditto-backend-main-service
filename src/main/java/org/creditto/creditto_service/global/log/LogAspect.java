@@ -111,9 +111,8 @@ public class LogAspect {
 
         log.info("[{}] method = {}()", className, methodName);
 
-        String sensitiveData = MaskingUtil.maskSensitiveData(toJsonString(args));
-
-        if (args.length > 0) {
+        if (args.length > 0 && log.isDebugEnabled()) {
+            String sensitiveData = MaskingUtil.maskSensitiveData(toJsonString(args));
             log.debug("[{}] Parameters: {}", className, sensitiveData);
         }
     }
