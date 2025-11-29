@@ -93,4 +93,18 @@ public interface CoreBankingFeignClient {
             @PathVariable("regRemId") Long regRemId,
             @RequestParam("userId") Long userId
     );
+
+    /*
+    EXCHANGE
+     */
+    /**
+     * 특정 통화에 대한 환율 정보를 조회합니다.
+     *
+     * @param currency 조회할 통화 코드 (e.g., "USD")
+     * @return 환율 정보가 담긴 응답 객체
+     */
+    @GetMapping(value = "/api/core/exchange/{currency}")
+    CoreBankingRes<ExchangeRes> getExchangeRateByCurrency(
+            @PathVariable("currency") String currency
+    );
 }
