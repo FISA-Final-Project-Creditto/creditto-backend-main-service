@@ -75,4 +75,10 @@ public class AccountController {
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, transactionService.getTransactionByAccountId(accountId));
     }
+
+    // 사용자 전체 계좌 합산 잔액 조회
+    @GetMapping("/balance/all")
+    public ResponseEntity<BaseResponse<BigDecimal>> getTotalBalanceByUserId(@UserId Long userId) {
+        return ApiResponseUtil.success(SuccessCode.OK, accountService.getTotalBalanceByUserId(userId));
+    }
 }

@@ -35,6 +35,9 @@ public interface CoreBankingFeignClient {
     @GetMapping(value = "/api/core/account", params = "userId")
     CoreBankingRes<List<AccountRes>> getAccountsByUserId(@RequestParam("userId") Long userId);
 
+    @GetMapping(value = "/api/core/account/balance/all/{userId}")
+    CoreBankingRes<BigDecimal> getTotalBalanceByUserId(@PathVariable Long userId);
+
     /*
     TRANSACTION
      */
