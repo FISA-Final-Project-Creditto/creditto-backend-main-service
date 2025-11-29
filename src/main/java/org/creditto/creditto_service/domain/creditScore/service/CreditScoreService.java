@@ -3,10 +3,7 @@ package org.creditto.creditto_service.domain.creditScore.service;
 import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
-import org.creditto.creditto_service.global.infra.creditrating.CreditRatingFeignClient;
-import org.creditto.creditto_service.global.infra.creditrating.CreditScoreHistoryRes;
-import org.creditto.creditto_service.global.infra.creditrating.CreditScorePredictRes;
-import org.creditto.creditto_service.global.infra.creditrating.CreditScoreRes;
+import org.creditto.creditto_service.global.infra.creditrating.*;
 import org.springframework.stereotype.Service;
 
 @Service
