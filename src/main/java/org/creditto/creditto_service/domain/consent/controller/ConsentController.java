@@ -1,6 +1,7 @@
 package org.creditto.creditto_service.domain.consent.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq;
 import org.creditto.creditto_service.domain.consent.dto.ConsentDefinitionRes;
 import org.creditto.creditto_service.domain.consent.dto.ConsentRecordRes;
 import org.creditto.creditto_service.domain.consent.service.ConsentService;
@@ -36,14 +37,26 @@ public class ConsentController {
     }
 
     /**
+     * 특정 ID의 동의서 정의를 조회
+     *
+     * @param definitionId 조회할 동의서의 ID
+     * @return 특정 동의서의 정보를 포함하는 응답 엔티티
+     */
+    @GetMapping("/definitions/{definitionId}")
+    public ResponseEntity<BaseResponse<ConsentDefinitionRes>> getConsentDefinitionById(@PathVariable Long definitionId) {
+        ConsentDefinitionRes definition = consentService.getConsentDefinition(definitionId);
+        return ApiResponseUtil.success(SuccessCode.OK, definition);
+    }
+
+    /**
      * 사용자가 특정 동의서에 동의
     */
     @PostMapping("/agree")
     public ResponseEntity<BaseResponse<ConsentRecordRes>> agreeConsent(
             @UserId Long userId,
-            @RequestParam String consentCode
+            @RequestBody ConsentAgreeReq req
     ) {
-        return ApiResponseUtil.success(SuccessCode.CREATED, consentService.agree(userId, consentCode));
+        return ApiResponseUtil.success(SuccessCode.CREATED, consentService.agree(userId, req));
     }
 
     /**

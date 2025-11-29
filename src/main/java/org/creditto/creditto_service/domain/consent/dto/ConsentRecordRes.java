@@ -6,14 +6,15 @@ import org.creditto.creditto_service.domain.consent.entity.ConsentStatus;
 import java.time.LocalDateTime;
 
 public record ConsentRecordRes(
-        Long recordId,
+        Long id,
         Long definitionId,
         String consentCode,
         Integer consentRecVer,
         ConsentStatus consentStatus,
         LocalDateTime consentDate,
         LocalDateTime withdrawalDate,
-        Long userId
+        Long userId,
+        String ipAddress
 ) {
 
     public static ConsentRecordRes from(ConsentRecord r) {
@@ -25,7 +26,8 @@ public record ConsentRecordRes(
                 r.getConsentStatus(),
                 r.getConsentDate(),
                 r.getWithdrawalDate(),
-                r.getUserId()
+                r.getUserId(),
+                r.getIpAddress()
         );
     }
 }
