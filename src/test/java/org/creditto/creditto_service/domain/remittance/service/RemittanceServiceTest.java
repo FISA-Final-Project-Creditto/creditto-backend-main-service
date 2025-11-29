@@ -60,16 +60,19 @@ class RemittanceServiceTest {
         Long regRemId = 101L;
 
         RemittanceHistoryDto history1 = RemittanceHistoryDto.builder()
+                .remittanceId(1L)
                 .sendAmount(new BigDecimal("100.00"))
                 .exchangeRate(new BigDecimal("1200.00"))
                 .createdDate(LocalDate.of(2023, 1, 1))
                 .build();
         RemittanceHistoryDto history2 = RemittanceHistoryDto.builder()
+                .remittanceId(2L)
                 .sendAmount(new BigDecimal("200.00"))
                 .exchangeRate(new BigDecimal("1210.00"))
                 .createdDate(LocalDate.of(2023, 1, 15))
                 .build();
         RemittanceHistoryDto history3 = RemittanceHistoryDto.builder()
+                .remittanceId(3L)
                 .sendAmount(new BigDecimal("300.00"))
                 .exchangeRate(new BigDecimal("1220.00"))
                 .createdDate(LocalDate.of(2023, 2, 1))

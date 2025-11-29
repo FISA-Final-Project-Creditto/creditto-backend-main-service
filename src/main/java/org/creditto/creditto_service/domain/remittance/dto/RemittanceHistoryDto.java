@@ -9,8 +9,8 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 public class RemittanceHistoryDto {
+    private Long remittanceId;
     private BigDecimal sendAmount;
     private BigDecimal exchangeRate;
-
     private LocalDate createdDate;
 }
