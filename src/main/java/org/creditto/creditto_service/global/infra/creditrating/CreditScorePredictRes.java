@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public record CreditScorePredictRes(
         @JsonProperty("user_id")
-        Integer userId,
+        Long userId,
         @JsonProperty("monthly_remit_amount")
         BigDecimal monthlyRemitAmount,
         @JsonProperty("current_score")

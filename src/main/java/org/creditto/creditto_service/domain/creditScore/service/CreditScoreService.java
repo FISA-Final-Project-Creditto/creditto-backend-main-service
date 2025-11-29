@@ -9,7 +9,6 @@ import org.creditto.creditto_service.global.infra.creditrating.CreditScorePredic
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreRes;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +17,6 @@ public class CreditScoreService {
 
     private final CreditRatingFeignClient creditRatingFeignClient;
 
-    @Transactional
     public CreditScoreRes calculateCreditScore(CreditScoreReq creditScoreReq) {
         return creditRatingFeignClient.calculateCreditScore(creditScoreReq);
     }
@@ -31,7 +29,7 @@ public class CreditScoreService {
         return creditRatingFeignClient.getCreditScoreHistory(userId);
     }
 
-    public CreditScorePredictRes getCreditScorePredict(CreditScorePredictReq creditScorePredictReq) {
+    public CreditScorePredictRes predictCreditScore(CreditScorePredictReq creditScorePredictReq) {
         return creditRatingFeignClient.getPredictCreditScore(creditScorePredictReq);
     }
 }

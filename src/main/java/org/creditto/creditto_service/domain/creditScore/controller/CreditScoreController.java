@@ -32,7 +32,7 @@ public class CreditScoreController {
     }
 
     @PostMapping("/prediction")
-    public CreditScorePredictRes getPredictCreditScore(@RequestBody CreditScorePredictReq request) {
-        return creditScoreService.getCreditScorePredict(request);
+    public CreditScorePredictRes predictCreditScore(@RequestBody CreditScorePredictReq request) {
+        return creditScoreService.predictCreditScore(request);
     }
 }

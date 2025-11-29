@@ -19,10 +19,10 @@ public interface CreditRatingFeignClient {
     CreditScoreRes calculateCreditScore(@RequestBody CreditScoreReq request);
 
     @GetMapping(value = "/api/server/credit-score/{userId}")
-    CreditScoreRes getCreditScore(@PathVariable Long userId);
+    CreditScoreRes getCreditScore(@PathVariable("userId") Long userId);
 
     @GetMapping(value = "/api/server/credit-score/history/{userId}")
-    CreditScoreHistoryRes getCreditScoreHistory(@PathVariable Long userId);
+    CreditScoreHistoryRes getCreditScoreHistory(@PathVariable("userId") Long userId);
 
     @PostMapping(value = "/api/server/credit-score/prediction", consumes = MediaType.APPLICATION_JSON_VALUE)
     CreditScorePredictRes getPredictCreditScore(@RequestBody CreditScorePredictReq request);
