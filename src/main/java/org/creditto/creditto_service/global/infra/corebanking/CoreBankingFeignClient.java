@@ -1,5 +1,6 @@
 package org.creditto.creditto_service.global.infra.corebanking;
 
+import org.creditto.creditto_service.domain.account.dto.AccountSummaryRes;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
 import org.creditto.creditto_service.domain.remittance.dto.*;
@@ -36,7 +37,7 @@ public interface CoreBankingFeignClient {
     CoreBankingRes<List<AccountRes>> getAccountsByUserId(@RequestParam("userId") Long userId);
 
     @GetMapping(value = "/api/core/account/balance/total")
-    CoreBankingRes<BigDecimal> getTotalBalanceByUserId(@RequestParam("userId") Long userId);
+    CoreBankingRes<AccountSummaryRes> getTotalBalanceByUserId(@RequestParam("userId") Long userId);
 
     /*
     TRANSACTION
