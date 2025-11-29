@@ -14,9 +14,4 @@ public class AuthFeignConfig {
     public ErrorDecoder authFeignErrorDecoder(ObjectMapper objectMapper) {
         return new AuthFeignErrorDecoder(objectMapper);
     }
-
-    @Bean
-    MicrometerObservationCapability micrometerObservationCapability(ObservationRegistry registry) {
-        return new MicrometerObservationCapability(registry);
-    }
 }
