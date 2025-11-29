@@ -20,21 +20,21 @@ public class MaskingUtil {
             "receiverAccountNumber"
     );
 
+    private static final String FIELD_NAMES_PATTERN_STRING = ACCOUNT_NUMBER_FIELD_NAMES.stream()
+            .map(Pattern::quote)
+            .collect(Collectors.joining("|"));
+
+    private static final Pattern STRING_PATTERN = Pattern.compile("(\"(?:" + FIELD_NAMES_PATTERN_STRING + ")\"\\s*:\\s*\")(.*?)(\")", Pattern.CASE_INSENSITIVE);
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile("(\"(?:" + FIELD_NAMES_PATTERN_STRING + ")\"\\s*:\\s*)(\\d+)", Pattern.CASE_INSENSITIVE);
+
 
     public static String maskSensitiveData(String raw) {
         if (raw == null || raw.isBlank()) {
             return raw;
         }
 
-        String fieldNamesPattern = ACCOUNT_NUMBER_FIELD_NAMES.stream()
-                .map(Pattern::quote)
-                .collect(Collectors.joining("|"));
-
-        Pattern stringPattern = Pattern.compile("(\"(?:" + fieldNamesPattern + ")\"\\s*:\\s*\")(.*?)(\")", Pattern.CASE_INSENSITIVE);
-        String masked = replaceWithMask(raw, stringPattern, true);
-
-        Pattern numericPattern = Pattern.compile("(\"(?:" + fieldNamesPattern + ")\"\\s*:\\s*)(\\d+)", Pattern.CASE_INSENSITIVE);
-        return replaceWithMask(masked, numericPattern, false);
+        String masked = replaceWithMask(raw, STRING_PATTERN, true);
+        return replaceWithMask(masked, NUMERIC_PATTERN, false);
     }
 
     public static String maskAccountNumber(String accountNumber) {
