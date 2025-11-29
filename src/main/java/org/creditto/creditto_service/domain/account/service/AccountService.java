@@ -37,4 +37,8 @@ public class AccountService {
     public List<AccountRes> getAccountsByUserId(Long userId) {
         return coreBankingFeignClient.getAccountsByUserId(userId).data();
     }
+
+    public BigDecimal getTotalBalanceByUserId(Long userId) {
+        return coreBankingFeignClient.getTotalBalanceByUserId(userId).data();
+    }
 }
