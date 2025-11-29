@@ -93,4 +93,12 @@ public interface CoreBankingFeignClient {
             @PathVariable("regRemId") Long regRemId,
             @RequestParam("userId") Long userId
     );
+
+    /*
+    EXCHANGE
+     */
+    @GetMapping(value = "/api/core/exchange/{currency}")
+    CoreBankingRes<ExchangeRes> getExchangeRateByCurrency(
+            @PathVariable String currency
+    );
 }
