@@ -133,7 +133,7 @@ jobs:
 
             for i in {1..10}
             do
-              STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:9000/actuator/health) // ?
+              STATUS=$(curl -s -o /dev/null -w "%{http_code}" ${{ secrets.HEALTH_URL }})
               if [ "$STATUS" -eq 200 ]; then
                 echo "✅ 서버 정상 응답 (HTTP 200)"
                 exit 0
