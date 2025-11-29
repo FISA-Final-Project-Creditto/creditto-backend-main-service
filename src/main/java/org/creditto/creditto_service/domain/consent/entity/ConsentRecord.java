@@ -32,7 +32,9 @@ public class ConsentRecord extends BaseEntity {
 
     private Long userId;
 
-    public static ConsentRecord of(ConsentDefinition consentDefinition, Long userId) {
+    private String ipAddress;
+
+    public static ConsentRecord of(ConsentDefinition consentDefinition, Long userId, String ipAddress) {
         return ConsentRecord.builder()
                 .consentDefinition(consentDefinition)
                 .consentStatus(ConsentStatus.AGREE)
@@ -40,6 +42,7 @@ public class ConsentRecord extends BaseEntity {
                 .consentDate(LocalDateTime.now())
                 .withdrawalDate(null)
                 .userId(userId)
+                .ipAddress(ipAddress)
                 .build();
     }
 

@@ -2,6 +2,7 @@ package org.creditto.creditto_service.domain.consent.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq;
 import org.creditto.creditto_service.domain.consent.dto.ConsentDefinitionRes;
 import org.creditto.creditto_service.domain.consent.dto.ConsentRecordRes;
 import org.creditto.creditto_service.domain.consent.entity.ConsentDefinition;
@@ -28,7 +29,6 @@ public class ConsentService {
     /**
      * 사용자의 동의를 기록
      * @param userId 동의한 userId
-     * @param consentCode 동의 코드
      * @return ConsentRecordRes 생성된 동의 기록 정보
      */
     @Transactional
@@ -37,15 +37,16 @@ public class ConsentService {
         ConsentDefinition definition = definitionRepository.findById(req.definitionId())
                 .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_DEFINITION));
 
-        ConsentRecord newRecord = ConsentRecord.of(
-                definition,
-                req.ipAddress(),
-                req.clientId()
-        );
+        ConsentRecord consentRecord = recordRepository
+                .findFirstByUserIdAndConsentDefinitionIdAndConsentStatusOrderByConsentDateDesc(
+                        userId, definition.getId(), ConsentStatus.AGREE
+                )
+                .orElseGet(() -> {
+                    ConsentRecord newRecord = ConsentRecord.of(definition, userId, req.ipAddress());
+                    return recordRepository.save(newRecord);
+                });
 
-        recordRepository.save(newRecord);
-
-        return ConsentRecordRes.from(newRecord);
+        return ConsentRecordRes.from(consentRecord);
     }
 
     /**
@@ -67,6 +68,7 @@ public class ConsentService {
 
     /**
      * 같은 코드의 모든 동의서 최신 버전을 조회
+     *
      * @return 최신 버전의 모든 동의서 목록
      */
     public List<ConsentDefinitionRes> getLatestConsentDefinitions() {

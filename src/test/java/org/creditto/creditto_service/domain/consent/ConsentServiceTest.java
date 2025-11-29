@@ -45,30 +45,40 @@ class ConsentServiceTest {
     @DisplayName("동의하기 - 성공")
     void agree_Success() {
         // Given
-        ConsentDefinition definition = ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null);
+        ConsentDefinition definition = ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.SIGNUP, 2, LocalDateTime.now(), null);
         definitionRepository.save(definition);
         ConsentAgreeReq req = new ConsentAgreeReq(
                 "test-client",
                 definition.getId(),
                 "127.0.0.1"
         );
+        Long userId = 1L;
 
         // When
-        Long userId = 1L;
-        ConsentRecordRes result = consentService.agree(userId, req);
+        ConsentRecordRes firstResult = consentService.agree(userId, req);
 
         // Then
         List<ConsentRecord> records = recordRepository.findAll();
         assertThat(records).hasSize(1);
         ConsentRecord savedRecord = records.get(0);
 
-        assertThat(result.consentCode()).isEqualTo("CODE1");
-        assertThat(result.consentStatus()).isEqualTo(ConsentStatus.AGREE);
-        assertThat(result.consentRecVer()).isEqualTo(2);
-        assertThat(result.userId()).isEqualTo(userId);
+        assertThat(firstResult.consentCode()).isEqualTo("CODE1");
+        assertThat(firstResult.consentStatus()).isEqualTo(ConsentStatus.AGREE);
+        assertThat(firstResult.consentRecVer()).isEqualTo(2);
+        assertThat(firstResult.userId()).isEqualTo(userId);
+        assertThat(firstResult.ipAddress()).isEqualTo(req.ipAddress());
 
         assertThat(savedRecord.getConsentDefinition().getConsentCode()).isEqualTo("CODE1");
         assertThat(savedRecord.getConsentStatus()).isEqualTo(ConsentStatus.AGREE);
+        assertThat(savedRecord.getIpAddress()).isEqualTo(req.ipAddress());
+
+        // When - Re-agreeing
+        ConsentRecordRes secondResult = consentService.agree(userId, req);
+
+        // Then - No new record should be created
+        assertThat(secondResult.id()).isEqualTo(firstResult.id());
+        List<ConsentRecord> recordsAfterReAgree = recordRepository.findAll();
+        assertThat(recordsAfterReAgree).hasSize(1);
     }
 
     @Test
@@ -76,8 +86,8 @@ class ConsentServiceTest {
     void withdraw_Success() {
         // Given
         Long userId = 1L;
-        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        ConsentRecord consentRecord = recordRepository.save(ConsentRecord.of(definition, userId));
+        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of("CODE1", "Title", "Desc", ConsentCategory.SIGNUP, 1, LocalDateTime.now(), null));
+        ConsentRecord consentRecord = recordRepository.save(ConsentRecord.of(definition, userId, "127.0.0.1"));
 
         // When
         consentService.withdraw(userId, definition.getConsentCode());
@@ -92,9 +102,9 @@ class ConsentServiceTest {
     @DisplayName("모든 최신 동의서 조회")
     void getLatestConsentDefinitions_Success() {
         // Given
-        definitionRepository.save(ConsentDefinition.of("CODE1", "Title1", "Desc1", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        definitionRepository.save(ConsentDefinition.of("CODE1", "Title1 v2", "Desc1 v2", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        definitionRepository.save(ConsentDefinition.of("CODE2", "Title2", "Desc2", ConsentCategory.SERVICE, 1, LocalDateTime.now(), null));
+        definitionRepository.save(ConsentDefinition.of("CODE1", "Title1", "Desc1", ConsentCategory.SIGNUP, 1, LocalDateTime.now(), null));
+        definitionRepository.save(ConsentDefinition.of("CODE1", "Title1 v2", "Desc1 v2", ConsentCategory.SIGNUP, 2, LocalDateTime.now(), null));
+        definitionRepository.save(ConsentDefinition.of("CODE2", "Title2", "Desc2", ConsentCategory.CREDIT, 1, LocalDateTime.now(), null));
 
         // When
         List<ConsentDefinitionRes> results = consentService.getLatestConsentDefinitions();
@@ -112,10 +122,10 @@ class ConsentServiceTest {
     void getConsentRecord_Success() {
         // Given
         Long userId = 1L;
-        ConsentDefinition def1 = definitionRepository.save(ConsentDefinition.of("CODE1", "Title1", "Desc1", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        ConsentDefinition def2 = definitionRepository.save(ConsentDefinition.of("CODE2", "Title2", "Desc2", ConsentCategory.SERVICE, 1, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(def1, userId));
-        ConsentRecord recordToWithdraw = ConsentRecord.of(def2, userId);
+        ConsentDefinition def1 = definitionRepository.save(ConsentDefinition.of("CODE1", "Title1", "Desc1", ConsentCategory.SIGNUP, 1, LocalDateTime.now(), null));
+        ConsentDefinition def2 = definitionRepository.save(ConsentDefinition.of("CODE2", "Title2", "Desc2", ConsentCategory.CREDIT, 1, LocalDateTime.now(), null));
+        recordRepository.save(ConsentRecord.of(def1, userId, "127.0.0.1"));
+        ConsentRecord recordToWithdraw = ConsentRecord.of(def2, userId, "127.0.0.1");
         recordToWithdraw.withdraw();
         recordRepository.save(recordToWithdraw);
 
@@ -133,8 +143,8 @@ class ConsentServiceTest {
         // Given
         Long userId = 1L;
         String code = "CODE1";
-        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(definition, userId));
+        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.SIGNUP, 2, LocalDateTime.now(), null));
+        recordRepository.save(ConsentRecord.of(definition, userId, "127.0.0.1"));
 
         // When
         boolean hasAgreed = consentService.checkAgreement(userId, code);
@@ -149,9 +159,9 @@ class ConsentServiceTest {
         // Given
         Long userId = 1L;
         String code = "CODE1";
-        definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        ConsentDefinition oldDefinition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
-        recordRepository.save(ConsentRecord.of(oldDefinition, userId));
+        definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.SIGNUP, 2, LocalDateTime.now(), null));
+        ConsentDefinition oldDefinition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.SIGNUP, 1, LocalDateTime.now(), null));
+        recordRepository.save(ConsentRecord.of(oldDefinition, userId, "127.0.0.1"));
 
         // When
         boolean hasAgreed = consentService.checkAgreement(userId, code);
@@ -166,8 +176,8 @@ class ConsentServiceTest {
         // Given
         Long userId = 1L;
         String code = "CODE1";
-        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 2, LocalDateTime.now(), null));
-        ConsentRecord recordToWithdraw = ConsentRecord.of(definition, userId);
+        ConsentDefinition definition = definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.SIGNUP, 2, LocalDateTime.now(), null));
+        ConsentRecord recordToWithdraw = ConsentRecord.of(definition, userId, "127.0.0.1");
         recordToWithdraw.withdraw();
         recordRepository.save(recordToWithdraw);
 
@@ -184,7 +194,7 @@ class ConsentServiceTest {
         // Given
         Long userId = 1L;
         String code = "CODE1";
-        definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.MARKETING, 1, LocalDateTime.now(), null));
+        definitionRepository.save(ConsentDefinition.of(code, "Title", "Desc", ConsentCategory.SIGNUP, 1, LocalDateTime.now(), null));
 
         // When
         boolean hasAgreed = consentService.checkAgreement(userId, code);

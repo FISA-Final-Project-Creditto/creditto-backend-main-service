@@ -1,6 +1,7 @@
 package org.creditto.creditto_service.domain.consent.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq;
 import org.creditto.creditto_service.domain.consent.dto.ConsentDefinitionRes;
 import org.creditto.creditto_service.domain.consent.dto.ConsentRecordRes;
 import org.creditto.creditto_service.domain.consent.service.ConsentService;
@@ -51,7 +52,7 @@ public class ConsentController {
     @PostMapping("/agree")
     public ResponseEntity<BaseResponse<ConsentRecordRes>> agreeConsent(
             @UserId Long userId,
-            @RequestBody org.creditto.creditto_service.domain.consent.dto.ConsentAgreeReq req
+            @RequestBody ConsentAgreeReq req
     ) {
         return ApiResponseUtil.success(SuccessCode.CREATED, consentService.agree(userId, req));
     }
