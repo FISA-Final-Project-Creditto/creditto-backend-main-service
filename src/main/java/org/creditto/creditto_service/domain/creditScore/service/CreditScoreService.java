@@ -8,11 +8,9 @@ import org.creditto.creditto_service.global.infra.creditrating.CreditScoreHistor
 import org.creditto.creditto_service.global.infra.creditrating.CreditScorePredictRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreRes;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class CreditScoreService {
 
     private final CreditRatingFeignClient creditRatingFeignClient;
