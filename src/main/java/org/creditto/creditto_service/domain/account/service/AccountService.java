@@ -1,6 +1,7 @@
 package org.creditto.creditto_service.domain.account.service;
 
 import lombok.RequiredArgsConstructor;
+import org.creditto.creditto_service.domain.account.dto.AccountSummaryRes;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.global.infra.corebanking.AccountRes;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
@@ -38,7 +39,7 @@ public class AccountService {
         return coreBankingFeignClient.getAccountsByUserId(userId).data();
     }
 
-    public BigDecimal getTotalBalanceByUserId(Long userId) {
+    public AccountSummaryRes getTotalBalanceByUserId(Long userId) {
         return coreBankingFeignClient.getTotalBalanceByUserId(userId).data();
     }
 }

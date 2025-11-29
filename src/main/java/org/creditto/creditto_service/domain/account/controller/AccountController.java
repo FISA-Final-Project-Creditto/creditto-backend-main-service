@@ -2,6 +2,7 @@ package org.creditto.creditto_service.domain.account.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.creditto.creditto_service.domain.account.dto.AccountSummaryRes;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.account.service.AccountService;
 import org.creditto.creditto_service.domain.transaction.service.TransactionService;
@@ -78,7 +79,7 @@ public class AccountController {
 
     // 사용자 전체 계좌 합산 잔액 조회
     @GetMapping("/me/balance")
-    public ResponseEntity<BaseResponse<BigDecimal>> getTotalBalanceByUserId(@UserId Long userId) {
+    public ResponseEntity<BaseResponse<AccountSummaryRes>> getTotalBalanceByUserId(@UserId Long userId) {
         return ApiResponseUtil.success(SuccessCode.OK, accountService.getTotalBalanceByUserId(userId));
     }
 }
