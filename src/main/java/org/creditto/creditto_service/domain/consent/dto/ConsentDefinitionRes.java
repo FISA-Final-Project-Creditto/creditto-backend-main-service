@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 public record ConsentDefinitionRes(
         Long definitionId,
-        String consentCode,
         String consentTitle,
         String consentDesc,
         ConsentCategory consentCategory,
@@ -18,7 +17,6 @@ public record ConsentDefinitionRes(
     public static ConsentDefinitionRes from(ConsentDefinition d) {
         return new ConsentDefinitionRes(
                 d.getId(),
-                d.getConsentCode(),
                 d.getConsentTitle(),
                 d.getConsentDesc(),
                 d.getConsentCategory(),

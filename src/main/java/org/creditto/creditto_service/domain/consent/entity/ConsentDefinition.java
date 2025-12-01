@@ -18,8 +18,6 @@ public class ConsentDefinition extends BaseEntity {
     @Column(name = "definition_id")
     private Long id;
 
-    private String consentCode; // 동의서 코드 (버전이 달라져도 그룹 조회 가능)
-
     @Lob
     private String consentTitle;
 
@@ -35,9 +33,8 @@ public class ConsentDefinition extends BaseEntity {
 
     private LocalDateTime validTo; // 유효 종료일
 
-    public static ConsentDefinition of(String consentCode, String consentTitle, String consentDesc, ConsentCategory consentCategory, Integer consentDefVer, LocalDateTime validFrom, LocalDateTime validTo) {
+    public static ConsentDefinition of(String consentTitle, String consentDesc, ConsentCategory consentCategory, Integer consentDefVer, LocalDateTime validFrom, LocalDateTime validTo) {
         return ConsentDefinition.builder()
-                .consentCode(consentCode)
                 .consentTitle(consentTitle)
                 .consentDesc(consentDesc)
                 .consentCategory(consentCategory)
