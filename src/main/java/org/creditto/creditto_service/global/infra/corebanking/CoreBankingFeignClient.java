@@ -1,5 +1,6 @@
 package org.creditto.creditto_service.global.infra.corebanking;
 
+import org.creditto.creditto_service.domain.account.dto.AccountPasswordConfirmReq;
 import org.creditto.creditto_service.domain.account.dto.AccountSummaryRes;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
@@ -38,6 +39,9 @@ public interface CoreBankingFeignClient {
 
     @GetMapping(value = "/api/core/account/balance/total")
     CoreBankingRes<AccountSummaryRes> getTotalBalanceByUserId(@RequestParam("userId") Long userId);
+
+    @PostMapping(value = "/api/core/account/{accountId}/verify-password")
+    CoreBankingRes<Void> verifyPassword(@PathVariable("accountId") Long accountId, @RequestBody AccountPasswordConfirmReq req);
 
     /*
     TRANSACTION

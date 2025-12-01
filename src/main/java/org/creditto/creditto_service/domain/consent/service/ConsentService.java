@@ -67,7 +67,6 @@ public class ConsentService {
 
     /**
      * 같은 코드의 모든 동의서 최신 버전을 조회
-     *
      * @return 최신 버전의 모든 동의서 목록
      */
     public List<ConsentDefinitionRes> getLatestConsentDefinitions() {
