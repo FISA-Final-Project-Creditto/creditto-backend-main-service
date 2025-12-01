@@ -1,5 +1,6 @@
 package org.creditto.creditto_service.domain.account.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.creditto.creditto_service.domain.account.dto.AccountPasswordConfirmReq;
@@ -88,7 +89,7 @@ public class AccountController {
     @PostMapping("/{accountId}/verify-password")
     public ResponseEntity<BaseResponse<Void>> verifyPassword(
             @PathVariable Long accountId,
-            @RequestBody AccountPasswordConfirmReq request
+            @Valid @RequestBody AccountPasswordConfirmReq request
     ) {
         accountService.verifyPassword(accountId, request);
         return ApiResponseUtil.success(SuccessCode.OK);
