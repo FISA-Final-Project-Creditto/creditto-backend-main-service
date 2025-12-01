@@ -7,6 +7,10 @@ import org.creditto.creditto_service.domain.creditScore.service.CreditScoreServi
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreHistoryRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScorePredictRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreRes;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,5 +38,16 @@ public class CreditScoreController {
     @PostMapping("/prediction")
     public CreditScorePredictRes predictCreditScore(@RequestBody CreditScorePredictReq request) {
         return creditScoreService.predictCreditScore(request);
+    }
+
+    @GetMapping("/report/pdf/{userId}")
+    public ResponseEntity<byte[]> downloadCreditReportPdf(@PathVariable Long userId) {
+        byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "credit_report.pdf");
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }
