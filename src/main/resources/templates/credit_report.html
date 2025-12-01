@@ -92,20 +92,24 @@
         }
 
 
-.card-table {
+.card-layout {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 15px;
+    border-spacing: 12px;
+}
+
+.card-layout td {
+    border: none;
+    padding: 0;
 }
 
 .card {
     border: 1px solid #d9e2ec;
     border-radius: 8px;
-    padding: 12px;
+    padding: 14px;
     text-align: center;
     background: #fff;
     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    width: 100%;
 }
 
 .card-title {
@@ -120,18 +124,6 @@
 }
 
 
-
-        .card-title {
-            font-size: 12px;
-            color: #666;
-        }
-
-        .card-value {
-            font-size: 15px;
-            font-weight: 700;
-            color: #003b72;
-        }
-
         .footer {
             text-align: center;
             font-size: 11px;
@@ -143,6 +135,25 @@
 <body>
 
 <h1>Creditto 신용 점수 보고서</h1>
+
+<div class="section">
+    <h2>고객 정보 (Client Information)</h2>
+    <table class="info-table">
+        <tr>
+            <th>이름</th>
+            <th>생년월일</th>
+            <th>국가</th>
+            <th>연락처</th>
+        </tr>
+        <tr>
+            <td th:text="${client.name}">Juan Dela Cruz</td>
+            <td th:text="${client.birthDate}">1998-07-15</td>
+            <td th:text="${client.countryCode}">PHL</td>
+            <td th:text="${client.phoneNo}">+63-912-345-6789</td>
+        </tr>
+
+    </table>
+</div>
 
 <div class="section">
     <h2>종합 신용 점수 (Global Credit Score)</h2>
@@ -195,16 +206,14 @@
 <div class="section">
     <h2>금융 능력 및 소득 안정성 (Financial Capability)</h2>
 
-    <table class="card-table">
+    <table class="card-layout">
         <tr>
             <td>
                 <div class="card">
                     <div class="card-title">6개월 평균 소득</div>
                     <div class="card-value">
                         약 ₩
-                        <span th:text="${#numbers.formatInteger(features.incomeAvg6m, 0, 'COMMA')}">
-                            3,200,000
-                        </span>
+                        <span th:text="${#numbers.formatInteger(features.incomeAvg6m, 0, 'COMMA')}">3,200,000</span>
                     </div>
                 </div>
             </td>
@@ -222,16 +231,13 @@
                     <div class="card-title">최소 잔고 (3개월)</div>
                     <div class="card-value">
                         ₩
-                        <span th:text="${#numbers.formatInteger(features.minBalance3m, 0, 'COMMA')}">
-                            450,000
-                        </span>
+                        <span th:text="${#numbers.formatInteger(features.minBalance3m, 0, 'COMMA')}">450,000</span>
                     </div>
                 </div>
             </td>
         </tr>
     </table>
 </div>
-
 
 
 <div class="section">
