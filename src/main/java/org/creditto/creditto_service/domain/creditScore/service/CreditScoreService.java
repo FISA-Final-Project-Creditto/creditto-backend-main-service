@@ -5,6 +5,7 @@ import com.lowagie.text.pdf.BaseFont;
 import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
+import org.creditto.creditto_service.global.infra.auth.ClientRes;
 import org.creditto.creditto_service.global.infra.creditrating.*;
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
 import org.creditto.creditto_service.global.response.exception.CustomBaseException;
@@ -20,11 +21,15 @@ import java.time.LocalDate;
 import java.util.Map;
 import java.util.Objects;
 
+import org.creditto.creditto_service.global.infra.auth.AuthFeignClient;
+
 @Service
 @RequiredArgsConstructor
 public class CreditScoreService {
 
+    private static final String MALGUN_GOTHIC_FONT_PATH = "/fonts/malgun.ttf";
     private final CreditRatingFeignClient creditRatingFeignClient;
+    private final AuthFeignClient authFeignClient;
     private final TemplateEngine templateEngine;
 
     public CreditScoreRes calculateCreditScore(CreditScoreReq creditScoreReq) {
@@ -62,8 +67,10 @@ public class CreditScoreService {
     // HTML 생성 로직 (템플릿 + 데이터 바인딩)
     private String buildReportHtml(Long userId) {
         CreditScoreReportRes reportData = creditRatingFeignClient.getCreditScoreReport(userId);
+        ClientRes clientRes = authFeignClient.getUserInformation(userId).data();
 
         Context context = new Context();
+        context.setVariable("client", clientRes);
         context.setVariable("finalScore", reportData.creditScore());
         context.setVariable("calculatedDate", LocalDate.now());
         context.setVariable("visa", Map.of(
@@ -95,7 +102,7 @@ public class CreditScoreService {
     // 폰트 등록
     private void configureFonts(ITextRenderer renderer) {
         try {
-            URL fontUrl = Objects.requireNonNull(getClass().getResource("/fonts/malgun.ttf"));
+            URL fontUrl = Objects.requireNonNull(getClass().getResource(MALGUN_GOTHIC_FONT_PATH));
             String fontPath = fontUrl.toExternalForm();
 
             renderer.getFontResolver().addFont(

@@ -46,7 +46,7 @@ public class CreditScoreController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "credit_report.pdf");
+        headers.setContentDispositionFormData("attachment", "credit_report_"+ java.time.LocalDate.now() + ".pdf");
 
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
