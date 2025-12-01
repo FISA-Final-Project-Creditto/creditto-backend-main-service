@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Creditto Global Credit Report</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', 'Segoe UI', Arial, sans-serif;
+            margin: 40px;
+            background-color: #f3f5f8;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #003b72;
+            margin-bottom: 30px;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 16px;
+            color: #003b72;
+            margin-bottom: 12px;
+            border-left: 5px solid #003b72;
+            padding-left: 10px;
+            font-weight: 700;
+        }
+
+        .section {
+            background: #fff;
+            padding: 24px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .info-table, .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background-color: #e7eef6;
+            color: #003b72;
+            padding: 10px;
+            font-weight: 700;
+            border-bottom: 2px solid #003b72;
+            text-align: center;
+        }
+
+        td {
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
+        .badge-green { background-color: #28a745; }
+        .badge-blue { background-color: #007bff; }
+        .badge-red { background-color: #dc3545; }
+        .badge-amber { background-color: #ff9800; }
+
+        .total-score-box {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 15px;
+            background-color: #f8fbff;
+            border: 1px solid #d4e1f3;
+            border-radius: 10px;
+        }
+
+        .total-score {
+            font-size: 36px;
+            font-weight: 800;
+            color: #002b5b;
+        }
+
+        .tier-label {
+            font-size: 16px;
+            color: #555;
+        }
+
+
+.card-layout {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 12px;
+}
+
+.card-layout td {
+    border: none;
+    padding: 0;
+}
+
+.card {
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.card-title {
+    font-size: 12px;
+    color: #666;
+}
+
+.card-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #003b72;
+}
+
+
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Creditto 신용 점수 보고서</h1>
+
+<div class="section">
+    <h2>고객 정보 (Client Information)</h2>
+    <table class="info-table">
+        <tr>
+            <th>이름</th>
+            <th>생년월일</th>
+            <th>국가</th>
+            <th>연락처</th>
+        </tr>
+        <tr>
+            <td th:text="${client.name}">Juan Dela Cruz</td>
+            <td th:text="${client.birthDate}">1998-07-15</td>
+            <td th:text="${client.countryCode}">PHL</td>
+            <td th:text="${client.phoneNo}">+63-912-345-6789</td>
+        </tr>
+
+    </table>
+</div>
+
+<div class="section">
+    <h2>종합 신용 점수 (Global Credit Score)</h2>
+
+    <div class="total-score-box">
+        <div class="total-score">
+            <span th:text="${finalScore}">720</span>
+            <span style="font-size: 18px; color: #555;">/ 950</span>
+        </div>
+    </div>
+
+    <table class="info-table">
+        <tr>
+            <td>평가 요약</td>
+            <td style="text-align: left;">
+                <span class="badge badge-green" style="margin-bottom:4px; display:inline-block;">VISA Verified</span> 체류
+                자격 안정적<br/>
+                <span class="badge badge-blue"
+                      style="margin-top:6px; display:inline-block;">Remittance Reliability</span> 해외 송금 성실도 반영됨
+            </td>
+        </tr>
+        <tr>
+            <td>산출 기준일</td>
+            <td style="text-align: left;" th:text="${calculatedDate}">2025-11-29</td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2>체류 및 비자 정보 (Residency Status)</h2>
+    <table class="data-table">
+        <tr>
+            <th>비자 종류</th>
+            <th>만료 예정일</th>
+            <th>잔여 체류기간</th>
+            <th>상태</th>
+        </tr>
+        <tr>
+            <td th:text="${visa.type}">E-9</td>
+            <td th:text="${visa.expireDate}">2026-10-15</td>
+            <td><b>D-<span th:text="${visa.remainingDays}">320</span></b></td>
+            <td>
+                <span class="badge badge-green" th:if="${visa.remainingDays > 180}">Stable</span>
+                <span class="badge badge-red" th:if="${visa.remainingDays <= 180}">Expiring</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2>금융 능력 및 소득 안정성 (Financial Capability)</h2>
+
+    <table class="card-layout">
+        <tr>
+            <td>
+                <div class="card">
+                    <div class="card-title">6개월 평균 소득</div>
+                    <div class="card-value">
+                        ₩
+                        <span th:text="${#numbers.formatInteger(features.incomeAvg6m, 0, 'COMMA')}">3,200,000</span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card">
+                    <div class="card-title">6개월 평균 소득 변동액</div>
+                    <div class="card-value">
+                        ₩
+                         <span th:text="${#numbers.formatInteger(features.incomeVolatility6m, 0, 'COMMA')}">1,200,000</span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="card">
+                    <div class="card-title">최소 잔고 (3개월)</div>
+                    <div class="card-value">
+                        ₩
+                        <span th:text="${#numbers.formatInteger(features.minBalance3m, 0, 'COMMA')}">450,000</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<div class="section">
+    <h2>해외 송금 책임 및 패턴 (Remittance Behavior)</h2>
+
+    <table class="data-table">
+        <tr>
+            <th>송금 횟수 (6개월)</th>
+            <th>평균 송금액 (6개월)</th>
+            <th>소득 대비 송금 비율</th>
+            <th>송금 실패율</th>
+        </tr>
+        <tr>
+            <td th:text="${features.remittanceCount6m}">12</td>
+            <td>₩ <span th:text="${#numbers.formatInteger(features.remittanceAmountAvg6m, 0, 'COMMA')}">800,000</span>
+            </td>
+            <td><span th:text="${#numbers.formatPercent(features.remittanceIncomeRatio, 1, 0)}">32%</span></td>
+            <td><span th:text="${#numbers.formatPercent(features.remittanceFailureRate6m, 1, 1)}">0.5%</span></td>
+        </tr>
+    </table>
+
+    <p style="font-size: 11px; color: #777; margin-top: 8px;">
+        * 송금 주기 안정성 점수: <b th:text="${features.remittanceCycleStability}">0.95</b> (1.0에 가까울수록 규칙적)
+    </p>
+</div>
+
+<div class="section">
+    <h2>리스크 분석 (Risk Indicators)</h2>
+    <table class="data-table">
+        <tr>
+            <th>카드 사용률</th>
+            <th>최근 연체 여부</th>
+            <th>리스크 발생 횟수</th>
+            <th>DTI 부채비율</th>
+        </tr>
+        <tr>
+            <td th:text="${#numbers.formatPercent(features.cardUtilization3m, 1, 0)}">28%</td>
+            <td>
+                <span class="badge badge-red" th:if="${features.recentOverdueFlag == 1}">Overdue</span>
+                <span class="badge badge-green" th:if="${features.recentOverdueFlag == 0}">No Overdue</span>
+            </td>
+            <td th:text="${features.riskEventCount}">1</td>
+            <td th:text="${#numbers.formatPercent(features.dtiLoanRatio, 1, 0)}">32%</td>
+        </tr>
+    </table>
+</div>
+
+<div class="footer">
+    본 리포트는 Creditto의 대안 신용평가를 통해 생성되었습니다.<br/>
+    금융기관의 최종 심사 결과와는 다를 수 있습니다.
+</div>
+
+</body>
+</html>
