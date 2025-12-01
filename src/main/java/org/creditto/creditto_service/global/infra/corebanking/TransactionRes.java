@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record TransactionRes(
+        Long txnId,
         Long accountId,
         BigDecimal txnAmount,
         TxnType txnType,
