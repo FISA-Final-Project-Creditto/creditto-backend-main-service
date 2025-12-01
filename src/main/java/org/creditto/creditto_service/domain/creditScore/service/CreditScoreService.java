@@ -5,6 +5,7 @@ import com.lowagie.text.pdf.BaseFont;
 import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
+import org.creditto.creditto_service.global.infra.auth.AuthFeignClient;
 import org.creditto.creditto_service.global.infra.auth.ClientRes;
 import org.creditto.creditto_service.global.infra.creditrating.*;
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
@@ -20,8 +21,6 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Objects;
-
-import org.creditto.creditto_service.global.infra.auth.AuthFeignClient;
 
 @Service
 @RequiredArgsConstructor
@@ -53,13 +52,12 @@ public class CreditScoreService {
      * @param userId 사용자 ID
      * @return PDF byte array
      */
+
     public byte[] generateCreditScoreReportPdf(Long userId) {
         try {
             String html = buildReportHtml(userId);
             return convertHtmlToPdf(html);
-        } catch (CustomBaseException e) { // 폰트 에러
-            throw e;
-        } catch (Exception e) { // 이외의 에러
+        } catch (IOException | DocumentException e) {
             throw new CustomBaseException(ErrorBaseCode.PDF_GENERATION_ERROR);
         }
     }

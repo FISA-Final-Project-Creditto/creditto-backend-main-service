@@ -40,14 +40,18 @@ public class CreditScoreController {
         return creditScoreService.predictCreditScore(request);
     }
 
-    @GetMapping("/report/pdf/{userId}")
+    @GetMapping(
+            value = "/report/pdf/{userId}",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
     public ResponseEntity<byte[]> downloadCreditReportPdf(@PathVariable Long userId) {
         byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", "credit_report_"+ java.time.LocalDate.now() + ".pdf");
-
+        headers.setContentDispositionFormData(
+                "attachment",
+                String.format("credit_report_%s.pdf", java.time.LocalDate.now()));
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }
