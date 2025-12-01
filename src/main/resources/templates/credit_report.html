@@ -212,17 +212,17 @@
                 <div class="card">
                     <div class="card-title">6개월 평균 소득</div>
                     <div class="card-value">
-                        약 ₩
+                        ₩
                         <span th:text="${#numbers.formatInteger(features.incomeAvg6m, 0, 'COMMA')}">3,200,000</span>
                     </div>
                 </div>
             </td>
             <td>
                 <div class="card">
-                    <div class="card-title">소득 변동성</div>
-                    <div class="card-value"
-                         th:text="${#numbers.formatPercent(features.incomeVolatility6m, 1, 1)}">
-                        8.5%
+                    <div class="card-title">6개월 평균 소득 변동액</div>
+                    <div class="card-value">
+                        ₩
+                         <span th:text="${#numbers.formatInteger(features.incomeVolatility6m, 0, 'COMMA')}">1,200,000</span>
                     </div>
                 </div>
             </td>
