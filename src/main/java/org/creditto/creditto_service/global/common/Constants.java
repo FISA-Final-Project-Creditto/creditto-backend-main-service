@@ -13,4 +13,8 @@ public final class Constants {
     public static final String CATEGORIES = "categories";
     public static final String NOTNULL = "NotNull";
     public static final String FORM = "form";
+
+    public static final String ACTIVE = "ACTIVE";
+    public static final String PAUSED = "PAUSED";
+    public static final String STOPPED = "STOPPED";
 }
