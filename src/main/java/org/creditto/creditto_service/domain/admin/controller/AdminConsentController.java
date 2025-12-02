@@ -34,7 +34,6 @@ public class AdminConsentController {
             Model model,
             RedirectAttributes redirectAttributes
     ) {
-        validateForm(form, bindingResult);
         if (bindingResult.hasErrors()) {
             prepareListPage(model);
             return "admin/consents";
@@ -62,7 +61,6 @@ public class AdminConsentController {
             Model model,
             RedirectAttributes redirectAttributes
     ) {
-        validateForm(form, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("consentId", consentId);
             model.addAttribute(CATEGORIES, ConsentCategory.values());
@@ -85,18 +83,6 @@ public class AdminConsentController {
         model.addAttribute(CATEGORIES, ConsentCategory.values());
         if (!model.containsAttribute("createForm")) {
             model.addAttribute("createForm", new ConsentDefinitionForm());
-        }
-    }
-
-    private void validateForm(ConsentDefinitionForm form, BindingResult bindingResult) {
-        if (form.getConsentDefVer() == null) {
-            bindingResult.rejectValue("consentDefVer", NOTNULL, "동의서 버전을 입력해주세요.");
-        }
-        if (form.getValidFrom() == null) {
-            bindingResult.rejectValue("validFrom", NOTNULL, "유효 시작일을 입력해주세요.");
-        }
-        if (form.getConsentCategory() == null) {
-            bindingResult.rejectValue("consentCategory", NOTNULL, "카테고리를 선택해주세요.");
         }
     }
 }

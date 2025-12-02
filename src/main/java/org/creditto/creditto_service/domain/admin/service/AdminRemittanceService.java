@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.creditto.creditto_service.global.common.Constants.*;
 
@@ -68,15 +70,15 @@ public class AdminRemittanceService {
             return RemittanceSummaryView.empty();
         }
 
-        long activeCount = remittances.stream()
-                .filter(dto -> ACTIVE.equalsIgnoreCase(dto.getRegRemStatus()))
-                .count();
-        long pausedCount = remittances.stream()
-                .filter(dto -> PAUSED.equalsIgnoreCase(dto.getRegRemStatus()))
-                .count();
-        long stoppedCount = remittances.stream()
-                .filter(dto -> STOPPED.equalsIgnoreCase(dto.getRegRemStatus()))
-                .count();
+        Map<String, Long> countsByStatus = remittances.stream()
+                .filter(dto -> dto.getRegRemStatus() != null)
+                .collect(Collectors.groupingBy(
+                        dto -> dto.getRegRemStatus().toUpperCase(),
+                        Collectors.counting()
+                ));
+        long activeCount = countsByStatus.getOrDefault(ACTIVE, 0L);
+        long pausedCount = countsByStatus.getOrDefault(PAUSED, 0L);
+        long stoppedCount = countsByStatus.getOrDefault(STOPPED, 0L);
 
         BigDecimal totalAmount = remittances.stream()
                 .map(RegularRemittanceResponseDto::getSendAmount)
