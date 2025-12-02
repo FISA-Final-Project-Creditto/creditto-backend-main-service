@@ -1,7 +1,6 @@
 package org.creditto.creditto_service.domain.creditScore.service;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.BaseFont;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
@@ -13,10 +12,8 @@ import org.creditto.creditto_service.global.response.exception.CustomBaseExcepti
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Map;
@@ -57,7 +54,7 @@ public class CreditScoreService {
         try {
             String html = buildReportHtml(userId, lang);
             return convertHtmlToPdf(html);
-        } catch (IOException | DocumentException e) {
+        } catch (Exception e) {
             throw new CustomBaseException(ErrorBaseCode.PDF_GENERATION_ERROR);
         }
     }
@@ -83,34 +80,24 @@ public class CreditScoreService {
     }
 
     // HTML → PDF 변환 (렌더링)
-    private byte[] convertHtmlToPdf(String html) throws IOException, DocumentException {
+    private byte[] convertHtmlToPdf(String html) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            ITextRenderer renderer = new ITextRenderer();
+            PdfRendererBuilder builder = new PdfRendererBuilder();
 
-            configureFonts(renderer);
+            // HTML 내용 입력
+            builder.withHtmlContent(html, null);
 
-            renderer.setDocumentFromString(html);
-            renderer.layout();
-            renderer.createPDF(outputStream, false);
-            renderer.finishPDF();
+            // 한글 폰트 등록
+            URL fontUrl = Objects.requireNonNull(getClass().getResource(MALGUN_GOTHIC_FONT_PATH));
+            builder.useFont(new java.io.File(fontUrl.toURI()), "Malgun Gothic");
+            builder.useFastMode();
+            builder.toStream(outputStream);
+            builder.run();
 
             return outputStream.toByteArray();
-        }
-    }
 
-    // 폰트 등록
-    private void configureFonts(ITextRenderer renderer) {
-        try {
-            URL fontUrl = Objects.requireNonNull(getClass().getResource(MALGUN_GOTHIC_FONT_PATH));
-            String fontPath = fontUrl.toExternalForm();
-
-            renderer.getFontResolver().addFont(
-                    fontPath,
-                    BaseFont.IDENTITY_H,
-                    BaseFont.EMBEDDED
-            );
         } catch (Exception e) {
-            throw new CustomBaseException(ErrorBaseCode.PDF_FONT_ERROR);
+            throw new CustomBaseException(ErrorBaseCode.PDF_GENERATION_ERROR);
         }
     }
 }

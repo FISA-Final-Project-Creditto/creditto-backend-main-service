@@ -1,6 +1,5 @@
 package org.creditto.creditto_service.domain.creditScore.service;
 
-import com.lowagie.text.DocumentException;
 import org.creditto.creditto_service.global.infra.auth.AuthFeignClient;
 import org.creditto.creditto_service.global.infra.auth.AuthRes;
 import org.creditto.creditto_service.global.infra.auth.ClientRes;
@@ -36,7 +35,7 @@ class CreditScoreServiceIntegrationTest {
 
     @Test
     @DisplayName("실제 HTML 템플릿과 데이터로 PDF 생성 통합 테스트")
-    void generateCreditScoreReportPdf_integrationTest() throws IOException, DocumentException {
+    void generateCreditScoreReportPdf_integrationTest() throws IOException {
         // given: 테스트에 사용할 데이터 설정
         Long userId = 1L;
 
