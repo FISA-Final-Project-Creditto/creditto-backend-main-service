@@ -24,3 +24,11 @@ spring:
 logging:
   level:
     org.hibernate.sql: DEBUG
+
+admin:
+  monitoring:
+    kibana-url: ${KIBANA_URL}
+    zipkin-url: ${ZIPKIN_DASHBOARD_URL}
+  auth:
+    username: ${ADMIN_USERNAME}
+    password: ${ADMIN_PASSWORD}
