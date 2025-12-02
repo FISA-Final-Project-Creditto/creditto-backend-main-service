@@ -56,10 +56,8 @@ public class CreditScoreController {
 
         byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId, lang);
 
-        String fileName = "credit_report_en_%s.pdf".formatted(java.time.LocalDate.now());
-        if ("ko".equalsIgnoreCase(lang)) {
-            fileName = "credit_report_ko_%s.pdf".formatted(java.time.LocalDate.now());
-        }
+        String langCode = "ko".equalsIgnoreCase(lang) ? "ko" : "en";
+        String fileName = "credit_report_%s_%s.pdf".formatted(langCode, java.time.LocalDate.now());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
