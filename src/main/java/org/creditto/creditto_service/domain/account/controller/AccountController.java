@@ -33,7 +33,7 @@ public class AccountController {
     @PostMapping
     public ResponseEntity<BaseResponse<AccountRes>> createAccount(
             @UserId Long userId,
-            @RequestBody CreateAccountReq request
+            @Valid @RequestBody CreateAccountReq request
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, accountService.createAccount(userId, request));
     }
