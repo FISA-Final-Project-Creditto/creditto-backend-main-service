@@ -9,7 +9,6 @@ import org.creditto.creditto_service.global.infra.creditrating.CreditScoreFeatur
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreReportRes;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -78,21 +77,34 @@ class CreditScoreServiceIntegrationTest {
         when(creditRatingFeignClient.getCreditScoreReport(userId)).thenReturn(mockReportRes);
         when(authFeignClient.getUserInformation(anyLong())).thenReturn(mockAuthRes);
 
-        // when: 실제 서비스 로직 호출
-        // 이 과정에서 실제 TemplateEngine이 실제 credit_report.html 파일을 처리
-        byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId);
+        // when: 실제 서비스 로직 호출 (한국어)
+        byte[] pdfBytesKo = creditScoreService.generateCreditScoreReportPdf(userId, "ko");
 
-        // then: 결과 검증
-        assertNotNull(pdfBytes);
-        assertTrue(pdfBytes.length > 0, "생성된 PDF 파일이 비어있습니다.");
+        // then: 한국어 결과 검증
+        assertNotNull(pdfBytesKo);
+        assertTrue(pdfBytesKo.length > 0, "생성된 한국어 PDF 파일이 비어있습니다.");
 
-        // 생성된 PDF를 임시 파일로 저장하여 로컬에서 확인할 수 있도록 합니다.
-        java.nio.file.Path tempFile = java.nio.file.Files.createTempFile("creditto-credit-report-test-", ".pdf");
-        try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempFile.toFile())) {
-            fos.write(pdfBytes);
+        // 생성된 한국어 PDF를 임시 파일로 저장
+        java.nio.file.Path tempFileKo = java.nio.file.Files.createTempFile("creditto-credit-report-test-ko-", ".pdf");
+        try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempFileKo.toFile())) {
+            fos.write(pdfBytesKo);
         }
-        // 생성된 파일 경로를 로그로 출력하여 쉽게 찾을 수 있도록 합니다.
-        System.out.println("Test PDF generated at: " + tempFile.toAbsolutePath());
+        System.out.println("Test PDF (Korean) generated at: " + tempFileKo.toAbsolutePath());
+
+        // when: 실제 서비스 로직 호출 (영어)
+        byte[] pdfBytesEn = creditScoreService.generateCreditScoreReportPdf(userId, "en");
+
+        // then: 영어 결과 검증
+        assertNotNull(pdfBytesEn);
+        assertTrue(pdfBytesEn.length > 0, "생성된 영어 PDF 파일이 비어있습니다.");
+
+        // 생성된 영어 PDF를 임시 파일로 저장
+        java.nio.file.Path tempFileEn = java.nio.file.Files.createTempFile("creditto-credit-report-test-en-", ".pdf");
+        try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempFileEn.toFile())) {
+            fos.write(pdfBytesEn);
+        }
+        System.out.println("Test PDF (English) generated at: " + tempFileEn.toAbsolutePath());
+
 
     }
 }
