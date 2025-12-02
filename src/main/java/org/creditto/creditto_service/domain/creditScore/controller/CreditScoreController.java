@@ -41,17 +41,24 @@ public class CreditScoreController {
     }
 
     @GetMapping(
-            value = "/report/pdf/{userId}",
+            value = "/report/{lang}/pdf/{userId}",
             produces = MediaType.APPLICATION_PDF_VALUE
     )
-    public ResponseEntity<byte[]> downloadCreditReportPdf(@PathVariable Long userId) {
-        byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId);
+    public ResponseEntity<byte[]> downloadCreditReportPdf(
+            @PathVariable String lang,
+            @PathVariable Long userId) {
+        byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId, lang);
+
+        String fileName = "credit_report_en_%s.pdf".formatted(java.time.LocalDate.now());
+        if ("ko".equalsIgnoreCase(lang)) {
+            fileName = "credit_report_ko_%s.pdf".formatted(java.time.LocalDate.now());
+        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData(
                 "attachment",
-                String.format("credit_report_%s.pdf", java.time.LocalDate.now()));
+                fileName);
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }
