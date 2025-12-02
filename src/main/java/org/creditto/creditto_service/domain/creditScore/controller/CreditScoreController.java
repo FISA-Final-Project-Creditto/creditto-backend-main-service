@@ -7,6 +7,8 @@ import org.creditto.creditto_service.domain.creditScore.service.CreditScoreServi
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreHistoryRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScorePredictRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreRes;
+import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
+import org.creditto.creditto_service.global.response.exception.CustomBaseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,6 +49,11 @@ public class CreditScoreController {
     public ResponseEntity<byte[]> downloadCreditReportPdf(
             @PathVariable String lang,
             @PathVariable Long userId) {
+
+        if (!"ko".equalsIgnoreCase(lang) && !"en".equalsIgnoreCase(lang)) {
+            throw new CustomBaseException(ErrorBaseCode.BAD_REQUEST);
+        }
+
         byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId, lang);
 
         String fileName = "credit_report_en_%s.pdf".formatted(java.time.LocalDate.now());
