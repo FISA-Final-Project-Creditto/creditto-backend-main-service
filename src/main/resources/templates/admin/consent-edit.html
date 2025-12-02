@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>동의서 정의 수정</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="app-shell">
+    <div class="nav-bar">
+        <div class="brand">
+            Creditto Admin
+        </div>
+        <div class="pill-nav">
+            <a th:href="@{/admin/dashboard}">대시보드</a>
+            <a th:href="@{/admin/consents}">동의서 관리</a>
+            <a th:href="@{/admin/remittances}">정기송금 관리</a>
+            <a th:href="@{/admin/monitoring}">모니터링</a>
+        </div>
+    </div>
+
+    <section class="hero">
+        <h1 th:text="'동의서 정의 편집 · ID ' + consentId"></h1>
+        <div class="cta">
+            <a class="btn btn-secondary" th:href="@{/admin/consents}">목록으로 돌아가기</a>
+        </div>
+    </section>
+
+    <section class="section glass">
+        <form th:action="@{|/admin/consents/${consentId}/update|}" th:object="${form}" method="post">
+            <div class="form-grid">
+                <div>
+                    <label>카테고리</label>
+                    <select th:field="*{consentCategory}" required>
+                        <option th:each="category : ${categories}"
+                                th:value="${category}"
+                                th:text="${category.name()} + ' - ' + category.description">
+                        </option>
+                    </select>
+                    <p class="small" th:if="${#fields.hasErrors('consentCategory')}" th:errors="*{consentCategory}"></p>
+                </div>
+                <div>
+                    <label>버전</label>
+                    <input type="number" min="1" th:field="*{consentDefVer}" required>
+                    <p class="small" th:if="${#fields.hasErrors('consentDefVer')}" th:errors="*{consentDefVer}"></p>
+                </div>
+            </div>
+            <div>
+                <label>동의서 제목</label>
+                <input th:field="*{consentTitle}" required>
+                <p class="small" th:if="${#fields.hasErrors('consentTitle')}" th:errors="*{consentTitle}"></p>
+            </div>
+            <div>
+                <label>동의서 본문</label>
+                <textarea th:field="*{consentDesc}" required></textarea>
+                <p class="small" th:if="${#fields.hasErrors('consentDesc')}" th:errors="*{consentDesc}"></p>
+            </div>
+            <div class="form-grid">
+                <div>
+                    <label>유효 시작일</label>
+                    <input type="datetime-local" th:field="*{validFrom}" required>
+                    <p class="small" th:if="${#fields.hasErrors('validFrom')}" th:errors="*{validFrom}"></p>
+                </div>
+                <div>
+                    <label>유효 종료일(옵션)</label>
+                    <input type="datetime-local" th:field="*{validTo}">
+                    <p class="small" th:if="${#fields.hasErrors('validTo')}" th:errors="*{validTo}"></p>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn-success">수정 내용 저장</button>
+                <a class="btn btn-secondary" th:href="@{/admin/consents}">취소</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

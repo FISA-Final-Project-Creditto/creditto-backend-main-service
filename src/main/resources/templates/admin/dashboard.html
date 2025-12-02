@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Creditto Admin · Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="app-shell">
+    <div class="nav-bar">
+        <div class="brand">
+            Creditto Admin
+        </div>
+        <div class="pill-nav">
+            <a th:href="@{/admin/dashboard}">대시보드</a>
+            <a th:href="@{/admin/consents}">동의서 관리</a>
+            <a th:href="@{/admin/remittances}">정기송금 관리</a>
+            <a th:href="@{/admin/monitoring}">모니터링</a>
+        </div>
+    </div>
+
+    <section class="hero">
+        <h1>Creditto 관리자 페이지</h1>
+        <p>동의서 / 정기송금 / 모니터링 관리가 가능합니다.</p>
+        <div class="cta">
+            <a class="btn" th:href="@{/admin/consents}">동의서 관리</a>
+            <a class="btn btn-secondary" th:href="@{/admin/remittances}">정기송금 관리</a>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="grid">
+            <div class="glass stat-card">
+                <h3>동의서 관리</h3>
+                <p>동의서 조회 / 생성 / 수정 / 제거</p>
+                <div class="actions">
+                    <a class="btn btn-secondary" th:href="@{/admin/consents}">상세 보기</a>
+                </div>
+            </div>
+            <div class="glass stat-card">
+                <h3>정기송금 관리</h3>
+                <p>사용자 ID 기반 정기 송금 설정 및 결과 조회</p>
+                <div class="actions">
+                    <a class="btn btn-secondary" th:href="@{/admin/remittances}">정기송금 관리</a>
+                </div>
+            </div>
+            <div class="glass stat-card">
+                <h3>로그 모니터링</h3>
+                <p>Kibana를 이용한 로그 모니터링</p>
+                <div class="actions">
+                    <a class="btn btn-secondary" th:href="@{/admin/monitoring}">모니터링</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 로그인</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="app-shell">
+    <div class="nav-bar">
+        <div class="brand">
+            Creditto Admin
+        </div>
+    </div>
+
+    <section class="hero">
+        <h1>관리자 로그인</h1>
+        <p>관리자 전용 계정을 입력하고 로그인하세요.</p>
+    </section>
+
+    <section class="section glass">
+        <div th:if="${loginError}" class="message" style="background:#fef2f2;border-color:#fecaca;color:#b91c1c;">
+            인증에 실패했습니다. 입력값을 다시 확인해주세요.
+        </div>
+        <form method="post" th:action="@{/admin/login/basic}">
+            <div class="form-grid">
+                <div>
+                    <label>아이디</label>
+                    <input type="text" name="username">
+                </div>
+                <div>
+                    <label>비밀번호</label>
+                    <input type="password" name="password">
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn">로그인</button>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

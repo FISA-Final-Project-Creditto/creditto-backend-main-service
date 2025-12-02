@@ -2,6 +2,7 @@ package org.creditto.creditto_service.domain.consent.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.creditto.creditto_service.domain.admin.dto.ConsentDefinitionForm;
 import org.creditto.creditto_service.global.common.BaseEntity;
 
 import java.time.LocalDateTime;
@@ -42,5 +43,14 @@ public class ConsentDefinition extends BaseEntity {
                 .validFrom(validFrom)
                 .validTo(validTo)
                 .build();
+    }
+
+    public void update(ConsentDefinitionForm form) {
+        this.consentTitle = form.getConsentTitle();
+        this.consentDesc = form.getConsentDesc();
+        this.consentCategory = form.getConsentCategory();
+        this.consentDefVer = form.getConsentDefVer();
+        this.validFrom = form.getValidFrom();
+        this.validTo = form.getValidTo();
     }
 }

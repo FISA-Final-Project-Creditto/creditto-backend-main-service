@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>정기송금 모니터링</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="app-shell">
+    <div class="nav-bar">
+        <div class="brand">
+            Creditto Admin
+        </div>
+        <div class="pill-nav">
+            <a th:href="@{/admin/dashboard}">대시보드</a>
+            <a th:href="@{/admin/consents}">동의서 관리</a>
+            <a th:href="@{/admin/remittances}">정기송금 관리</a>
+            <a th:href="@{/admin/monitoring}">모니터링</a>
+        </div>
+    </div>
+
+    <section class="hero">
+        <h1>정기송금 스케줄링 조회</h1>
+        <p>사용자별 정기송금 설정과 실행 이력을 조회</p>
+    </section>
+
+    <section class="section glass">
+        <h2>사용자/정기송금 조회</h2>
+        <form method="get" th:action="@{/admin/remittances}">
+            <div class="form-grid">
+                <div>
+                    <label>사용자 ID</label>
+                    <input type="number" name="userId" min="1" th:value="${dashboard?.searchUserId}">
+                </div>
+                <div>
+                    <label>정기송금 ID (선택)</label>
+                    <input type="number" name="regRemId" min="1" th:value="${dashboard?.selectedRemittanceId}">
+                </div>
+                <div>
+                    <label>송금 이력 ID (선택)</label>
+                    <input type="number" name="remittanceId" min="1" th:value="${dashboard?.historyRemittanceId}">
+                </div>
+            </div>
+            <div class="actions">
+                <button type="submit" class="btn">조회</button>
+            </div>
+        </form>
+    </section>
+
+    <section class="section glass" th:if="${dashboard?.summary != null && dashboard.searchUserId != null}">
+        <h2>정기송금 스케줄 요약</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <h3>총 스케줄 수</h3>
+                <p th:text="${dashboard.summary.totalCount()} + ' 건'"></p>
+            </div>
+            <div class="stat-card">
+                <h3>총 송금 금액</h3>
+                <p th:text="${#numbers.formatDecimal(dashboard.summary.totalAmount(), 0, 'COMMA', 0, 'POINT')} + ' 원'"></p>
+            </div>
+            <div class="stat-card">
+                <h3>상태별 분포</h3>
+                <p>
+                    <span th:text="'Active ' + ${dashboard.summary.activeCount()}"></span> ·
+                    <span th:text="'Paused ' + ${dashboard.summary.pausedCount()}"></span> ·
+                    <span th:text="'Stopped ' + ${dashboard.summary.stoppedCount()}"></span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section glass" th:if="${dashboard?.searchUserId != null}">
+        <h2>정기송금 목록</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>계좌번호</th>
+                <th>수취인</th>
+                <th>송금액</th>
+                <th>상태</th>
+                <th>주기</th>
+                <th>시작일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(dashboard.remittances)}">
+                <td colspan="7" class="small" style="text-align:center;color:#6b7280;">조회된 정기송금이 없습니다.</td>
+            </tr>
+            <tr th:each="item : ${dashboard.remittances}">
+                <td th:text="${item.regRemId}"></td>
+                <td th:text="${item.accountNo}"></td>
+                <td>
+                    <div th:text="${item.recipientName}"></div>
+                    <div class="small" th:text="${item.recipientBankName}"></div>
+                </td>
+                <td th:text="${item.sendAmount}"></td>
+                <td th:text="${item.regRemStatus}"></td>
+                <td>
+                    <span th:text="${item.regRemType}"></span>
+                    <div class="small" th:text="${item.scheduledDate != null ? item.scheduledDate + '일' : item.scheduledDay}"></div>
+                </td>
+               <td th:text="${item.startedAt}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section glass" th:if="${dashboard?.remittanceDetail}">
+        <h2 th:text="'정기송금 상세 · ID ' + ${dashboard.selectedRemittanceId}"></h2>
+        <div class="split">
+            <div>
+                <h3>송금 설정</h3>
+                <p><strong>계좌</strong>: <span th:text="${dashboard.remittanceDetail.accountNo}"></span></p>
+                <p><strong>금액</strong>: <span th:text="${dashboard.remittanceDetail.sendAmount} + ' ' + dashboard.remittanceDetail.sendCurrency"></span></p>
+                <p><strong>주기</strong>: <span th:text="${dashboard.remittanceDetail.regRemType}"></span>
+                    <span class="small"
+                          th:text="${dashboard.remittanceDetail.scheduledDate != null ? dashboard.remittanceDetail.scheduledDate + '일' : dashboard.remittanceDetail.scheduledDay}"></span>
+                </p>
+                <p><strong>상태</strong>: <span th:text="${dashboard.remittanceDetail.regRemStatus}"></span></p>
+                <p><strong>시작일</strong>: <span th:text="${dashboard.remittanceDetail.startedAt}"></span></p>
+            </div>
+            <div>
+                <h3>송금/수취 정보</h3>
+                <p><strong>송금인</strong>: <span th:text="${dashboard.remittanceDetail.clientName}"></span> (<span th:text="${dashboard.remittanceDetail.clientCountry}"></span>)</p>
+                <p><strong>수취인</strong>: <span th:text="${dashboard.remittanceDetail.recipientName}"></span></p>
+                <p><strong>은행</strong>: <span th:text="${dashboard.remittanceDetail.recipientBankName}"></span></p>
+                <p><strong>계좌</strong>: <span th:text="${dashboard.remittanceDetail.recipientAccountNo}"></span></p>
+                <p><strong>국가</strong>: <span th:text="${dashboard.remittanceDetail.recipientCountry}"></span></p>
+                <p><strong>수취 통화</strong>: <span th:text="${dashboard.remittanceDetail.receiveCurrency}"></span></p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section glass" th:if="${dashboard?.errorMessage}">
+        <div class="message" style="background:#fef2f2;border-color:#fecaca;color:#b91c1c;">
+            <span th:text="${dashboard.errorMessage}"></span>
+        </div>
+    </section>
+
+    <section class="section glass" th:if="${dashboard?.historyRecords}">
+        <h2>송금 이력</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>이력 ID</th>
+                <th>송금일</th>
+                <th>보낸 금액</th>
+                <th>환율</th>
+                <th>상세 보기</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="history : ${dashboard.historyRecords}">
+                <td th:text="${history.remittanceId}"></td>
+                <td th:text="${history.createdDate}"></td>
+                <td th:text="${history.sendAmount}"></td>
+                <td th:text="${history.exchangeRate}"></td>
+                <td>
+                    <a class="btn btn-secondary"
+                       th:href="@{|/admin/remittances?userId=${dashboard.searchUserId}&regRemId=${dashboard.selectedRemittanceId}&remittanceId=${history.remittanceId}|}">상세</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section glass" th:if="${dashboard?.historyDetail}">
+        <h2 th:text="'송금 이력 상세 · ID ' + ${dashboard.historyRemittanceId}"></h2>
+        <div class="history-grid">
+            <div>
+                <h3>송금 정보</h3>
+                <p><strong>계좌번호</strong>: <span th:text="${dashboard.historyDetail.accountNo}"></span></p>
+                <p><strong>보낸 금액</strong>: <span th:text="${dashboard.historyDetail.sendAmount}"></span></p>
+                <p><strong>수수료</strong>: <span th:text="${dashboard.historyDetail.totalFee}"></span></p>
+            </div>
+            <div>
+                <h3>수취 정보</h3>
+                <p><strong>수취 은행</strong>: <span th:text="${dashboard.historyDetail.recipientBankName}"></span></p>
+                <p><strong>수취 계좌</strong>: <span th:text="${dashboard.historyDetail.recipientAccountNo}"></span></p>
+                <p><strong>상태</strong>: <span th:text="${dashboard.historyDetail.remittanceStatus}"></span></p>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

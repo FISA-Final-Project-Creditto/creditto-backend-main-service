@@ -3,6 +3,7 @@ package org.creditto.creditto_service.global.log;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -14,6 +15,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.creditto.creditto_service.global.response.BaseResponse;
 import org.creditto.creditto_service.global.util.MaskingUtil;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +59,9 @@ public class LogAspect {
                 ? new Object[0]
                 : Arrays.stream(originalArgs)
                         .filter(arg -> !(arg instanceof HttpServletRequest))
-                        .filter(arg -> !(arg instanceof jakarta.servlet.http.HttpServletResponse))
-                        .filter(arg -> !(arg instanceof org.springframework.validation.BindingResult))
+                        .filter(arg -> !(arg instanceof HttpServletResponse))
+                        .filter(arg -> !(arg instanceof BindingResult))
+                        .filter(arg -> !(arg instanceof Model))
                         .toArray();
 
         String argsAsString = toJsonString(args.length == 0 ? null : args);

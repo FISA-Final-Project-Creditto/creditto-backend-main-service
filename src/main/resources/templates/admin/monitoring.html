@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그 모니터링</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+</head>
+<body>
+<div class="app-shell">
+    <div class="nav-bar">
+        <div class="brand">
+            Creditto Admin
+        </div>
+        <div class="pill-nav">
+            <a th:href="@{/admin/dashboard}">대시보드</a>
+            <a th:href="@{/admin/consents}">동의서 관리</a>
+            <a th:href="@{/admin/remittances}">정기송금 관리</a>
+            <a th:href="@{/admin/monitoring}">모니터링</a>
+        </div>
+    </div>
+
+    <section class="hero">
+        <h1>Kibana 로그 대시 보드</h1>
+        <p>'ZIPKIN 보기' 클릭시 로그 분산 추적 가능</p>
+    </section>
+
+    <section class="section glass">
+        <h2>Kibana 대시보드</h2>
+        <iframe class="log-frame" style="height: 1000px" th:src="${kibanaUrl}" title="Kibana Dashboard"></iframe>
+    </section>
+</div>
+</body>
+</html>
