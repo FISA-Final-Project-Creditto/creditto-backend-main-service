@@ -142,7 +142,7 @@
         <tr>
             <th>이름</th>
             <th>생년월일</th>
-            <th>국가</th>
+            <th>국가 코드</th>
             <th>연락처</th>
         </tr>
         <tr>
@@ -196,7 +196,7 @@
             <td th:text="${visa.expireDate}">2026-10-15</td>
             <td><b>D-<span th:text="${visa.remainingDays}">320</span></b></td>
             <td>
-                <span class="badge badge-green" th:if="${visa.remainingDays > 180}">Stable</span>
+                <span class="badge badge-green" th:if="${visa.remainingDays &gt; 180}">Stable</span>
                 <span class="badge badge-red" th:if="${visa.remainingDays <= 180}">Expiring</span>
             </td>
         </tr>

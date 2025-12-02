@@ -53,9 +53,9 @@ public class CreditScoreService {
      * @return PDF byte array
      */
 
-    public byte[] generateCreditScoreReportPdf(Long userId) {
+    public byte[] generateCreditScoreReportPdf(Long userId, String lang) {
         try {
-            String html = buildReportHtml(userId);
+            String html = buildReportHtml(userId, lang);
             return convertHtmlToPdf(html);
         } catch (IOException | DocumentException e) {
             throw new CustomBaseException(ErrorBaseCode.PDF_GENERATION_ERROR);
@@ -63,7 +63,7 @@ public class CreditScoreService {
     }
 
     // HTML 생성 로직 (템플릿 + 데이터 바인딩)
-    private String buildReportHtml(Long userId) {
+    private String buildReportHtml(Long userId, String lang) {
         CreditScoreReportRes reportData = creditRatingFeignClient.getCreditScoreReport(userId);
         ClientRes clientRes = authFeignClient.getUserInformation(userId).data();
 
@@ -78,7 +78,8 @@ public class CreditScoreService {
         ));
         context.setVariable("features", reportData.features());
 
-        return templateEngine.process("credit_report", context);
+        String templateName = "credit_report_" + lang;
+        return templateEngine.process(templateName, context);
     }
 
     // HTML → PDF 변환 (렌더링)

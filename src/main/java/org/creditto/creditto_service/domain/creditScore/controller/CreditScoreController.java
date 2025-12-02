@@ -7,6 +7,8 @@ import org.creditto.creditto_service.domain.creditScore.service.CreditScoreServi
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreHistoryRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScorePredictRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreRes;
+import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
+import org.creditto.creditto_service.global.response.exception.CustomBaseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,17 +43,27 @@ public class CreditScoreController {
     }
 
     @GetMapping(
-            value = "/report/pdf/{userId}",
+            value = "/report/{lang}/pdf/{userId}",
             produces = MediaType.APPLICATION_PDF_VALUE
     )
-    public ResponseEntity<byte[]> downloadCreditReportPdf(@PathVariable Long userId) {
-        byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId);
+    public ResponseEntity<byte[]> downloadCreditReportPdf(
+            @PathVariable String lang,
+            @PathVariable Long userId) {
+
+        if (!"ko".equalsIgnoreCase(lang) && !"en".equalsIgnoreCase(lang)) {
+            throw new CustomBaseException(ErrorBaseCode.BAD_REQUEST);
+        }
+
+        byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId, lang);
+
+        String langCode = "ko".equalsIgnoreCase(lang) ? "ko" : "en";
+        String fileName = "credit_report_%s_%s.pdf".formatted(langCode, java.time.LocalDate.now());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
         headers.setContentDispositionFormData(
                 "attachment",
-                String.format("credit_report_%s.pdf", java.time.LocalDate.now()));
+                fileName);
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 }
