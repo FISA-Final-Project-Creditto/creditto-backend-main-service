@@ -21,6 +21,7 @@ public class ExchangeService {
     }
 
     public PreferentialRateRes getPreferentialRateByUserId(Long userId) {
-        return coreBankingFeignClient.getPreferentialRate(userId).data();
+        return Optional.ofNullable(coreBankingFeignClient.getPreferentialRate(userId).data())
+                .orElseThrow(() -> new NoSuchElementException("우대 환율 정보를 찾을 수 없습니다: " + userId));
     }
 }
