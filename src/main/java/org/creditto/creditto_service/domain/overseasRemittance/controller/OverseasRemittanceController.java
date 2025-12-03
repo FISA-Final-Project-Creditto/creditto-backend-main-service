@@ -12,6 +12,8 @@ import org.creditto.creditto_service.global.response.SuccessCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/remittance")
@@ -26,5 +28,13 @@ public class OverseasRemittanceController {
             @Valid @RequestBody OverseasRemittanceReq request
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.processRemittanceOnce(userId, request));
+    }
+
+    // 해외 송금 내역 조회
+    @GetMapping("/{userId}")
+    public ResponseEntity<BaseResponse<List<OverseasRemittanceRes>>> getRemittanceList (
+            @PathVariable Long userId
+    ) {
+        return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.getRemittanceList(userId));
     }
 }

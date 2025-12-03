@@ -10,6 +10,8 @@ import org.creditto.creditto_service.global.response.exception.CustomBaseExcepti
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,5 +32,9 @@ public class OverseasRemittanceService {
         }
 
         return coreBankingFeignClient.processRemittanceOnce(userId, request).data();
+    }
+
+    public List<OverseasRemittanceRes> getRemittanceList(Long userId) {
+        return coreBankingFeignClient.getRemittanceList(userId).data();
     }
 }
