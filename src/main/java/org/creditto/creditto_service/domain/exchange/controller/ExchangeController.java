@@ -3,6 +3,7 @@ package org.creditto.creditto_service.domain.exchange.controller;
 import lombok.RequiredArgsConstructor;
 import org.creditto.creditto_service.domain.exchange.service.ExchangeService;
 import org.creditto.creditto_service.global.infra.corebanking.ExchangeRes;
+import org.creditto.creditto_service.global.infra.corebanking.PreferentialRateRes;
 import org.creditto.creditto_service.global.response.ApiResponseUtil;
 import org.creditto.creditto_service.global.response.BaseResponse;
 import org.creditto.creditto_service.global.response.SuccessCode;
@@ -22,5 +23,10 @@ public class ExchangeController {
     @GetMapping("/{currency}")
     public ResponseEntity<BaseResponse<ExchangeRes>> getExchangeRateByCurrency(@PathVariable String currency) {
         return ApiResponseUtil.success(SuccessCode.OK, exchangeService.getExchangeRateByCurrency(currency));
+    }
+
+    @GetMapping("/preferential-rate/{userId}")
+    public ResponseEntity<BaseResponse<PreferentialRateRes>> getPreferentialRateByUserId(@PathVariable Long userId) {
+        return ApiResponseUtil.success(SuccessCode.OK, exchangeService.getPreferentialRateByUserId(userId));
     }
 }
