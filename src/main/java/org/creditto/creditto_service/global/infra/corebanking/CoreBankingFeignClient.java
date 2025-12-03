@@ -112,4 +112,9 @@ public interface CoreBankingFeignClient {
     CoreBankingRes<ExchangeRes> getExchangeRateByCurrency(
             @PathVariable("currency") String currency
     );
+
+    @GetMapping(value = "/api/core/exchange/preferential-rate/{userId}")
+    CoreBankingRes<PreferentialRateRes> getPreferentialRate(
+            @PathVariable("userId") Long userId
+    );
 }
