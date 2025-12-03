@@ -9,17 +9,22 @@ import org.creditto.creditto_service.global.infra.auth.ClientRes;
 import org.creditto.creditto_service.global.infra.creditrating.*;
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
 import org.creditto.creditto_service.global.response.exception.CustomBaseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class CreditScoreService {
+
+    private static final Logger log = LoggerFactory.getLogger(CreditScoreService.class);
 
     private static final String MALGUN_GOTHIC_FONT_PATH = "/fonts/malgun.ttf";
     private final CreditRatingFeignClient creditRatingFeignClient;
@@ -94,7 +99,8 @@ public class CreditScoreService {
 
             return outputStream.toByteArray();
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            log.error("PDF generation failed due to IOException.", e);
             throw new CustomBaseException(ErrorBaseCode.PDF_GENERATION_ERROR);
         }
     }
