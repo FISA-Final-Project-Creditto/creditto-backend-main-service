@@ -32,3 +32,10 @@ admin:
   auth:
     username: ${ADMIN_USERNAME}
     password: ${ADMIN_PASSWORD}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 15000
+        readTimeout: 15000
