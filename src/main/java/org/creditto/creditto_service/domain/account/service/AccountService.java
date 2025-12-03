@@ -42,8 +42,4 @@ public class AccountService {
     public AccountSummaryRes getTotalBalanceByUserId(Long userId) {
         return coreBankingFeignClient.getTotalBalanceByUserId(userId).data();
     }
-
-    public void verifyPassword(Long accountId, AccountPasswordConfirmReq req) {
-        coreBankingFeignClient.verifyPassword(accountId, req);
-    }
 }
