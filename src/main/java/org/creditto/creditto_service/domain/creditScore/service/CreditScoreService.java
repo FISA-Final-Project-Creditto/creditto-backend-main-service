@@ -2,6 +2,7 @@ package org.creditto.creditto_service.domain.creditScore.service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
 import org.creditto.creditto_service.global.infra.auth.AuthFeignClient;
@@ -9,8 +10,8 @@ import org.creditto.creditto_service.global.infra.auth.ClientRes;
 import org.creditto.creditto_service.global.infra.creditrating.*;
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
 import org.creditto.creditto_service.global.response.exception.CustomBaseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,11 +23,11 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Map;
 
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreditScoreService {
-
-    private static final Logger log = LoggerFactory.getLogger(CreditScoreService.class);
 
     private static final String MALGUN_GOTHIC_FONT_PATH = "/fonts/malgun.ttf";
     private final CreditRatingFeignClient creditRatingFeignClient;
