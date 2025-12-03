@@ -3,7 +3,6 @@ package org.creditto.creditto_service.domain.account.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.creditto.creditto_service.domain.account.dto.AccountPasswordConfirmReq;
 import org.creditto.creditto_service.domain.account.dto.AccountSummaryRes;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.domain.account.service.AccountService;
@@ -84,15 +83,4 @@ public class AccountController {
     public ResponseEntity<BaseResponse<AccountSummaryRes>> getTotalBalanceByUserId(@UserId Long userId) {
         return ApiResponseUtil.success(SuccessCode.OK, accountService.getTotalBalanceByUserId(userId));
     }
-
-    // 비밀번호, 비밀번호 확인 검증
-    @PostMapping("/{accountId}/verify-password")
-    public ResponseEntity<BaseResponse<Void>> verifyPassword(
-            @PathVariable Long accountId,
-            @Valid @RequestBody AccountPasswordConfirmReq request
-    ) {
-        accountService.verifyPassword(accountId, request);
-        return ApiResponseUtil.success(SuccessCode.OK);
-    }
-
 }

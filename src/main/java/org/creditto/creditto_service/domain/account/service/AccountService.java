@@ -1,7 +1,6 @@
 package org.creditto.creditto_service.domain.account.service;
 
 import lombok.RequiredArgsConstructor;
-import org.creditto.creditto_service.domain.account.dto.AccountPasswordConfirmReq;
 import org.creditto.creditto_service.domain.account.dto.AccountSummaryRes;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
 import org.creditto.creditto_service.global.infra.corebanking.AccountRes;
