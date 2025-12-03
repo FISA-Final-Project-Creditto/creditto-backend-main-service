@@ -20,8 +20,8 @@ public class ExchangeService {
                 .orElseThrow(() -> new NoSuchElementException("환율 정보를 찾을 수 없습니다: " + currencyCode));
     }
 
-    public PreferentialRateRes getPreferentialRateByUserId(Long userId) {
-        return Optional.ofNullable(coreBankingFeignClient.getPreferentialRate(userId).data())
+    public PreferentialRateRes getPreferentialRateByUserId(Long userId, String currency) {
+        return Optional.ofNullable(coreBankingFeignClient.getPreferentialRate(userId, currency).data())
                 .orElseThrow(() -> new NoSuchElementException("우대 환율 정보를 찾을 수 없습니다: " + userId));
     }
 }

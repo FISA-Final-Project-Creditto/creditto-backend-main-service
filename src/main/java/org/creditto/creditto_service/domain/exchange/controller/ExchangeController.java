@@ -25,8 +25,8 @@ public class ExchangeController {
         return ApiResponseUtil.success(SuccessCode.OK, exchangeService.getExchangeRateByCurrency(currency));
     }
 
-    @GetMapping("/preferential-rate/{userId}")
-    public ResponseEntity<BaseResponse<PreferentialRateRes>> getPreferentialRateByUserId(@PathVariable Long userId) {
-        return ApiResponseUtil.success(SuccessCode.OK, exchangeService.getPreferentialRateByUserId(userId));
+    @GetMapping("/preferential-rate/{userId}/{currency}")
+    public ResponseEntity<BaseResponse<PreferentialRateRes>> getPreferentialRateByUserId(@PathVariable Long userId, @PathVariable String currency) {
+        return ApiResponseUtil.success(SuccessCode.OK, exchangeService.getPreferentialRateByUserId(userId, currency));
     }
 }
