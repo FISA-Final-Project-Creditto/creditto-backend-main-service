@@ -1,7 +1,7 @@
 package org.creditto.creditto_service.global.infra.creditrating;
 
-import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
-import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
+import org.creditto.creditto_service.domain.credit_score.dto.CreditScorePredictReq;
+import org.creditto.creditto_service.domain.credit_score.dto.CreditScoreReq;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

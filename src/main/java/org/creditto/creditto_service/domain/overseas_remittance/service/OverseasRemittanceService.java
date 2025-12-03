@@ -1,7 +1,7 @@
-package org.creditto.creditto_service.domain.overseasRemittance.service;
+package org.creditto.creditto_service.domain.overseas_remittance.service;
 
 import lombok.RequiredArgsConstructor;
-import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
+import org.creditto.creditto_service.domain.overseas_remittance.dto.OverseasRemittanceReq;
 import org.creditto.creditto_service.global.infra.corebanking.AccountRes;
 import org.creditto.creditto_service.global.infra.corebanking.CoreBankingFeignClient;
 import org.creditto.creditto_service.global.infra.corebanking.OverseasRemittanceRes;

@@ -1,4 +1,4 @@
-package org.creditto.creditto_service.domain.overseasRemittance.enums;
+package org.creditto.creditto_service.domain.overseas_remittance.enums;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package org.creditto.creditto_service.domain.creditScore.service;
+package org.creditto.creditto_service.domain.credit_score.service;
 
 import com.lowagie.text.DocumentException;
 import org.creditto.creditto_service.global.infra.auth.AuthFeignClient;

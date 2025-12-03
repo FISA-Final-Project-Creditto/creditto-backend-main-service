@@ -1,9 +1,9 @@
-package org.creditto.creditto_service.domain.creditScore.controller;
+package org.creditto.creditto_service.domain.credit_score.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
-import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
-import org.creditto.creditto_service.domain.creditScore.service.CreditScoreService;
+import org.creditto.creditto_service.domain.credit_score.dto.CreditScorePredictReq;
+import org.creditto.creditto_service.domain.credit_score.dto.CreditScoreReq;
+import org.creditto.creditto_service.domain.credit_score.service.CreditScoreService;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreHistoryRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScorePredictRes;
 import org.creditto.creditto_service.global.infra.creditrating.CreditScoreRes;

@@ -1,10 +1,10 @@
-package org.creditto.creditto_service.domain.creditScore.service;
+package org.creditto.creditto_service.domain.credit_score.service;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import lombok.RequiredArgsConstructor;
-import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
-import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
+import org.creditto.creditto_service.domain.credit_score.dto.CreditScorePredictReq;
+import org.creditto.creditto_service.domain.credit_score.dto.CreditScoreReq;
 import org.creditto.creditto_service.global.infra.auth.AuthFeignClient;
 import org.creditto.creditto_service.global.infra.auth.ClientRes;
 import org.creditto.creditto_service.global.infra.creditrating.*;
