@@ -30,10 +30,10 @@ public class OverseasRemittanceController {
         return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.processRemittanceOnce(userId, request));
     }
 
-    // 해외 송금 내역 조회
-    @GetMapping("/{userId}")
+    // 해외 송금 내역 조회 by userId
+    @GetMapping
     public ResponseEntity<BaseResponse<List<OverseasRemittanceRes>>> getRemittanceList (
-            @PathVariable Long userId
+            @UserId Long userId
     ) {
         return ApiResponseUtil.success(SuccessCode.OK, overseasRemittanceService.getRemittanceList(userId));
     }
