@@ -69,6 +69,7 @@ public enum ErrorBaseCode implements ErrorCode {
     PDF_GENERATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "PDF 생성 중 오류가 발생했습니다."),
     URL_DECODE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 500, "URL 디코딩 에러"),
     TRANSACTION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, 50001, "거래 처지 중 오류가 발생했습니다."),
+    API_CALL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 50002, "외부 API 호출 중 오류가 발생했습니다."),
     NO_AUTHENTICATION(HttpStatus.INTERNAL_SERVER_ERROR, 50010, "인증객체 관련 오류입니다."),
 
     /**
