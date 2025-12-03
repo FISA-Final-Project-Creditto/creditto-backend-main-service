@@ -58,13 +58,13 @@ public class CreditScoreService {
             String html = buildReportHtml(userId, lang);
             return convertHtmlToPdf(html);
         } catch (CustomBaseException e) { // 하위 메서드에서 발생시킨 CustomBaseException
-            log.warn("CustomBaseException propagated during PDF report generation for user {}: {}", userId, e.getMessage(), e);
+            log.warn("CustomBaseException propagated during PDF report generation for user {}", userId, e);
             throw e;
         } catch (feign.FeignException e) { // Feign 클라이언트 통신 오류 처리
-            log.error("Feign client call failed during PDF report generation for user {}: {}", userId, e.getMessage(), e);
+            log.error("Feign client call failed during PDF report generation for user {}", userId, e);
             throw new CustomBaseException(ErrorBaseCode.API_CALL_ERROR);
         } catch (Exception e) { //이외의 에러
-            log.error("An unexpected error occurred during PDF report generation for user {}: {}", userId, e.getMessage(), e);
+            log.error("An unexpected error occurred during PDF report generation for user {}", userId, e);
             throw new CustomBaseException(ErrorBaseCode.INTERNAL_SERVER_ERROR);
         }
     }
