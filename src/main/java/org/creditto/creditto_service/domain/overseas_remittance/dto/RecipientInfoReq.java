@@ -1,4 +1,4 @@
-package org.creditto.creditto_service.domain.overseasRemittance.dto;
+package org.creditto.creditto_service.domain.overseas_remittance.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

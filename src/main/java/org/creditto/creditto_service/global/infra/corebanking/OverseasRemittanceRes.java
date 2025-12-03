@@ -1,6 +1,6 @@
 package org.creditto.creditto_service.global.infra.corebanking;
 
-import org.creditto.creditto_service.domain.overseasRemittance.enums.RemittanceStatus;
+import org.creditto.creditto_service.domain.overseas_remittance.enums.RemittanceStatus;
 import org.creditto.creditto_service.global.common.CurrencyCode;
 
 import java.math.BigDecimal;

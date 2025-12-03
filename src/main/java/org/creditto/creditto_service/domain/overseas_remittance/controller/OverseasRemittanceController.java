@@ -1,9 +1,9 @@
-package org.creditto.creditto_service.domain.overseasRemittance.controller;
+package org.creditto.creditto_service.domain.overseas_remittance.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
-import org.creditto.creditto_service.domain.overseasRemittance.service.OverseasRemittanceService;
+import org.creditto.creditto_service.domain.overseas_remittance.dto.OverseasRemittanceReq;
+import org.creditto.creditto_service.domain.overseas_remittance.service.OverseasRemittanceService;
 import org.creditto.creditto_service.global.infra.corebanking.OverseasRemittanceRes;
 import org.creditto.creditto_service.global.resolver.UserId;
 import org.creditto.creditto_service.global.response.ApiResponseUtil;

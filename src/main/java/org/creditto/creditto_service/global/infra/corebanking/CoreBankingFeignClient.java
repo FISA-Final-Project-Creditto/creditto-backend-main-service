@@ -3,7 +3,7 @@ package org.creditto.creditto_service.global.infra.corebanking;
 import org.creditto.creditto_service.domain.account.dto.AccountPasswordConfirmReq;
 import org.creditto.creditto_service.domain.account.dto.AccountSummaryRes;
 import org.creditto.creditto_service.domain.account.dto.CreateAccountReq;
-import org.creditto.creditto_service.domain.overseasRemittance.dto.OverseasRemittanceReq;
+import org.creditto.creditto_service.domain.overseas_remittance.dto.OverseasRemittanceReq;
 import org.creditto.creditto_service.domain.remittance.dto.*;
 import org.creditto.creditto_service.global.common.CoreBankingRes;
 import org.springframework.cloud.openfeign.FeignClient;
