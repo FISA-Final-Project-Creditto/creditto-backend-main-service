@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import feign.FeignException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -52,13 +53,19 @@ public class CreditScoreService {
      * @param userId 사용자 ID
      * @return PDF byte array
      */
-
     public byte[] generateCreditScoreReportPdf(Long userId, String lang) {
         try {
             String html = buildReportHtml(userId, lang);
             return convertHtmlToPdf(html);
-        } catch (Exception e) {
-            throw new CustomBaseException(ErrorBaseCode.PDF_GENERATION_ERROR);
+        } catch (CustomBaseException e) { // 하위 메서드에서 발생시킨 CustomBaseException
+            log.warn("CustomBaseException propagated during PDF report generation for user {}: {}", userId, e.getMessage(), e);
+            throw e;
+        } catch (feign.FeignException e) { // Feign 클라이언트 통신 오류 처리
+            log.error("Feign client call failed during PDF report generation for user {}: {}", userId, e.getMessage(), e);
+            throw new CustomBaseException(ErrorBaseCode.API_CALL_ERROR);
+        } catch (Exception e) { //이외의 에러
+            log.error("An unexpected error occurred during PDF report generation for user {}: {}", userId, e.getMessage(), e);
+            throw new CustomBaseException(ErrorBaseCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -82,6 +89,7 @@ public class CreditScoreService {
         return templateEngine.process(templateName, context);
     }
 
+    // Pdf 변환로직
     private byte[] convertHtmlToPdf(String html) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
@@ -89,7 +97,14 @@ public class CreditScoreService {
             builder.withHtmlContent(html, null);
 
             builder.useFont(
-                    () -> getClass().getResourceAsStream(MALGUN_GOTHIC_FONT_PATH),
+                    () -> {
+                        java.io.InputStream inputStream = getClass().getResourceAsStream(MALGUN_GOTHIC_FONT_PATH);
+                        if (inputStream == null) {
+                            log.error("Font resource not found: {}", MALGUN_GOTHIC_FONT_PATH);
+                            throw new CustomBaseException(ErrorBaseCode.PDF_FONT_ERROR);
+                        }
+                        return inputStream;
+                    },
                     "Malgun Gothic"
             );
 
