@@ -14,6 +14,6 @@ public class FeignConfig {
     @Bean
     Retryer.Default retryer() {
         // 최초 요청 포함 최대 3번 시도
-        return new Retryer.Default(100L, TimeUnit.SECONDS.toMillis(1L), 5);
+        return new Retryer.Default(100L, TimeUnit.SECONDS.toMillis(1L), 3);
     }
 }
