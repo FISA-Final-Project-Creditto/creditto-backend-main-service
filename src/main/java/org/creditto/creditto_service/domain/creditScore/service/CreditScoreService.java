@@ -14,10 +14,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.io.ByteArrayOutputStream;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -79,17 +77,17 @@ public class CreditScoreService {
         return templateEngine.process(templateName, context);
     }
 
-    // HTML → PDF 변환 (렌더링)
     private byte[] convertHtmlToPdf(String html) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            PdfRendererBuilder builder = new PdfRendererBuilder();
 
-            // HTML 내용 입력
+            PdfRendererBuilder builder = new PdfRendererBuilder();
             builder.withHtmlContent(html, null);
 
-            // 한글 폰트 등록
-            URL fontUrl = Objects.requireNonNull(getClass().getResource(MALGUN_GOTHIC_FONT_PATH));
-            builder.useFont(new java.io.File(fontUrl.toURI()), "Malgun Gothic");
+            builder.useFont(
+                    () -> getClass().getResourceAsStream(MALGUN_GOTHIC_FONT_PATH),
+                    "Malgun Gothic"
+            );
+
             builder.useFastMode();
             builder.toStream(outputStream);
             builder.run();
