@@ -18,6 +18,7 @@ import feign.FeignException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class CreditScoreService {
         } catch (CustomBaseException e) { // 하위 메서드에서 발생시킨 CustomBaseException
             log.warn("CustomBaseException propagated during PDF report generation for user {}", userId, e);
             throw e;
-        } catch (feign.FeignException e) { // Feign 클라이언트 통신 오류 처리
+        } catch (FeignException e) { // Feign 클라이언트 통신 오류 처리
             log.error("Feign client call failed during PDF report generation for user {}", userId, e);
             throw new CustomBaseException(ErrorBaseCode.API_CALL_ERROR);
         } catch (Exception e) { //이외의 에러
@@ -98,7 +99,7 @@ public class CreditScoreService {
 
             builder.useFont(
                     () -> {
-                        java.io.InputStream inputStream = getClass().getResourceAsStream(MALGUN_GOTHIC_FONT_PATH);
+                        InputStream inputStream = getClass().getResourceAsStream(MALGUN_GOTHIC_FONT_PATH);
                         if (inputStream == null) {
                             log.error("Font resource not found: {}", MALGUN_GOTHIC_FONT_PATH);
                             throw new CustomBaseException(ErrorBaseCode.PDF_FONT_ERROR);
