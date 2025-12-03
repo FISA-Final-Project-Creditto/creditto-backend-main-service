@@ -59,7 +59,7 @@ public class CreditScoreService {
             String html = buildReportHtml(userId, lang);
             return convertHtmlToPdf(html);
         } catch (CustomBaseException e) { // 하위 메서드에서 발생시킨 CustomBaseException
-            log.warn("CustomBaseException propagated during PDF report generation for user {}", userId, e);
+            log.error("CustomBaseException propagated during PDF report generation for user {}", userId, e);
             throw e;
         } catch (FeignException e) { // Feign 클라이언트 통신 오류 처리
             log.error("Feign client call failed during PDF report generation for user {}", userId, e);
