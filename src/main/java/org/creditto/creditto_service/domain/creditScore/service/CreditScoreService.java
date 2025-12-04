@@ -1,8 +1,8 @@
 package org.creditto.creditto_service.domain.creditScore.service;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.BaseFont;
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScorePredictReq;
 import org.creditto.creditto_service.domain.creditScore.dto.CreditScoreReq;
 import org.creditto.creditto_service.global.infra.auth.AuthFeignClient;
@@ -10,20 +10,23 @@ import org.creditto.creditto_service.global.infra.auth.ClientRes;
 import org.creditto.creditto_service.global.infra.creditrating.*;
 import org.creditto.creditto_service.global.response.error.ErrorBaseCode;
 import org.creditto.creditto_service.global.response.exception.CustomBaseException;
+
+
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.xhtmlrenderer.pdf.ITextRenderer;
+import feign.FeignException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Map;
-import java.util.Objects;
+
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CreditScoreService {
 
     private static final String MALGUN_GOTHIC_FONT_PATH = "/fonts/malgun.ttf";
@@ -52,13 +55,19 @@ public class CreditScoreService {
      * @param userId 사용자 ID
      * @return PDF byte array
      */
-
     public byte[] generateCreditScoreReportPdf(Long userId, String lang) {
         try {
             String html = buildReportHtml(userId, lang);
             return convertHtmlToPdf(html);
-        } catch (IOException | DocumentException e) {
-            throw new CustomBaseException(ErrorBaseCode.PDF_GENERATION_ERROR);
+        } catch (CustomBaseException e) { // 하위 메서드에서 발생시킨 CustomBaseException
+            log.error("CustomBaseException propagated during PDF report generation for user {}", userId, e);
+            throw e;
+        } catch (FeignException e) { // Feign 클라이언트 통신 오류 처리
+            log.error("Feign client call failed during PDF report generation for user {}", userId, e);
+            throw new CustomBaseException(ErrorBaseCode.API_CALL_ERROR);
+        } catch (Exception e) { //이외의 에러
+            log.error("An unexpected error occurred during PDF report generation for user {}", userId, e);
+            throw new CustomBaseException(ErrorBaseCode.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -82,35 +91,34 @@ public class CreditScoreService {
         return templateEngine.process(templateName, context);
     }
 
-    // HTML → PDF 변환 (렌더링)
-    private byte[] convertHtmlToPdf(String html) throws IOException, DocumentException {
+    // Pdf 변환로직
+    private byte[] convertHtmlToPdf(String html) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            ITextRenderer renderer = new ITextRenderer();
 
-            configureFonts(renderer);
+            PdfRendererBuilder builder = new PdfRendererBuilder();
+            builder.withHtmlContent(html, null);
 
-            renderer.setDocumentFromString(html);
-            renderer.layout();
-            renderer.createPDF(outputStream, false);
-            renderer.finishPDF();
+            builder.useFont(
+                    () -> {
+                        InputStream inputStream = getClass().getResourceAsStream(MALGUN_GOTHIC_FONT_PATH);
+                        if (inputStream == null) {
+                            log.error("Font resource not found: {}", MALGUN_GOTHIC_FONT_PATH);
+                            throw new CustomBaseException(ErrorBaseCode.PDF_FONT_ERROR);
+                        }
+                        return inputStream;
+                    },
+                    "Malgun Gothic"
+            );
+
+            builder.useFastMode();
+            builder.toStream(outputStream);
+            builder.run();
 
             return outputStream.toByteArray();
-        }
-    }
 
-    // 폰트 등록
-    private void configureFonts(ITextRenderer renderer) {
-        try {
-            URL fontUrl = Objects.requireNonNull(getClass().getResource(MALGUN_GOTHIC_FONT_PATH));
-            String fontPath = fontUrl.toExternalForm();
-
-            renderer.getFontResolver().addFont(
-                    fontPath,
-                    BaseFont.IDENTITY_H,
-                    BaseFont.EMBEDDED
-            );
-        } catch (Exception e) {
-            throw new CustomBaseException(ErrorBaseCode.PDF_FONT_ERROR);
+        } catch (IOException e) {
+            log.error("PDF generation failed due to IOException.", e);
+            throw new CustomBaseException(ErrorBaseCode.PDF_GENERATION_ERROR);
         }
     }
 }

@@ -15,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 @RestController
 @RequestMapping("/api/credit-score")
 @RequiredArgsConstructor
@@ -57,7 +60,8 @@ public class CreditScoreController {
         byte[] pdfBytes = creditScoreService.generateCreditScoreReportPdf(userId, lang);
 
         String langCode = "ko".equalsIgnoreCase(lang) ? "ko" : "en";
-        String fileName = "credit_report_%s_%s.pdf".formatted(langCode, java.time.LocalDate.now());
+        String safeDate = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+        String fileName = "credit_report_%s_%s.pdf".formatted(langCode, safeDate);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
