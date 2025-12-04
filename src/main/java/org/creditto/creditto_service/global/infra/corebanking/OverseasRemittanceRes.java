@@ -7,12 +7,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record OverseasRemittanceRes(
-        Long remittance,
-        String clientId,
+        Long remittanceId,
+        Long userId,
         Long recipientId,
         String recipientName,
         Long accountId,
-        Long accountNo,
+        String accountNo,
         Long recurId,
         Long exchangeId,
         BigDecimal exchangeRate,
