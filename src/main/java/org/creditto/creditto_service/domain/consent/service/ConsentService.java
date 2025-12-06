@@ -34,13 +34,16 @@ public class ConsentService {
         String key = "consent::" + definitionId;
 
         // Redis 캐시 조회
-        Object cachedData = redisTemplate.opsForValue().get(key);
-        if (cachedData != null) {
-            try {
-                return objectMapper.readValue((String) cachedData, ConsentDefinitionRes.class);
-            } catch (Exception e) {
-                redisTemplate.delete(key);
+        try {
+            Object cachedData = redisTemplate.opsForValue().get(key);
+            if (cachedData != null) {
+                // ObjectMapper를 사용하여 캐시된 객체를 DTO로 변환
+                return objectMapper.convertValue(cachedData, ConsentDefinitionRes.class);
             }
+        } catch (Exception e) {
+            log.warn("Failed to read or convert cache data for key: {}. Proceeding to DB.", key, e);
+            // 캐시 읽기/변환 실패 시 키를 삭제
+            redisTemplate.delete(key);
         }
 
         // redis에 캐싱된 값이 없으면 DB에서 조회
@@ -48,12 +51,11 @@ public class ConsentService {
                 .map(ConsentDefinitionRes::from)
                 .orElseThrow(() -> new CustomBaseException(ErrorBaseCode.NOT_FOUND_DEFINITION));
 
-        // DB에서 조회한 DTO 객체를 JSON 문자열로 변환해서 저장
+        // DB에서 조회한 DTO 객체를 Redis에 저장
         try {
-            String str = objectMapper.writeValueAsString(consentDefinitionRes);
-            redisTemplate.opsForValue().set(key, str);
+            redisTemplate.opsForValue().set(key, consentDefinitionRes);
         } catch (Exception e) {
-            log.error("Failed to cache data for key: {}, Error:{}", key, e.getMessage());
+            log.error("Failed to cache data for key: {}", key, e);
         }
 
         return consentDefinitionRes;
